@@ -11,7 +11,7 @@ import java.util.Map;
 public class EventManager<E extends Event> {
     private Map<Class<E>, List<EventListener<E>>> listenerMap;
 
-    EventManager() {
+    public EventManager() {
         this.listenerMap = new HashMap<>();
     }
 

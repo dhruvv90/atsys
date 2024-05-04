@@ -16,4 +16,8 @@ public class EventQueue {
     public Event get() {
         return this.queue.poll();
     }
+
+    public Boolean isEmpty() {
+        return this.queue.isEmpty();
+    }
 }

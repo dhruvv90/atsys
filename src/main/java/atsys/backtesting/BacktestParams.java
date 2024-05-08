@@ -1,17 +1,17 @@
 package atsys.backtesting;
 
-import atsys.core.HoldingType;
+import atsys.core.models.HoldingType;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class BtParameters {
+public class BacktestParams {
     private BigDecimal initialCapital;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
     private HoldingType holdingType;
 
-    public BtParameters(BigDecimal initialCapital, LocalDateTime startDateTime, LocalDateTime endDateTime, HoldingType holdingType) {
+    public BacktestParams(BigDecimal initialCapital, LocalDateTime startDateTime, LocalDateTime endDateTime, HoldingType holdingType) {
         this.initialCapital = initialCapital;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;

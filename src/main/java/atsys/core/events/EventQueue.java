@@ -1,4 +1,4 @@
-package atsys.events;
+package atsys.core.events;
 
 import java.util.LinkedList;
 

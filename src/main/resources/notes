@@ -1,0 +1,75 @@
+** Events related
+
+IEvent
+    FetchTickEvent -> raised by atsys, used by DataFetcher to fetch ..
+        List<Instrument>
+
+	TickDataEvent -> raised by data fetcher, consumed by strategy
+
+	SignalEvent-> raised by strategy , consumed by Portfolio manager
+	OrderEvent -> raised by portfolio mgr , consumed by Execution handler
+	FillEvent -> raised by execution handler , consumed by Perfomance metric recording service...
+
+
+
+*** Core components ****
+
+
+IDataFetcher
+    // fetch data for a particular tick, may be cached or on the fly..
+    // publish TickDataEvent
+
+
+IStrategy
+    initialize();
+    onTick(TickDataEvent e);
+
+    // create signal..
+    // uses market tick and IPortfolio...
+
+
+IPortfolioManager
+    onSignal() // create Order
+
+
+IExecutionHandler
+    onOrder()  // create Fill
+
+
+IPerformanceManager
+
+
+
+********************************
+
+Backtest
+    name;
+    BacktestParameters
+    Queue<IEvent> eventsQueue;
+    List<IEventhandler<IEvent>> registeredEvents;
+
+
+BacktestParameters
+    List<Instrument> instruments;
+    initialCapital
+    startDateTime
+    endDateTime
+    holdingType
+
+
+**** TBD
+
+backtesting params
+
+private BigDecimal initialCapital;
+    private LocalDateTime startDateTime;
+    private LocalDateTime endDateTime;
+    private HoldingType holdingType;
+
+
+*** June 2024
+
+
+
+
+

@@ -1,4 +1,4 @@
-package atsys.api.event;
+package atsys.api.core;
 
 public interface Event {
 

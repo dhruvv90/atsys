@@ -1,4 +1,4 @@
-package atsys.api.event;
+package atsys.api.core;
 
 
 public interface EventListener<T extends Event> {

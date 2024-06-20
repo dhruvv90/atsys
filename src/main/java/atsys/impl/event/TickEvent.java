@@ -1,6 +1,6 @@
 package atsys.impl.event;
 
-import atsys.api.event.Event;
+import atsys.api.core.Event;
 import atsys.impl.model.BaseTickData;
 import lombok.Getter;
 

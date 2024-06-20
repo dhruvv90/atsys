@@ -1,8 +1,8 @@
-package atsys.impl.event;
+package atsys.impl.core;
 
-import atsys.api.event.Event;
-import atsys.api.event.EventEmitter;
-import atsys.api.event.EventListener;
+import atsys.api.core.Event;
+import atsys.api.core.EventEmitter;
+import atsys.api.core.EventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

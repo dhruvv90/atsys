@@ -1,4 +1,4 @@
-package atsys.api.event;
+package atsys.api.core;
 
 public interface EventEmitter {
     <E extends Event> void register(Class<E> clazz, EventListener<E> listener);

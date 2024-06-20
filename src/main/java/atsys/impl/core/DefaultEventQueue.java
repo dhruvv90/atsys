@@ -1,7 +1,7 @@
-package atsys.impl.event;
+package atsys.impl.core;
 
-import atsys.api.event.Event;
-import atsys.api.event.EventQueue;
+import atsys.api.core.Event;
+import atsys.api.core.EventQueue;
 
 import java.util.LinkedList;
 import java.util.Queue;

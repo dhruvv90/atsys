@@ -2,13 +2,13 @@ package atsys.impl;
 
 import atsys.api.TradingEngine;
 import atsys.api.components.DataStreamer;
-import atsys.api.event.Event;
-import atsys.api.event.EventEmitter;
-import atsys.api.event.EventQueue;
+import atsys.api.core.Event;
+import atsys.api.core.EventEmitter;
+import atsys.api.core.EventQueue;
 import atsys.impl.components.DummyDataStreamer;
 import atsys.impl.components.DummyStrategy;
-import atsys.impl.event.DefaultEventEmitter;
-import atsys.impl.event.DefaultEventQueue;
+import atsys.impl.core.DefaultEventEmitter;
+import atsys.impl.core.DefaultEventQueue;
 import atsys.impl.event.TickEvent;
 import atsys.impl.model.BaseTickData;
 

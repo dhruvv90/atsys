@@ -1,7 +1,7 @@
 package atsys.impl.components;
 
 import atsys.api.components.Strategy;
-import atsys.api.event.EventListener;
+import atsys.api.core.EventListener;
 import atsys.impl.event.TickEvent;
 import atsys.impl.model.BaseTickData;
 import lombok.extern.slf4j.Slf4j;

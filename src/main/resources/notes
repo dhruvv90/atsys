@@ -1,6 +1,12 @@
-** Events related
 
-IEvent
+
+Events
+    TickDataEvent
+    TradingSignalEvent
+    OrderEvent
+    FillEvent
+
+
     FetchTickEvent -> raised by atsys, used by DataFetcher to fetch ..
         List<Instrument>
 
@@ -61,10 +67,7 @@ BacktestParameters
 
 backtesting params
 
-private BigDecimal initialCapital;
-    private LocalDateTime startDateTime;
-    private LocalDateTime endDateTime;
-    private HoldingType holdingType;
+
 
 
 *** June 2024

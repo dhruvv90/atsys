@@ -1,7 +1,8 @@
 package atsys.api.event;
 
-import java.util.Queue;
+public interface EventQueue<T extends Event> {
 
-public interface EventQueue extends Queue<Event> {
-
+    boolean offer(T event);
+    boolean isEmpty();
+    T poll();
 }

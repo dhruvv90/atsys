@@ -1,5 +1,6 @@
-package atsys.api.model;
+package atsys.impl.model;
 
+import atsys.api.model.TickData;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +11,7 @@ import java.util.Map;
 
 @Getter
 @Setter
-public class DataTick {
+public class BaseTickData implements TickData {
 
     private String mode;
     private boolean tradable;
@@ -31,5 +32,13 @@ public class DataTick {
     private double oiDayHigh;
     private double oiDayLow;
     private Instant tickTimestamp;
-    private Map<String, ArrayList<Depth>> depth;
+    private Map<String, ArrayList<MarketDepth>> depth;
+
+    @Getter
+    @Setter
+    public static class MarketDepth {
+        private int quantity;
+        private double price;
+        private int orders;
+    }
 }

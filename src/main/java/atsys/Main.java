@@ -3,6 +3,10 @@ package atsys;
 
 import atsys.impl.Backtester;
 import atsys.impl.BacktestingInputs;
+import atsys.impl.components.DummyDataStreamer;
+import atsys.impl.components.DummyStrategy;
+import atsys.impl.core.DefaultEventEmitter;
+import atsys.impl.core.DefaultEventQueue;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -17,7 +21,12 @@ public class Main {
                 .endDateTime(Instant.now())
                 .build();
 
-        Backtester bt = new Backtester(inputs);
+
+        Backtester bt = new Backtester(
+                new DummyDataStreamer(inputs),
+                new DummyStrategy(),
+                new DefaultEventQueue(),
+                new DefaultEventEmitter());
         bt.run();
     }
 }

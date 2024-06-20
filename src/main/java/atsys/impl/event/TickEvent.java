@@ -1,15 +1,15 @@
 package atsys.impl.event;
 
 import atsys.api.core.Event;
-import atsys.impl.model.BaseTickData;
+import atsys.api.model.TickData;
 import lombok.Getter;
 
 @Getter
 public class TickEvent implements Event {
 
-    private final BaseTickData data;
+    private final TickData data;
 
-    public TickEvent(BaseTickData data){
+    public TickEvent(TickData data){
         this.data = data;
     }
 }

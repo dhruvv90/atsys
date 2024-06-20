@@ -1,21 +1,16 @@
 
 
 Events
-    TickDataEvent
-    TradingSignalEvent
+    TickEvent
+    SignalEvent
     OrderEvent
     FillEvent
 
-
-    FetchTickEvent -> raised by atsys, used by DataFetcher to fetch ..
-        List<Instrument>
-
-	TickDataEvent -> raised by data fetcher, consumed by strategy
-
-	SignalEvent-> raised by strategy , consumed by Portfolio manager
-	OrderEvent -> raised by portfolio mgr , consumed by Execution handler
-	FillEvent -> raised by execution handler , consumed by Perfomance metric recording service...
-
+EventListener:
+    TickEventListener -> uses strategy to place orders
+    SignalEventListener -> uses portfolio
+    OrderEventListener -> uses execution to do order..
+    FillEventListener -> capture results..
 
 
 *** Core components ****
@@ -66,11 +61,6 @@ BacktestParameters
 **** TBD
 
 backtesting params
-
-
-
-
-*** June 2024
 
 
 

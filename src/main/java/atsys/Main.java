@@ -23,8 +23,6 @@ public class Main {
                 .endDateTime(Instant.now())
                 .build();
 
-        DataStreamer<TickData> ds = new TickDataStreamer(inputs);
-
         Backtester bt = new Backtester(
                 new TickDataStreamer(inputs),
                 new DummyStrategy(),

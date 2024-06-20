@@ -1,5 +1,6 @@
 package atsys.impl.components;
 
+import atsys.api.model.TickData;
 import atsys.impl.BacktestingInputs;
 import atsys.impl.model.BaseTickData;
 
@@ -7,13 +8,13 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DummyDataHelper {
+public class DataHelper {
 
-    static List<BaseTickData> generateData(BacktestingInputs inputs){
+    static List<TickData> generateDummyData(BacktestingInputs inputs){
         Instant from = inputs.getStartDateTime();
         Instant to = inputs.getEndDateTime();
 
-        List<BaseTickData> result = new ArrayList<>();
+        List<TickData> result = new ArrayList<>();
         for(int i = 0; i < 1000; i++){
             BaseTickData data = new BaseTickData();
             data.setOi(1.223);

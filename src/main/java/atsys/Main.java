@@ -1,9 +1,11 @@
 package atsys;
 
 
+import atsys.api.components.DataStreamer;
+import atsys.api.model.TickData;
 import atsys.impl.Backtester;
 import atsys.impl.BacktestingInputs;
-import atsys.impl.components.DummyDataStreamer;
+import atsys.impl.components.TickDataStreamer;
 import atsys.impl.components.DummyStrategy;
 import atsys.impl.core.DefaultEventEmitter;
 import atsys.impl.core.DefaultEventQueue;
@@ -21,9 +23,10 @@ public class Main {
                 .endDateTime(Instant.now())
                 .build();
 
+        DataStreamer<TickData> ds = new TickDataStreamer(inputs);
 
         Backtester bt = new Backtester(
-                new DummyDataStreamer(inputs),
+                new TickDataStreamer(inputs),
                 new DummyStrategy(),
                 new DefaultEventQueue(),
                 new DefaultEventEmitter());

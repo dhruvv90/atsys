@@ -2,12 +2,12 @@ package atsys.impl;
 
 import atsys.api.TradingEngine;
 import atsys.api.components.Strategy;
-import atsys.api.core.Event;
+import atsys.api.core.event.Event;
 import atsys.api.core.EventEmitter;
 import atsys.api.core.EventQueue;
 import atsys.api.model.TickData;
 import atsys.impl.components.TickDataStreamer;
-import atsys.impl.event.TickEvent;
+import atsys.api.core.event.TickEvent;
 import atsys.impl.event.listener.TickEventListener;
 
 

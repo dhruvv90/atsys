@@ -1,6 +1,5 @@
-package atsys.impl.event;
+package atsys.api.core.event;
 
-import atsys.api.core.Event;
 import atsys.api.model.TickData;
 import lombok.Getter;
 

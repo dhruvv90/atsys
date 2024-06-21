@@ -1,8 +1,8 @@
 package atsys.impl.components;
 
 import atsys.api.components.Strategy;
+import atsys.api.core.event.TickEvent;
 import atsys.api.model.TickData;
-import atsys.impl.model.BaseTickData;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -20,12 +20,11 @@ public class DummyStrategy implements Strategy{
         log.info("Ending Strategy..");
     }
 
-
     @Override
-    public <T extends TickData> void handleData(T data) {
-        BaseTickData tickData = (BaseTickData) data;
+    public void handleTick(TickEvent event) {
+        TickData tickData = event.getData();
         String sb = "counter: " + counter + ". Strategy calc. " +
-                "OI: " + tickData.getOi() +
+                "Symbol: " + tickData.getSymbol() +
                 ", timestamp: " + tickData.getTickTimestamp() +
                 ", LTT: " + tickData.getLastTradedTime() +
                 ", LTP: " + tickData.getLastTradedPrice();

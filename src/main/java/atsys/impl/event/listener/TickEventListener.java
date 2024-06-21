@@ -2,7 +2,7 @@ package atsys.impl.event.listener;
 
 import atsys.api.components.Strategy;
 import atsys.api.core.EventListener;
-import atsys.impl.event.TickEvent;
+import atsys.api.core.event.TickEvent;
 
 public class TickEventListener implements EventListener<TickEvent> {
 
@@ -14,6 +14,6 @@ public class TickEventListener implements EventListener<TickEvent> {
 
     @Override
     public void onEvent(TickEvent event) {
-        this.strategy.handleData(event.getData());
+        this.strategy.handleTick(event);
     }
 }

@@ -1,11 +1,10 @@
 package atsys.api.components;
 
 import atsys.api.LifecycleManager;
-import atsys.api.model.TickData;
+import atsys.api.core.event.TickEvent;
 
 public interface Strategy extends LifecycleManager {
 
-    <T extends TickData> void handleData(T data);
+    void handleTick(TickEvent event);
 
-//    void handleData(BaseTickData tickData);
 }

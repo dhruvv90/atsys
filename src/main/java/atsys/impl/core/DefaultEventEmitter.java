@@ -1,6 +1,6 @@
 package atsys.impl.core;
 
-import atsys.api.core.Event;
+import atsys.api.core.event.Event;
 import atsys.api.core.EventEmitter;
 import atsys.api.core.EventListener;
 import java.util.ArrayList;

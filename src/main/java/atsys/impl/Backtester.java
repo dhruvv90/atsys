@@ -45,10 +45,14 @@ public class Backtester implements TradingEngine {
         onComplete();
     }
 
-    @Override
-    public void onInit() {
+    private void registerComponents(){
         // Register Events..
         eventEmitter.register(TickEvent.class, new TickEventListener(this.strategy));
+    }
+
+    @Override
+    public void onInit() {
+        registerComponents();
 
         // Lifecycle hooks for the components
         dataStreamer.onInit();

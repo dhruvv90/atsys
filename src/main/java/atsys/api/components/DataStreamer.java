@@ -6,7 +6,7 @@ import atsys.api.model.TickData;
 /**
  * Primary component for ingesting, processing and streaming data of type T into trading engine.
  */
-public interface DataStreamer<T extends TickData> extends LifecycleManager {
+public interface DataStreamer<T> extends LifecycleManager {
 
     /**
      * Used to read next chunk of data

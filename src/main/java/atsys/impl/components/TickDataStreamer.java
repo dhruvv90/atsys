@@ -13,7 +13,7 @@ import java.util.List;
 public class TickDataStreamer implements DataStreamer<TickData> {
 
     private final BacktestingInputs backtestingInputs;
-    private Iterator<TickData> dataIter;
+    private Iterator<TickData> dataIterator;
 
     public TickDataStreamer(BacktestingInputs inputs) {
         backtestingInputs = inputs;
@@ -23,17 +23,17 @@ public class TickDataStreamer implements DataStreamer<TickData> {
     public void onInit() {
         log.info("Ingesting dummy data..");
         List<TickData> data = DataHelper.generateDummyData(backtestingInputs);
-        dataIter = data.iterator();
+        dataIterator = data.iterator();
     }
 
     @Override
     public TickData readData() {
-        return dataIter.next();
+        return dataIterator.next();
     }
 
     @Override
     public boolean hasNext() {
-        return dataIter.hasNext();
+        return dataIterator.hasNext();
     }
 
 

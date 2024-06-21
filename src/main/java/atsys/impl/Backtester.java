@@ -1,25 +1,24 @@
 package atsys.impl;
 
 import atsys.api.TradingEngine;
-import atsys.api.components.DataStreamer;
 import atsys.api.components.Strategy;
 import atsys.api.core.Event;
 import atsys.api.core.EventEmitter;
-import atsys.api.core.EventListener;
 import atsys.api.core.EventQueue;
 import atsys.api.model.TickData;
+import atsys.impl.components.TickDataStreamer;
 import atsys.impl.event.TickEvent;
 import atsys.impl.event.listener.TickEventListener;
 
 
 public class Backtester implements TradingEngine {
     private final EventQueue<Event> eventQueue;
-    private final DataStreamer<TickData> dataStreamer;
+    private final TickDataStreamer dataStreamer;
     private final Strategy strategy;
     private final EventEmitter eventEmitter;
 
 
-    public Backtester(DataStreamer dataStreamer,
+    public Backtester(TickDataStreamer dataStreamer,
                       Strategy strategy,
                       EventQueue<Event> eventQueue,
                       EventEmitter eventEmitter) {
@@ -48,9 +47,10 @@ public class Backtester implements TradingEngine {
 
     @Override
     public void onInit() {
-        EventListener<TickEvent> tickEventListener = new TickEventListener(this.strategy);
-        eventEmitter.register(TickEvent.class, tickEventListener);
+        // Register Events..
+        eventEmitter.register(TickEvent.class, new TickEventListener(this.strategy));
 
+        // Lifecycle hooks for the components
         dataStreamer.onInit();
         strategy.onInit();
     }

@@ -1,36 +1,38 @@
 package atsys.impl;
 
-import atsys.api.TradingEngine;
+import atsys.api.LifecycleManager;
 import atsys.api.components.Strategy;
-import atsys.api.core.event.Event;
 import atsys.api.core.EventEmitter;
 import atsys.api.core.EventQueue;
+import atsys.api.core.event.Event;
+import atsys.api.core.event.TickEvent;
 import atsys.api.model.TickData;
 import atsys.impl.components.TickDataStreamer;
-import atsys.api.core.event.TickEvent;
+import atsys.impl.core.DefaultEventEmitter;
+import atsys.impl.core.DefaultEventQueue;
 import atsys.impl.event.listener.TickEventListener;
 
 
-public class Backtester implements TradingEngine {
+public class Backtester implements LifecycleManager {
+
     private final EventQueue<Event> eventQueue;
     private final TickDataStreamer dataStreamer;
-    private final Strategy strategy;
     private final EventEmitter eventEmitter;
 
-
-    public Backtester(TickDataStreamer dataStreamer,
-                      Strategy strategy,
-                      EventQueue<Event> eventQueue,
-                      EventEmitter eventEmitter) {
-        this.eventQueue = eventQueue;
-        this.eventEmitter = eventEmitter;
-        this.strategy = strategy;
-        this.dataStreamer = dataStreamer;
+    public Backtester() {
+        this.eventQueue = new DefaultEventQueue();
+        this.dataStreamer = new TickDataStreamer();
+        this.eventEmitter = new DefaultEventEmitter();
     }
 
-    @Override
-    public void run() {
+    public void run(Backtest bt) {
         onInit();
+
+        Strategy strategy = bt.getStrategy();
+        TickEventListener tickListener = new TickEventListener(strategy);
+        eventEmitter.register(TickEvent.class, tickListener);
+        strategy.onInit();
+
         while (dataStreamer.hasNext()) {
             if (eventQueue.isEmpty()) {
                 TickData data = dataStreamer.readData();
@@ -42,26 +44,20 @@ public class Backtester implements TradingEngine {
             Event ev = eventQueue.poll();
             eventEmitter.emit(ev);
         }
-        onComplete();
-    }
 
-    private void registerComponents(){
-        // Register Events..
-        eventEmitter.register(TickEvent.class, new TickEventListener(this.strategy));
+        eventEmitter.unregister(TickEvent.class, tickListener);
+        strategy.onComplete();
+        onComplete();
     }
 
     @Override
     public void onInit() {
-        registerComponents();
-
-        // Lifecycle hooks for the components
         dataStreamer.onInit();
-        strategy.onInit();
     }
 
     @Override
     public void onComplete() {
-        strategy.onComplete();
+        this.eventQueue.clear();
         dataStreamer.onComplete();
     }
 }

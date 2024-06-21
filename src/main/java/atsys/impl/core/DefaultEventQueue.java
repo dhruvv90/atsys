@@ -28,4 +28,10 @@ public class DefaultEventQueue implements EventQueue<Event> {
     public Event poll() {
         return queue.poll();
     }
+
+    @Override
+    public void clear() {
+        queue.clear();
+    }
+
 }

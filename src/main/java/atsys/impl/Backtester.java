@@ -13,7 +13,7 @@ import atsys.impl.core.DefaultEventQueue;
 import atsys.impl.event.listener.TickEventListener;
 
 
-public class Backtester implements LifecycleManager {
+public class Backtester {
 
     private final EventQueue<Event> eventQueue;
     private final TickDataStreamer dataStreamer;
@@ -26,12 +26,12 @@ public class Backtester implements LifecycleManager {
     }
 
     public void run(Backtest bt) {
-        onInit();
+        bt.onInit();
 
+        dataStreamer.onInit();
         Strategy strategy = bt.getStrategy();
         TickEventListener tickListener = new TickEventListener(strategy);
         eventEmitter.register(TickEvent.class, tickListener);
-        strategy.onInit();
 
         while (dataStreamer.hasNext()) {
             if (eventQueue.isEmpty()) {
@@ -46,18 +46,9 @@ public class Backtester implements LifecycleManager {
         }
 
         eventEmitter.unregister(TickEvent.class, tickListener);
-        strategy.onComplete();
-        onComplete();
-    }
 
-    @Override
-    public void onInit() {
-        dataStreamer.onInit();
-    }
-
-    @Override
-    public void onComplete() {
         this.eventQueue.clear();
         dataStreamer.onComplete();
+        bt.onComplete();
     }
 }

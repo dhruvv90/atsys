@@ -1,5 +1,6 @@
 package atsys.impl;
 
+import atsys.api.LifecycleManager;
 import atsys.api.components.Strategy;
 import atsys.api.model.Instrument;
 import lombok.Getter;
@@ -8,7 +9,7 @@ import java.time.Instant;
 import java.util.List;
 
 @Getter
-public class Backtest {
+public class Backtest implements LifecycleManager {
     private final String name;
     private final String description;
     private final List<Instrument> instruments;
@@ -29,5 +30,15 @@ public class Backtest {
         this.endDateTime = endDateTime;
         this.strategy = strategy;
         this.createdAt = Instant.now();
+    }
+
+    @Override
+    public void onInit() {
+        strategy.onInit();
+    }
+
+    @Override
+    public void onComplete() {
+        strategy.onComplete();
     }
 }

@@ -5,12 +5,25 @@ import atsys.impl.Backtest;
 import atsys.impl.Backtester;
 import atsys.impl.components.DataHelper;
 import atsys.impl.components.DummyStrategy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.time.Instant;
 import java.util.ArrayList;
 
+
+@SpringBootApplication
 public class Main {
+    private static final Logger log = LoggerFactory.getLogger(Main.class);
+
     public static void main(String[] args) {
+        SpringApplication.run(Main.class, args);
+        tryBacktester();
+    }
+
+    private static void tryBacktester(){
         Backtest myBacktest = new Backtest(
                 "myBacktest", "",
                 new ArrayList<>(),
@@ -23,20 +36,11 @@ public class Main {
         long startTime;
         long endTime;
 
-        startTime = System.currentTimeMillis();
-        btEngine.run(myBacktest);
-        endTime = System.currentTimeMillis();
-        System.out.println(endTime - startTime);
-
-        startTime = System.currentTimeMillis();
-        btEngine.run(myBacktest);
-        endTime = System.currentTimeMillis();
-        System.out.println(endTime - startTime);
-
-        startTime = System.currentTimeMillis();
-        btEngine.run(myBacktest);
-        endTime = System.currentTimeMillis();
-        System.out.println(endTime - startTime);
-
+        for(int i = 0; i < 3; i++){
+            startTime = System.currentTimeMillis();
+            btEngine.run(myBacktest);
+            endTime = System.currentTimeMillis();
+            System.out.println(endTime - startTime);
+        }
     }
 }

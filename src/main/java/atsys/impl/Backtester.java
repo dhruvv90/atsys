@@ -27,26 +27,29 @@ public class Backtester {
 
     public void run(Backtest bt) {
         bt.onInit();
-
         dataStreamer.onInit();
-        Strategy strategy = bt.getStrategy();
-        TickEventListener tickListener = new TickEventListener(strategy);
+        eventQueue.clear();
+
+        TickEventListener tickListener = new TickEventListener(bt.getStrategy());
         eventEmitter.register(TickEvent.class, tickListener);
 
-        while (dataStreamer.hasNext()) {
-            if (eventQueue.isEmpty()) {
+        // Either dataStreamer has some data , or eventQueue has some events
+        while (dataStreamer.hasNext() || !eventQueue.isEmpty()) {
+
+            // Process all events in queue first..
+            while(!eventQueue.isEmpty()){
+                Event ev = eventQueue.poll();
+                eventEmitter.emit(ev);
+            }
+
+            // If DataStreamer still has data, Load it..
+            if(dataStreamer.hasNext()){
                 TickData data = dataStreamer.readData();
                 eventQueue.offer(new TickEvent(data));
             }
-            if (eventQueue.isEmpty()) {
-                break;
-            }
-            Event ev = eventQueue.poll();
-            eventEmitter.emit(ev);
         }
 
         eventEmitter.unregister(TickEvent.class, tickListener);
-
         this.eventQueue.clear();
         dataStreamer.onComplete();
         bt.onComplete();

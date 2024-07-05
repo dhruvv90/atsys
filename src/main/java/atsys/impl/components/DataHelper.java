@@ -8,9 +8,9 @@ import java.util.List;
 
 public class DataHelper {
 
-    static List<TickData> generateDummyData(){
+    public static List<TickData> generateDummyData(){
         List<TickData> result = new ArrayList<>();
-        for(int i = 0; i < 10; i++){
+        for(int i = 0; i < 15; i++){
             TickData data = new TickData();
             data.setSymbol("Symbol("+ i + ")");
             data.setTickTimestamp(Instant.now());

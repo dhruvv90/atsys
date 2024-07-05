@@ -3,6 +3,7 @@ package atsys;
 
 import atsys.impl.Backtest;
 import atsys.impl.Backtester;
+import atsys.impl.components.DataHelper;
 import atsys.impl.components.DummyStrategy;
 
 import java.time.Instant;

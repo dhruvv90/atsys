@@ -1,6 +1,6 @@
-package atsys.api.core;
+package atsys.backtesting.core;
 
-import atsys.api.core.event.Event;
+import atsys.backtesting.core.event.Event;
 
 public interface EventEmitter {
     <E extends Event> void register(Class<E> clazz, EventListener<E> listener);

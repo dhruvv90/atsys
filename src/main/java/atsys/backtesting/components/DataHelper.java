@@ -1,6 +1,6 @@
-package atsys.impl.components;
+package atsys.backtesting.components;
 
-import atsys.api.model.TickData;
+import atsys.backtesting.model.TickData;
 
 import java.time.Instant;
 import java.util.ArrayList;

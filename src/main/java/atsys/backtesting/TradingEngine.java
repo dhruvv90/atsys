@@ -1,4 +1,4 @@
-package atsys.api;
+package atsys.backtesting;
 
 /**
  * Can be used for Live trading, Backtesting or any Simulation

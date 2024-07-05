@@ -1,8 +1,7 @@
-package atsys.impl;
+package atsys.backtesting;
 
-import atsys.api.LifecycleManager;
-import atsys.api.components.Strategy;
-import atsys.api.model.Instrument;
+import atsys.backtesting.components.Strategy;
+import atsys.backtesting.model.Instrument;
 import lombok.Getter;
 
 import java.time.Instant;

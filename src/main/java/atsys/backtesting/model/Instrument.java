@@ -1,4 +1,4 @@
-package atsys.api.model;
+package atsys.backtesting.model;
 
 public interface Instrument {
 }

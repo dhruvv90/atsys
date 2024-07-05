@@ -1,7 +1,7 @@
-package atsys.api.core;
+package atsys.backtesting.core;
 
 
-import atsys.api.core.event.Event;
+import atsys.backtesting.core.event.Event;
 
 public interface EventListener<T extends Event> {
     void onEvent(T event);

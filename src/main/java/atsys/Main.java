@@ -1,10 +1,9 @@
 package atsys;
 
 
-import atsys.impl.Backtest;
-import atsys.impl.Backtester;
-import atsys.impl.components.DataHelper;
-import atsys.impl.components.DummyStrategy;
+import atsys.backtesting.Backtest;
+import atsys.backtesting.Backtester;
+import atsys.backtesting.components.DummyStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;

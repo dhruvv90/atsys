@@ -1,7 +1,6 @@
-package atsys.impl.components;
+package atsys.backtesting.components;
 
-import atsys.api.components.DataStreamer;
-import atsys.api.model.TickData;
+import atsys.backtesting.model.TickData;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Iterator;

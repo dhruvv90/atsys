@@ -1,6 +1,6 @@
-package atsys.api.core.event;
+package atsys.backtesting.core.event;
 
-import atsys.api.model.TickData;
+import atsys.backtesting.model.TickData;
 import lombok.Getter;
 
 @Getter

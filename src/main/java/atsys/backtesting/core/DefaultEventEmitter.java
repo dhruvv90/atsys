@@ -1,8 +1,7 @@
-package atsys.impl.core;
+package atsys.backtesting.core;
 
-import atsys.api.core.event.Event;
-import atsys.api.core.EventEmitter;
-import atsys.api.core.EventListener;
+import atsys.backtesting.core.event.Event;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

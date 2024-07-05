@@ -1,16 +1,14 @@
-package atsys.impl;
+package atsys.backtesting;
 
-import atsys.api.LifecycleManager;
-import atsys.api.components.Strategy;
-import atsys.api.core.EventEmitter;
-import atsys.api.core.EventQueue;
-import atsys.api.core.event.Event;
-import atsys.api.core.event.TickEvent;
-import atsys.api.model.TickData;
-import atsys.impl.components.TickDataStreamer;
-import atsys.impl.core.DefaultEventEmitter;
-import atsys.impl.core.DefaultEventQueue;
-import atsys.impl.event.listener.TickEventListener;
+import atsys.backtesting.core.EventEmitter;
+import atsys.backtesting.core.EventQueue;
+import atsys.backtesting.core.event.Event;
+import atsys.backtesting.core.event.TickEvent;
+import atsys.backtesting.model.TickData;
+import atsys.backtesting.components.TickDataStreamer;
+import atsys.backtesting.core.DefaultEventEmitter;
+import atsys.backtesting.core.DefaultEventQueue;
+import atsys.backtesting.core.TickEventListener;
 
 
 public class Backtester {

@@ -1,4 +1,4 @@
-package atsys.impl.exception;
+package atsys.backtesting.exception;
 
 public class BaseException extends Exception{
 }

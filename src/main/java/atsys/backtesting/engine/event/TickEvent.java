@@ -1,4 +1,4 @@
-package atsys.backtesting.core.event;
+package atsys.backtesting.engine.event;
 
 import atsys.backtesting.model.TickData;
 import lombok.Getter;

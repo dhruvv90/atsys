@@ -1,7 +1,7 @@
-package atsys.backtesting.core;
+package atsys.backtesting.engine.listeners;
 
-import atsys.backtesting.components.Strategy;
-import atsys.backtesting.core.event.TickEvent;
+import atsys.backtesting.components.strategy.Strategy;
+import atsys.backtesting.engine.event.TickEvent;
 
 public class TickEventListener implements EventListener<TickEvent> {
 

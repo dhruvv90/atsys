@@ -1,6 +1,6 @@
-package atsys.backtesting.core;
+package atsys.backtesting.engine;
 
-import atsys.backtesting.core.event.Event;
+import atsys.backtesting.engine.event.Event;
 
 import java.util.LinkedList;
 import java.util.Queue;

@@ -1,6 +1,6 @@
-package atsys.backtesting.components;
+package atsys.backtesting.components.strategy;
 
-import atsys.backtesting.core.event.TickEvent;
+import atsys.backtesting.engine.event.TickEvent;
 import atsys.backtesting.model.TickData;
 import lombok.extern.slf4j.Slf4j;
 

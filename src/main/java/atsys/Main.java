@@ -10,6 +10,8 @@ import atsys.backtesting.model.Backtest;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class Main {
@@ -30,11 +32,15 @@ public class Main {
         long startTime;
         long endTime;
 
+        List<Long> times = new ArrayList<>();
+
         for(int i = 0; i < 3; i++){
             startTime = System.currentTimeMillis();
             btEngine.run(myBacktest);
             endTime = System.currentTimeMillis();
-            System.out.println(endTime - startTime);
+            times.add(endTime - startTime);
         }
+
+        System.out.println(Arrays.toString(times.toArray()));
     }
 }

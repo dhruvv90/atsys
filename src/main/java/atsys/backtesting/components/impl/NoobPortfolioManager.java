@@ -2,6 +2,7 @@ package atsys.backtesting.components.impl;
 
 import atsys.backtesting.BacktestingContext;
 import atsys.backtesting.components.PortfolioManager;
+import atsys.backtesting.engine.events.FillEvent;
 import atsys.backtesting.engine.events.OrderEvent;
 import atsys.backtesting.engine.events.SignalEvent;
 import lombok.extern.slf4j.Slf4j;
@@ -26,5 +27,10 @@ public class NoobPortfolioManager implements PortfolioManager {
     @Override
     public void onComplete() {
         log.info("Ending {}", this.getClass().getSimpleName());
+    }
+
+    @Override
+    public void onFill(FillEvent event) {
+        log.info("{} processing Fill", this.getClass().getSimpleName());
     }
 }

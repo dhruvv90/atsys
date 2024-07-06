@@ -6,10 +6,8 @@ import atsys.backtesting.components.PortfolioManager;
 import atsys.backtesting.components.Strategy;
 import atsys.backtesting.engine.EventPublisher;
 import atsys.backtesting.engine.EventsRepository;
-import atsys.backtesting.engine.events.Event;
-import atsys.backtesting.engine.events.OrderEvent;
-import atsys.backtesting.engine.events.SignalEvent;
-import atsys.backtesting.engine.events.TickEvent;
+import atsys.backtesting.engine.events.*;
+import atsys.backtesting.engine.listeners.FillEventListener;
 import atsys.backtesting.engine.listeners.OrderEventListener;
 import atsys.backtesting.engine.listeners.SignalEventListener;
 import atsys.backtesting.engine.listeners.TickEventListener;
@@ -48,6 +46,7 @@ public class BacktestingContext {
 
         // Register PortfolioManager
         eventsRepository.register(SignalEvent.class, new SignalEventListener(backtest.getPortfolioManager()));
+        eventsRepository.register(FillEvent.class, new FillEventListener(backtest.getPortfolioManager()));
     }
 
     private void registerExecutionManager(){

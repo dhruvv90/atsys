@@ -2,14 +2,18 @@ package atsys.backtesting.components.impl;
 
 import atsys.backtesting.BacktestingContext;
 import atsys.backtesting.components.ExecutionManager;
+import atsys.backtesting.engine.events.FillEvent;
 import atsys.backtesting.engine.events.OrderEvent;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class SimulatedExecutionManager implements ExecutionManager {
 
+    private BacktestingContext context;
+
     @Override
     public void onInit(BacktestingContext context) {
+        this.context = context;
         log.info("Initiating {}", this.getClass().getSimpleName());
     }
 
@@ -21,5 +25,6 @@ public class SimulatedExecutionManager implements ExecutionManager {
     @Override
     public void processOrder(OrderEvent event) {
         log.info("{} processing OrderEvent", this.getClass().getSimpleName());
+        this.context.publishEvent(new FillEvent());
     }
 }

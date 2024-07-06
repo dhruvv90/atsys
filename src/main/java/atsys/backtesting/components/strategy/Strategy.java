@@ -1,7 +1,7 @@
-package atsys.backtesting.components;
+package atsys.backtesting.components.strategy;
 
 import atsys.backtesting.LifecycleManager;
-import atsys.backtesting.core.event.TickEvent;
+import atsys.backtesting.engine.event.TickEvent;
 
 public interface Strategy extends LifecycleManager {
 

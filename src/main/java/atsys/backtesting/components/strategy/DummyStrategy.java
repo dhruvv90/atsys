@@ -37,7 +37,7 @@ public class DummyStrategy implements Strategy{
 
         if(counter == 5){
 //            context.getEventPublisher().publishEvent(new KillEvent());
-            context.getEventPublisher().publishEvent(new SignalEvent());
+            context.publishEvent(new SignalEvent());
         }
     }
 }

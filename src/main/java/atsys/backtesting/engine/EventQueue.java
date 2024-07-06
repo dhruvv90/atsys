@@ -9,7 +9,4 @@ public interface EventQueue<T extends Event> {
     T poll();
     T peek();
     void clear();
-
-    EventConsumer getConsumer();
-    EventPublisher getPublisher();
 }

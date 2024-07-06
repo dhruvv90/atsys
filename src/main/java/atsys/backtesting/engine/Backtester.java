@@ -1,55 +1,44 @@
 package atsys.backtesting.engine;
 
 import atsys.backtesting.model.Backtest;
-import atsys.backtesting.components.strategy.Strategy;
 import atsys.backtesting.engine.events.Event;
 import atsys.backtesting.engine.events.TickEvent;
-import atsys.backtesting.engine.listeners.TickEventListener;
 import atsys.backtesting.model.TickData;
 import atsys.backtesting.components.data.TickDataStreamer;
 
 
 public class Backtester {
 
-    private final EventQueue<Event> eventQueue;
-    private final EventEmitter eventEmitter;
     private final TickDataStreamer dataStreamer;
+    private final EventDrivenEngine engine;
 
     public Backtester() {
-        eventQueue = new EventQueueImpl();
-        eventEmitter = new EventEmitter();
+        engine = new EventDrivenEngine();
         dataStreamer = new TickDataStreamer();
     }
 
-    private void postBacktest(BacktestingContext context) {
-        eventQueue.clear();
-        eventEmitter.unregisterAll();
+    private void preBacktest(Backtest backtest){
+        // Initialize dataStreamer
+        dataStreamer.onInit(backtest);
 
-        context.complete();
-        dataStreamer.onComplete();
+        //Register backtest
+        engine.registerBacktest(backtest);
     }
 
-    private void preBacktest(BacktestingContext context){
-        // Initialize dataStreamer
-        dataStreamer.onInit(context);
-
-        // Initialize backtest..
-        context.initialize();
-
-        // Register Strategy as TickEventListener
-        Strategy strategy = context.getBacktest().getStrategy();
-        eventEmitter.register(TickEvent.class, new TickEventListener(strategy));
+    private void postBacktest(Backtest backtest) {
+        engine.unregisterBacktest();
+        dataStreamer.onComplete();
     }
 
     /**
      * Run Backtest independently
      */
-    public void run(Backtest bt) {
-        BacktestingContext context = new BacktestingContext(bt, eventQueue.getPublisher());
-        preBacktest(context);
+    public void run(Backtest backtest) {
+        preBacktest(backtest);
 
-        EventConsumer eventConsumer = eventQueue.getConsumer();
-        EventPublisher eventPublisher = eventQueue.getPublisher();
+        // extract consumers and producers
+        EventConsumer eventConsumer = engine.getConsumer();
+        EventPublisher eventPublisher = engine.getPublisher();
 
         // Either dataStreamer has some data , or eventConsumer has some events
         while (dataStreamer.hasNext() || eventConsumer.hasEvents()) {
@@ -57,7 +46,7 @@ public class Backtester {
             // Process all events in queue first..
             while (eventConsumer.hasEvents()) {
                 Event ev = eventConsumer.getEvent();
-                eventEmitter.emit(ev);
+                engine.emitEvent(ev);
             }
 
             // If DataStreamer still has data, Load it..
@@ -67,6 +56,6 @@ public class Backtester {
             }
         }
 
-        postBacktest(context);
+        postBacktest(backtest);
     }
 }

@@ -7,13 +7,9 @@ import java.util.Queue;
 
 public class EventQueueImpl implements EventQueue<Event> {
     private final Queue<Event> queue;
-    private final EventConsumer consumer;
-    private final EventPublisher publisher;
 
     public EventQueueImpl(){
         this.queue = new LinkedList<>();
-        consumer = new EventConsumer(this);
-        publisher = new EventPublisher(this);
     }
 
     @Override
@@ -40,16 +36,6 @@ public class EventQueueImpl implements EventQueue<Event> {
     @Override
     public void clear() {
         queue.clear();
-    }
-
-    @Override
-    public EventConsumer getConsumer() {
-        return consumer;
-    }
-
-    @Override
-    public EventPublisher getPublisher() {
-        return publisher;
     }
 
 }

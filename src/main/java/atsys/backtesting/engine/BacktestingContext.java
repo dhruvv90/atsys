@@ -14,14 +14,12 @@ public class BacktestingContext {
     BacktestingContext(Backtest backtest, EventPublisher eventPublisher){
         this.backtest = backtest;
         this.eventPublisher = eventPublisher;
+
+        this.backtest.getStrategy().onInit(this);
     }
 
-    public void initialize() {
-        // Initialize Strategy
-        backtest.getStrategy().onInit(this);
-    }
 
-    public void complete() {
+    public void destroy() {
         backtest.getStrategy().onComplete();
     }
 }

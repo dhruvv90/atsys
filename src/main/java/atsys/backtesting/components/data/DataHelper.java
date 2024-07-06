@@ -1,6 +1,7 @@
 package atsys.backtesting.components.data;
 
 import atsys.backtesting.engine.BacktestingContext;
+import atsys.backtesting.model.Backtest;
 import atsys.backtesting.model.TickData;
 
 import java.time.Instant;
@@ -9,7 +10,7 @@ import java.util.List;
 
 public class DataHelper {
 
-    public static List<TickData> generateDummyData(BacktestingContext context){
+    public static List<TickData> generateDummyData(Backtest backtest){
         List<TickData> result = new ArrayList<>();
         for(int i = 0; i < 15; i++){
             TickData data = new TickData();

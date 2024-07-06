@@ -3,9 +3,11 @@ package atsys.backtesting.engine;
 import atsys.backtesting.BacktestingContext;
 import atsys.backtesting.engine.events.Event;
 import atsys.backtesting.engine.events.KillEvent;
+import atsys.backtesting.engine.events.SignalEvent;
 import atsys.backtesting.engine.events.TickEvent;
 import atsys.backtesting.engine.listeners.EventListener;
 import atsys.backtesting.engine.listeners.KillEventListener;
+import atsys.backtesting.engine.listeners.SignalEventListener;
 import atsys.backtesting.engine.listeners.TickEventListener;
 import atsys.backtesting.model.Backtest;
 import lombok.Getter;
@@ -59,6 +61,9 @@ public class EventDrivenEngine {
 
         // Register KillEvent
         eventsRepository.register(KillEvent.class, new KillEventListener());
+
+        // Register PortfolioManager
+        eventsRepository.register(SignalEvent.class, new SignalEventListener(backtest.getPortfolioManager()));
     }
 
 

@@ -1,6 +1,7 @@
 package atsys.backtesting.components.strategy;
 
 import atsys.backtesting.BacktestingContext;
+import atsys.backtesting.engine.events.SignalEvent;
 import atsys.backtesting.engine.events.TickEvent;
 import atsys.backtesting.model.TickData;
 import lombok.extern.slf4j.Slf4j;
@@ -34,8 +35,9 @@ public class DummyStrategy implements Strategy{
         log.info(sb);
         counter++;
 
-//        if(counter == 5){
+        if(counter == 5){
 //            context.getEventPublisher().publishEvent(new KillEvent());
-//        }
+            context.getEventPublisher().publishEvent(new SignalEvent());
+        }
     }
 }

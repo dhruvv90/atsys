@@ -17,11 +17,13 @@ public class BacktestingContext {
         this.eventPublisher = eventPublisher;
 
         this.backtest.getStrategy().onInit(this);
+        this.backtest.getPortfolioManager().onInit(this);
     }
 
 
     public void destroy() {
         backtest.getStrategy().onComplete();
+        backtest.getPortfolioManager().onComplete();
     }
 
 }

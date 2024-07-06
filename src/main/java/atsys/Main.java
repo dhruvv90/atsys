@@ -1,6 +1,7 @@
 package atsys;
 
 
+import atsys.backtesting.components.portfolio.NoobPortfolioManager;
 import atsys.backtesting.exception.BaseException;
 import atsys.backtesting.model.Backtest;
 import atsys.backtesting.Backtester;
@@ -26,7 +27,7 @@ public class Main {
                 1000,
                 Instant.now(),
                 Instant.now(),
-                new DummyStrategy());
+                new DummyStrategy(), new NoobPortfolioManager());
 
         Backtester btEngine = new Backtester();
         long startTime;

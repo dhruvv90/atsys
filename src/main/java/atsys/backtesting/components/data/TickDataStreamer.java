@@ -1,5 +1,6 @@
 package atsys.backtesting.components.data;
 
+import atsys.backtesting.Backtest;
 import atsys.backtesting.model.TickData;
 import lombok.extern.slf4j.Slf4j;
 
@@ -12,8 +13,8 @@ public class TickDataStreamer implements DataStreamer<TickData> {
 
     private Iterator<TickData> dataIterator;
 
-    @Override
-    public void onInit() {
+
+    public void onInit(Backtest backtest) {
         log.info("Ingesting dummy data..");
         List<TickData> data = DataHelper.generateDummyData();
         dataIterator = data.iterator();
@@ -29,8 +30,6 @@ public class TickDataStreamer implements DataStreamer<TickData> {
         return dataIterator.hasNext();
     }
 
-
-    @Override
     public void onComplete() {
         log.info("Data Streaming completed");
     }

@@ -29,6 +29,11 @@ public class EventEmitter {
         }
     }
 
+    public void unregisterAll(){
+        listenersMap.clear();
+    }
+
+
     @SuppressWarnings("unchecked")
     public <E extends Event> void emit(E event) {
         List<EventListener<? extends Event>> listeners = listenersMap.get(event.getClass());

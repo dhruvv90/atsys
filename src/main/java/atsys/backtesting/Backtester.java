@@ -1,12 +1,12 @@
 package atsys.backtesting;
 
+import atsys.backtesting.components.strategy.Strategy;
 import atsys.backtesting.engine.*;
 import atsys.backtesting.engine.event.Event;
 import atsys.backtesting.engine.event.TickEvent;
 import atsys.backtesting.engine.listeners.TickEventListener;
 import atsys.backtesting.model.TickData;
 import atsys.backtesting.components.data.TickDataStreamer;
-import lombok.Getter;
 
 
 public class Backtester {
@@ -15,28 +15,42 @@ public class Backtester {
     private final EventConsumer eventConsumer;
     private final EventPublisher eventPublisher;
     private final EventEmitter eventEmitter;
-
+    private final TickDataStreamer dataStreamer;
 
     public Backtester() {
-        this.eventQueue = new EventQueueImpl();
-        this.eventEmitter = new EventEmitter();
-
-        this.eventConsumer = new EventConsumer(eventQueue);
-        this.eventPublisher = new EventPublisher(eventQueue);
+        eventQueue = new EventQueueImpl();
+        eventEmitter = new EventEmitter();
+        dataStreamer = new TickDataStreamer();
+        eventConsumer = new EventConsumer(eventQueue);
+        eventPublisher = new EventPublisher(eventQueue);
     }
 
-    private void reset() {
-        this.eventQueue.clear();
+    private void postBacktest(Backtest bt) {
+        eventQueue.clear();
+        eventEmitter.unregisterAll();
+
+        dataStreamer.onComplete();
+        bt.onComplete();
     }
 
-    public void run(Backtest bt) {
-        TickDataStreamer dataStreamer = new TickDataStreamer();
-
-        TickEventListener tickListener = new TickEventListener(bt.getStrategy());
-        eventEmitter.register(TickEvent.class, tickListener);
-
+    private void preBacktest(Backtest bt){
+        // Initialize backtest..
         bt.onInit();
-        dataStreamer.onInit();
+
+        // Initialize dataStreamer
+        dataStreamer.onInit(bt);
+
+
+        // Register Strategy..
+        Strategy strategy = bt.getStrategy();
+        eventEmitter.register(TickEvent.class, new TickEventListener(strategy));
+    }
+
+    /**
+     * Run Backtest independently
+     */
+    public void run(Backtest bt) {
+        preBacktest(bt);
 
         // Either dataStreamer has some data , or eventConsumer has some events
         while (dataStreamer.hasNext() || eventConsumer.hasEvents()) {
@@ -54,10 +68,6 @@ public class Backtester {
             }
         }
 
-        eventEmitter.unregister(TickEvent.class, tickListener);
-        dataStreamer.onComplete();
-        bt.onComplete();
-
-        this.reset();
+        postBacktest(bt);
     }
 }

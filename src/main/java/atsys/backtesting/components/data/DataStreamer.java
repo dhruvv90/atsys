@@ -1,11 +1,9 @@
 package atsys.backtesting.components.data;
 
-import atsys.backtesting.LifecycleManager;
-
 /**
  * Primary component for ingesting, processing and streaming data of type T into trading engine.
  */
-public interface DataStreamer<T> extends LifecycleManager {
+public interface DataStreamer<T> {
 
     /**
      * Used to read next chunk of data
@@ -17,4 +15,5 @@ public interface DataStreamer<T> extends LifecycleManager {
      * @return false when no chunk available
      */
     boolean hasNext();
+
 }

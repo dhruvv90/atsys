@@ -1,6 +1,7 @@
 package atsys.backtesting.components.data;
 
-import atsys.backtesting.Backtest;
+import atsys.backtesting.BacktestingContext;
+import atsys.backtesting.components.LifecycleManager;
 import atsys.backtesting.model.TickData;
 import lombok.extern.slf4j.Slf4j;
 
@@ -9,27 +10,27 @@ import java.util.List;
 
 
 @Slf4j
-public class TickDataStreamer implements DataStreamer<TickData> {
+public class TickDataStreamer implements LifecycleManager {
 
     private Iterator<TickData> dataIterator;
 
 
-    public void onInit(Backtest backtest) {
+    @Override
+    public void onInit(BacktestingContext context) {
         log.info("Ingesting dummy data..");
-        List<TickData> data = DataHelper.generateDummyData(backtest);
+        List<TickData> data = DataHelper.generateDummyData(context);
         dataIterator = data.iterator();
     }
 
-    @Override
     public TickData readData() {
         return dataIterator.next();
     }
 
-    @Override
     public boolean hasNext() {
         return dataIterator.hasNext();
     }
 
+    @Override
     public void onComplete() {
         log.info("Data Streaming completed");
     }

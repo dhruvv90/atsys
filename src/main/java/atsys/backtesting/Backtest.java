@@ -8,7 +8,7 @@ import java.time.Instant;
 import java.util.List;
 
 @Getter
-public class Backtest implements LifecycleManager {
+public class Backtest {
     private final String name;
     private final String description;
     private final List<Instrument> instruments;
@@ -29,15 +29,5 @@ public class Backtest implements LifecycleManager {
         this.endDateTime = endDateTime;
         this.strategy = strategy;
         this.createdAt = Instant.now();
-    }
-
-    @Override
-    public void onInit() {
-        strategy.onInit();
-    }
-
-    @Override
-    public void onComplete() {
-        strategy.onComplete();
     }
 }

@@ -25,24 +25,23 @@ public class Backtester {
         eventPublisher = new EventPublisher(eventQueue);
     }
 
-    private void postBacktest(Backtest bt) {
+    private void postBacktest(BacktestingContext context) {
         eventQueue.clear();
         eventEmitter.unregisterAll();
-
         dataStreamer.onComplete();
-        bt.onComplete();
+        context.complete();
     }
 
-    private void preBacktest(Backtest bt){
+    private void preBacktest(BacktestingContext context){
         // Initialize backtest..
-        bt.onInit();
+        context.initialize();
 
         // Initialize dataStreamer
-        dataStreamer.onInit(bt);
+        dataStreamer.onInit(context);
 
 
-        // Register Strategy..
-        Strategy strategy = bt.getStrategy();
+        // Register Strategy as TickEventListener
+        Strategy strategy = context.getBacktest().getStrategy();
         eventEmitter.register(TickEvent.class, new TickEventListener(strategy));
     }
 
@@ -50,7 +49,8 @@ public class Backtester {
      * Run Backtest independently
      */
     public void run(Backtest bt) {
-        preBacktest(bt);
+        BacktestingContext context = new BacktestingContext(bt, eventPublisher, eventEmitter);
+        preBacktest(context);
 
         // Either dataStreamer has some data , or eventConsumer has some events
         while (dataStreamer.hasNext() || eventConsumer.hasEvents()) {
@@ -68,6 +68,6 @@ public class Backtester {
             }
         }
 
-        postBacktest(bt);
+        postBacktest(context);
     }
 }

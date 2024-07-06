@@ -1,5 +1,6 @@
 package atsys.backtesting.components.strategy;
 
+import atsys.backtesting.BacktestingContext;
 import atsys.backtesting.engine.event.TickEvent;
 import atsys.backtesting.model.TickData;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +11,7 @@ public class DummyStrategy implements Strategy{
     private int counter;
 
     @Override
-    public void onInit() {
+    public void onInit(BacktestingContext context) {
         log.info("Initiating Strategy..");
     }
 

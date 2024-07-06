@@ -20,7 +20,7 @@ import java.util.Map;
 public class EventDrivenEngine {
 
     private final EventQueue<Event> eventQueue;
-    private final EventEmitter eventEmitter;
+    private final EventsRepository eventsRepository;
 
     @Getter
     private final EventConsumer consumer;
@@ -31,40 +31,40 @@ public class EventDrivenEngine {
     private BacktestingContext currentContext;
 
 
-    EventDrivenEngine(){
+    EventDrivenEngine() {
         this.eventQueue = new EventQueueImpl();
-        this.eventEmitter = new EventEmitter();
+        this.eventsRepository = new EventsRepository();
 
         this.consumer = new EventConsumer(this.eventQueue);
         this.publisher = new EventPublisher(this.eventQueue);
     }
 
-    void emitEvent(Event e){
-        eventEmitter.emit(e);
+    void emitEvent(Event e) {
+        eventsRepository.emit(e);
     }
 
-    void reset(){
+    void reset() {
         currentContext.destroy();
 
-        eventEmitter.unregisterAll();
+        eventsRepository.unregisterAll();
         eventQueue.clear();
     }
 
-    void initializeForBacktest(Backtest backtest){
+    void initializeForBacktest(Backtest backtest) {
         currentContext = new BacktestingContext(backtest, publisher);
 
         // Register Strategy as TickEventListener
-        eventEmitter.register(TickEvent.class, new TickEventListener(backtest.getStrategy()));
+        eventsRepository.register(TickEvent.class, new TickEventListener(backtest.getStrategy()));
 
         // Register KillEvent
-        eventEmitter.register(KillEvent.class, new KillEventListener());
+        eventsRepository.register(KillEvent.class, new KillEventListener());
     }
 
 
-    private static class EventEmitter {
+    private static class EventsRepository {
         private final Map<Class<? extends Event>, List<EventListener<? extends Event>>> listenersMap;
 
-        EventEmitter(){
+        EventsRepository() {
             this.listenersMap = new HashMap<>();
         }
 
@@ -74,15 +74,15 @@ public class EventDrivenEngine {
 
         public <E extends Event> void unregister(Class<E> clazz, EventListener<E> listener) {
             List<EventListener<? extends Event>> listenerValues = listenersMap.get(clazz);
-            if(listenerValues != null){
+            if (listenerValues != null) {
                 listenerValues.remove(listener);
-                if(listenerValues.isEmpty()){
+                if (listenerValues.isEmpty()) {
                     listenersMap.remove(clazz);
                 }
             }
         }
 
-        public void unregisterAll(){
+        public void unregisterAll() {
             listenersMap.clear();
         }
 
@@ -90,9 +90,9 @@ public class EventDrivenEngine {
         @SuppressWarnings("unchecked")
         public <E extends Event> void emit(E event) {
             List<EventListener<? extends Event>> listeners = listenersMap.get(event.getClass());
-            if(listeners != null){
-                for(EventListener<? extends Event> listener: listeners){
-                    ((EventListener<E>)listener).onEvent(event);
+            if (listeners != null) {
+                for (EventListener<? extends Event> listener : listeners) {
+                    ((EventListener<E>) listener).onEvent(event);
                 }
             }
         }

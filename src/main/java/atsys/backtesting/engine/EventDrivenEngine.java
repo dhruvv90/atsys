@@ -6,10 +6,12 @@ import atsys.backtesting.engine.events.KillEvent;
 import atsys.backtesting.engine.listeners.KillEventListener;
 import atsys.backtesting.model.Backtest;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * A Re-usable Event Driven Engine used by the backtester
  */
+@Slf4j
 public class EventDrivenEngine {
 
     private final EventQueue<Event> eventQueue;
@@ -33,11 +35,15 @@ public class EventDrivenEngine {
     }
 
     public void emitEvent(Event e) {
+        if(currentContext == null){
+            log.warn("Engine is not attached to any Backtest. This event emission will be futile!");
+        }
         eventsRepository.emit(e);
     }
 
     public void reset() {
         currentContext.destroy();
+        currentContext = null;
 
         eventsRepository.unregisterAll();
         eventQueue.clear();

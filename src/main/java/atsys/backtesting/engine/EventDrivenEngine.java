@@ -2,8 +2,10 @@ package atsys.backtesting.engine;
 
 import atsys.backtesting.components.strategy.Strategy;
 import atsys.backtesting.engine.events.Event;
+import atsys.backtesting.engine.events.KillEvent;
 import atsys.backtesting.engine.events.TickEvent;
 import atsys.backtesting.engine.listeners.EventListener;
+import atsys.backtesting.engine.listeners.KillEventListener;
 import atsys.backtesting.engine.listeners.TickEventListener;
 import atsys.backtesting.model.Backtest;
 import lombok.Getter;
@@ -54,6 +56,9 @@ public class EventDrivenEngine {
 
         // Register Strategy as TickEventListener
         eventEmitter.register(TickEvent.class, new TickEventListener(backtest.getStrategy()));
+
+        // Register KillEvent
+        eventEmitter.register(KillEvent.class, new KillEventListener());
     }
 
 

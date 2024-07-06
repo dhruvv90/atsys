@@ -4,9 +4,9 @@ package atsys.backtesting.engine;
 import atsys.backtesting.model.Backtest;
 import lombok.Getter;
 
+@Getter
 public class BacktestingContext {
 
-    @Getter
     private final Backtest backtest;
 
     private final EventPublisher eventPublisher;
@@ -22,4 +22,5 @@ public class BacktestingContext {
     public void destroy() {
         backtest.getStrategy().onComplete();
     }
+
 }

@@ -1,5 +1,6 @@
 package atsys.backtesting.engine;
 
+import atsys.backtesting.BacktestingContext;
 import atsys.backtesting.engine.events.Event;
 import atsys.backtesting.engine.events.KillEvent;
 import atsys.backtesting.engine.events.TickEvent;
@@ -31,7 +32,7 @@ public class EventDrivenEngine {
     private BacktestingContext currentContext;
 
 
-    EventDrivenEngine() {
+    public EventDrivenEngine() {
         this.eventQueue = new EventQueueImpl();
         this.eventsRepository = new EventsRepository();
 
@@ -39,18 +40,18 @@ public class EventDrivenEngine {
         this.publisher = new EventPublisher(this.eventQueue);
     }
 
-    void emitEvent(Event e) {
+    public void emitEvent(Event e) {
         eventsRepository.emit(e);
     }
 
-    void reset() {
+    public void reset() {
         currentContext.destroy();
 
         eventsRepository.unregisterAll();
         eventQueue.clear();
     }
 
-    void initializeForBacktest(Backtest backtest) {
+    public void initializeForBacktest(Backtest backtest) {
         currentContext = new BacktestingContext(backtest, publisher);
 
         // Register Strategy as TickEventListener

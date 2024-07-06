@@ -1,6 +1,7 @@
-package atsys.backtesting.engine;
+package atsys.backtesting;
 
 
+import atsys.backtesting.engine.EventPublisher;
 import atsys.backtesting.model.Backtest;
 import lombok.Getter;
 
@@ -11,7 +12,7 @@ public class BacktestingContext {
 
     private final EventPublisher eventPublisher;
 
-    BacktestingContext(Backtest backtest, EventPublisher eventPublisher){
+    public BacktestingContext(Backtest backtest, EventPublisher eventPublisher){
         this.backtest = backtest;
         this.eventPublisher = eventPublisher;
 

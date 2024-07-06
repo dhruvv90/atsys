@@ -3,7 +3,7 @@ package atsys;
 
 import atsys.backtesting.exception.BaseException;
 import atsys.backtesting.model.Backtest;
-import atsys.backtesting.engine.Backtester;
+import atsys.backtesting.Backtester;
 import atsys.backtesting.components.strategy.DummyStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

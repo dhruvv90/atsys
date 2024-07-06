@@ -1,7 +1,6 @@
 package atsys.backtesting.components.strategy;
 
-import atsys.backtesting.engine.BacktestingContext;
-import atsys.backtesting.engine.events.KillEvent;
+import atsys.backtesting.BacktestingContext;
 import atsys.backtesting.engine.events.TickEvent;
 import atsys.backtesting.model.TickData;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +31,7 @@ public class DummyStrategy implements Strategy{
                 ", timestamp: " + tickData.getTickTimestamp() +
                 ", LTT: " + tickData.getLastTradedTime() +
                 ", LTP: " + tickData.getLastTradedPrice();
-//        log.info(sb);
+        log.info(sb);
         counter++;
 
 //        if(counter == 5){

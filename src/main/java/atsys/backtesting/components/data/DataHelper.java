@@ -1,6 +1,5 @@
 package atsys.backtesting.components.data;
 
-import atsys.backtesting.engine.BacktestingContext;
 import atsys.backtesting.model.Backtest;
 import atsys.backtesting.model.TickData;
 

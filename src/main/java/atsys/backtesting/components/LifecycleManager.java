@@ -1,6 +1,6 @@
 package atsys.backtesting.components;
 
-import atsys.backtesting.engine.BacktestingContext;
+import atsys.backtesting.BacktestingContext;
 
 /**
  * Represents a resource , which is a reusable and runnable component.

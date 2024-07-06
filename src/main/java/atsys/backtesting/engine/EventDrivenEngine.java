@@ -1,6 +1,5 @@
 package atsys.backtesting.engine;
 
-import atsys.backtesting.components.strategy.Strategy;
 import atsys.backtesting.engine.events.Event;
 import atsys.backtesting.engine.events.KillEvent;
 import atsys.backtesting.engine.events.TickEvent;
@@ -16,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a repository of all the components of an event driven system.
+ * A Re-usable Event Driven Engine used by the backtester
  */
 public class EventDrivenEngine {
 
@@ -44,14 +43,14 @@ public class EventDrivenEngine {
         eventEmitter.emit(e);
     }
 
-    void unregisterBacktest(){
+    void reset(){
         currentContext.destroy();
 
         eventEmitter.unregisterAll();
         eventQueue.clear();
     }
 
-    void registerBacktest(Backtest backtest){
+    void initializeForBacktest(Backtest backtest){
         currentContext = new BacktestingContext(backtest, publisher);
 
         // Register Strategy as TickEventListener

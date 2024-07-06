@@ -1,5 +1,6 @@
 package atsys.backtesting.engine;
 
+import atsys.backtesting.exception.BaseException;
 import atsys.backtesting.model.Backtest;
 import atsys.backtesting.engine.events.Event;
 import atsys.backtesting.engine.events.TickEvent;
@@ -7,6 +8,10 @@ import atsys.backtesting.model.TickData;
 import atsys.backtesting.components.data.TickDataStreamer;
 
 
+/**
+ * A Re-usable Event Driven Backtester used to run backtests independently.
+ * Engine, Streamer and other components must be reset after each backtest
+ */
 public class Backtester {
 
     private final TickDataStreamer dataStreamer;
@@ -17,23 +22,24 @@ public class Backtester {
         dataStreamer = new TickDataStreamer();
     }
 
+    /**
+     * Prepare Backtester for a particular backtest.
+     * All resource initialization must be here
+     */
     private void preBacktest(Backtest backtest){
-        // Initialize dataStreamer
-        dataStreamer.onInit(backtest);
-
-        //Register backtest
-        engine.registerBacktest(backtest);
+        dataStreamer.initializeForBacktest(backtest);
+        engine.initializeForBacktest(backtest);
     }
 
     private void postBacktest(Backtest backtest) {
-        engine.unregisterBacktest();
-        dataStreamer.onComplete();
+        engine.reset();
+        dataStreamer.reset();
     }
 
     /**
      * Run Backtest independently
      */
-    public void run(Backtest backtest) {
+    public void run(Backtest backtest) throws BaseException {
         preBacktest(backtest);
 
         // extract consumers and producers

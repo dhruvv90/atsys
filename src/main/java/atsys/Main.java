@@ -1,6 +1,7 @@
 package atsys;
 
 
+import atsys.backtesting.exception.BaseException;
 import atsys.backtesting.model.Backtest;
 import atsys.backtesting.engine.Backtester;
 import atsys.backtesting.components.strategy.DummyStrategy;
@@ -14,11 +15,11 @@ import java.util.ArrayList;
 public class Main {
     private static final Logger log = LoggerFactory.getLogger(Main.class);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws BaseException {
         tryBacktester();
     }
 
-    private static void tryBacktester(){
+    private static void tryBacktester() throws BaseException {
         Backtest myBacktest = new Backtest(
                 "myBacktest", "",
                 new ArrayList<>(),

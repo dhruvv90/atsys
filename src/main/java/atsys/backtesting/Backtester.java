@@ -6,7 +6,6 @@ import atsys.backtesting.core.event.Event;
 import atsys.backtesting.core.event.TickEvent;
 import atsys.backtesting.model.TickData;
 import atsys.backtesting.components.TickDataStreamer;
-import atsys.backtesting.core.DefaultEventEmitter;
 import atsys.backtesting.core.DefaultEventQueue;
 import atsys.backtesting.core.TickEventListener;
 
@@ -20,7 +19,7 @@ public class Backtester {
     public Backtester() {
         this.eventQueue = new DefaultEventQueue();
         this.dataStreamer = new TickDataStreamer();
-        this.eventEmitter = new DefaultEventEmitter();
+        this.eventEmitter = new EventEmitter();
     }
 
     public void run(Backtest bt) {

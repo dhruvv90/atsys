@@ -1,6 +1,6 @@
 package atsys.backtesting.engine.listeners;
 
-import atsys.backtesting.components.portfolio.PortfolioManager;
+import atsys.backtesting.components.PortfolioManager;
 import atsys.backtesting.engine.events.SignalEvent;
 
 public class SignalEventListener implements  EventListener<SignalEvent> {

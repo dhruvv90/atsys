@@ -1,8 +1,8 @@
 package atsys.backtesting.model;
 
-import atsys.backtesting.components.execution.ExecutionManager;
-import atsys.backtesting.components.portfolio.PortfolioManager;
-import atsys.backtesting.components.strategy.Strategy;
+import atsys.backtesting.components.ExecutionManager;
+import atsys.backtesting.components.PortfolioManager;
+import atsys.backtesting.components.Strategy;
 import lombok.Getter;
 
 import java.time.Instant;

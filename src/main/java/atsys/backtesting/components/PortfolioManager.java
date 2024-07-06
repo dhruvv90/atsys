@@ -1,6 +1,5 @@
-package atsys.backtesting.components.portfolio;
+package atsys.backtesting.components;
 
-import atsys.backtesting.components.LifecycleManager;
 import atsys.backtesting.engine.events.SignalEvent;
 
 public interface PortfolioManager extends LifecycleManager {

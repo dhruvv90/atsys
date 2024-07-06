@@ -1,9 +1,9 @@
 package atsys.backtesting;
 
 
-import atsys.backtesting.components.execution.ExecutionManager;
-import atsys.backtesting.components.portfolio.PortfolioManager;
-import atsys.backtesting.components.strategy.Strategy;
+import atsys.backtesting.components.ExecutionManager;
+import atsys.backtesting.components.PortfolioManager;
+import atsys.backtesting.components.Strategy;
 import atsys.backtesting.engine.EventPublisher;
 import atsys.backtesting.engine.EventsRepository;
 import atsys.backtesting.engine.events.Event;

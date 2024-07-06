@@ -1,6 +1,7 @@
-package atsys.backtesting.components.strategy;
+package atsys.backtesting.components.impl;
 
 import atsys.backtesting.BacktestingContext;
+import atsys.backtesting.components.Strategy;
 import atsys.backtesting.engine.events.SignalEvent;
 import atsys.backtesting.engine.events.TickEvent;
 import atsys.backtesting.model.TickData;
@@ -8,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 
 
 @Slf4j
-public class DummyStrategy implements Strategy{
+public class DummyStrategy implements Strategy {
     private int counter;
     private BacktestingContext context;
 

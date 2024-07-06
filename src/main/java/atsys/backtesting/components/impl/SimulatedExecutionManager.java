@@ -1,6 +1,7 @@
-package atsys.backtesting.components.execution;
+package atsys.backtesting.components.impl;
 
 import atsys.backtesting.BacktestingContext;
+import atsys.backtesting.components.ExecutionManager;
 import atsys.backtesting.engine.events.OrderEvent;
 import lombok.extern.slf4j.Slf4j;
 

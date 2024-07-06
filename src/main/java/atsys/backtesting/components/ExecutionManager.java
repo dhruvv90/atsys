@@ -1,6 +1,5 @@
-package atsys.backtesting.components.execution;
+package atsys.backtesting.components;
 
-import atsys.backtesting.components.LifecycleManager;
 import atsys.backtesting.engine.events.OrderEvent;
 
 public interface ExecutionManager extends LifecycleManager {

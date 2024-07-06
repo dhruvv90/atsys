@@ -1,6 +1,6 @@
 package atsys.backtesting.engine.listeners;
 
-import atsys.backtesting.components.execution.ExecutionManager;
+import atsys.backtesting.components.ExecutionManager;
 import atsys.backtesting.engine.events.OrderEvent;
 
 public class OrderEventListener implements EventListener<OrderEvent> {

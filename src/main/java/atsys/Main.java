@@ -2,9 +2,9 @@ package atsys;
 
 
 import atsys.backtesting.Backtester;
-import atsys.backtesting.components.execution.SimulatedExecutionManager;
-import atsys.backtesting.components.portfolio.NoobPortfolioManager;
-import atsys.backtesting.components.strategy.DummyStrategy;
+import atsys.backtesting.components.impl.SimulatedExecutionManager;
+import atsys.backtesting.components.impl.NoobPortfolioManager;
+import atsys.backtesting.components.impl.DummyStrategy;
 import atsys.backtesting.exception.BaseException;
 import atsys.backtesting.model.Backtest;
 

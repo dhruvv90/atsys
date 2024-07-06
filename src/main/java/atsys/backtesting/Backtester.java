@@ -12,8 +12,6 @@ import atsys.backtesting.components.data.TickDataStreamer;
 public class Backtester {
 
     private final EventQueue<Event> eventQueue;
-    private final EventConsumer eventConsumer;
-    private final EventPublisher eventPublisher;
     private final EventEmitter eventEmitter;
     private final TickDataStreamer dataStreamer;
 
@@ -21,8 +19,6 @@ public class Backtester {
         eventQueue = new EventQueueImpl();
         eventEmitter = new EventEmitter();
         dataStreamer = new TickDataStreamer();
-        eventConsumer = new EventConsumer(eventQueue);
-        eventPublisher = new EventPublisher(eventQueue);
     }
 
     private void postBacktest(BacktestingContext context) {
@@ -49,8 +45,11 @@ public class Backtester {
      * Run Backtest independently
      */
     public void run(Backtest bt) {
-        BacktestingContext context = new BacktestingContext(bt, eventPublisher, eventEmitter);
+        BacktestingContext context = new BacktestingContext(bt, eventQueue.getPublisher());
         preBacktest(context);
+
+        EventConsumer eventConsumer = eventQueue.getConsumer();
+        EventPublisher eventPublisher = eventQueue.getPublisher();
 
         // Either dataStreamer has some data , or eventConsumer has some events
         while (dataStreamer.hasNext() || eventConsumer.hasEvents()) {

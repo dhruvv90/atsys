@@ -29,7 +29,7 @@ public class DummyStrategy implements Strategy{
                 ", timestamp: " + tickData.getTickTimestamp() +
                 ", LTT: " + tickData.getLastTradedTime() +
                 ", LTP: " + tickData.getLastTradedPrice();
-//        log.info(sb);
+        log.info(sb);
         counter++;
     }
 }

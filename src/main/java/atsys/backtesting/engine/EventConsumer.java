@@ -6,7 +6,7 @@ public class EventConsumer {
 
     private final EventQueue<Event> eventQueue;
 
-    public EventConsumer(EventQueue<Event> eventQueue){
+    EventConsumer(EventQueue<Event> eventQueue){
         this.eventQueue = eventQueue;
     }
 

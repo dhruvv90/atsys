@@ -14,7 +14,7 @@ public class BacktestingContext {
 
     private final EventPublisher eventPublisher;
 
-    BacktestingContext(Backtest backtest, EventPublisher eventPublisher, EventEmitter eventEmitter){
+    BacktestingContext(Backtest backtest, EventPublisher eventPublisher){
         this.backtest = backtest;
         this.eventPublisher = eventPublisher;
     }

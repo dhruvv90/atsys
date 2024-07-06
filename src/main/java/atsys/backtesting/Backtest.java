@@ -16,7 +16,7 @@ public class Backtest implements LifecycleManager {
     private final Instant startDateTime;
     private final Instant endDateTime;
     private final Strategy strategy;
-    private Instant createdAt;
+    private final Instant createdAt;
 
     public Backtest(String name,
                     String description, List<Instrument> instruments,

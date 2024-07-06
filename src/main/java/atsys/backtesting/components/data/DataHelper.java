@@ -1,7 +1,6 @@
 package atsys.backtesting.components.data;
 
-import atsys.backtesting.Backtest;
-import atsys.backtesting.BacktestingContext;
+import atsys.backtesting.engine.BacktestingContext;
 import atsys.backtesting.model.TickData;
 
 import java.time.Instant;

@@ -1,6 +1,6 @@
 package atsys.backtesting.engine;
 
-import atsys.backtesting.engine.event.Event;
+import atsys.backtesting.engine.events.Event;
 
 public interface EventQueue<T extends Event> {
 

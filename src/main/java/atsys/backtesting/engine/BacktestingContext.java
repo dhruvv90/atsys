@@ -1,10 +1,7 @@
-package atsys.backtesting;
+package atsys.backtesting.engine;
 
 
-import atsys.backtesting.engine.EventEmitter;
-import atsys.backtesting.engine.EventPublisher;
-import atsys.backtesting.engine.event.TickEvent;
-import atsys.backtesting.engine.listeners.TickEventListener;
+import atsys.backtesting.model.Backtest;
 import lombok.Getter;
 
 public class BacktestingContext {

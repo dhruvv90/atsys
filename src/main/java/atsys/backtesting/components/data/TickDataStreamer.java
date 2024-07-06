@@ -1,6 +1,6 @@
 package atsys.backtesting.components.data;
 
-import atsys.backtesting.BacktestingContext;
+import atsys.backtesting.engine.BacktestingContext;
 import atsys.backtesting.components.LifecycleManager;
 import atsys.backtesting.model.TickData;
 import lombok.extern.slf4j.Slf4j;

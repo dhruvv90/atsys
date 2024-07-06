@@ -1,6 +1,6 @@
 package atsys.backtesting.engine;
 
-import atsys.backtesting.engine.event.Event;
+import atsys.backtesting.engine.events.Event;
 import atsys.backtesting.engine.listeners.EventListener;
 
 import java.util.ArrayList;
@@ -8,10 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EventEmitter {
+class EventEmitter {
     private final Map<Class<? extends Event>, List<EventListener<? extends Event>>> listenersMap;
 
-    public EventEmitter(){
+    EventEmitter(){
         this.listenersMap = new HashMap<>();
     }
 

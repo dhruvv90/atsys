@@ -1,9 +1,9 @@
-package atsys.backtesting;
+package atsys.backtesting.engine;
 
+import atsys.backtesting.model.Backtest;
 import atsys.backtesting.components.strategy.Strategy;
-import atsys.backtesting.engine.*;
-import atsys.backtesting.engine.event.Event;
-import atsys.backtesting.engine.event.TickEvent;
+import atsys.backtesting.engine.events.Event;
+import atsys.backtesting.engine.events.TickEvent;
 import atsys.backtesting.engine.listeners.TickEventListener;
 import atsys.backtesting.model.TickData;
 import atsys.backtesting.components.data.TickDataStreamer;
@@ -24,17 +24,17 @@ public class Backtester {
     private void postBacktest(BacktestingContext context) {
         eventQueue.clear();
         eventEmitter.unregisterAll();
-        dataStreamer.onComplete();
+
         context.complete();
+        dataStreamer.onComplete();
     }
 
     private void preBacktest(BacktestingContext context){
-        // Initialize backtest..
-        context.initialize();
-
         // Initialize dataStreamer
         dataStreamer.onInit(context);
 
+        // Initialize backtest..
+        context.initialize();
 
         // Register Strategy as TickEventListener
         Strategy strategy = context.getBacktest().getStrategy();

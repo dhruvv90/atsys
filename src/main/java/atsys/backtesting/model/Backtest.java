@@ -1,7 +1,6 @@
-package atsys.backtesting;
+package atsys.backtesting.model;
 
 import atsys.backtesting.components.strategy.Strategy;
-import atsys.backtesting.model.Instrument;
 import lombok.Getter;
 
 import java.time.Instant;

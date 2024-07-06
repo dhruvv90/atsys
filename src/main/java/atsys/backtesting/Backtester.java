@@ -1,13 +1,14 @@
 package atsys.backtesting;
 
-import atsys.backtesting.engine.EventQueue;
-import atsys.backtesting.engine.event.Event;
-import atsys.backtesting.engine.event.TickEvent;
+import atsys.backtesting.core.EventEmitter;
+import atsys.backtesting.core.EventQueue;
+import atsys.backtesting.core.event.Event;
+import atsys.backtesting.core.event.TickEvent;
 import atsys.backtesting.model.TickData;
-import atsys.backtesting.components.data.TickDataStreamer;
-import atsys.backtesting.engine.EventEmitter;
-import atsys.backtesting.engine.DefaultEventQueue;
-import atsys.backtesting.engine.listeners.TickEventListener;
+import atsys.backtesting.components.TickDataStreamer;
+import atsys.backtesting.core.DefaultEventEmitter;
+import atsys.backtesting.core.DefaultEventQueue;
+import atsys.backtesting.core.TickEventListener;
 
 
 public class Backtester {
@@ -19,7 +20,7 @@ public class Backtester {
     public Backtester() {
         this.eventQueue = new DefaultEventQueue();
         this.dataStreamer = new TickDataStreamer();
-        this.eventEmitter = new EventEmitter();
+        this.eventEmitter = new DefaultEventEmitter();
     }
 
     public void run(Backtest bt) {

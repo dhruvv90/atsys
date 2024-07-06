@@ -1,7 +1,6 @@
 package atsys.backtesting;
 
-import atsys.backtesting.components.LifecycleManager;
-import atsys.backtesting.components.strategy.Strategy;
+import atsys.backtesting.components.Strategy;
 import atsys.backtesting.model.Instrument;
 import lombok.Getter;
 

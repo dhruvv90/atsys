@@ -1,4 +1,4 @@
-package atsys.backtesting.components.data;
+package atsys.backtesting.components;
 
 import atsys.backtesting.model.TickData;
 

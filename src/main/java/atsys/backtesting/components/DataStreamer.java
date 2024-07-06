@@ -1,6 +1,6 @@
-package atsys.backtesting.components.data;
+package atsys.backtesting.components;
 
-import atsys.backtesting.components.LifecycleManager;
+import atsys.backtesting.LifecycleManager;
 
 /**
  * Primary component for ingesting, processing and streaming data of type T into trading engine.

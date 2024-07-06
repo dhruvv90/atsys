@@ -3,7 +3,7 @@ package atsys;
 
 import atsys.backtesting.Backtest;
 import atsys.backtesting.Backtester;
-import atsys.backtesting.components.strategy.DummyStrategy;
+import atsys.backtesting.components.DummyStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;

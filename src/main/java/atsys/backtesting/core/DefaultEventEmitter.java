@@ -1,24 +1,25 @@
-package atsys.backtesting.engine;
+package atsys.backtesting.core;
 
-import atsys.backtesting.engine.event.Event;
-import atsys.backtesting.engine.listeners.EventListener;
+import atsys.backtesting.core.event.Event;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EventEmitter {
+public class DefaultEventEmitter implements EventEmitter {
     private final Map<Class<? extends Event>, List<EventListener<? extends Event>>> listenersMap;
 
-    public EventEmitter(){
+    public DefaultEventEmitter(){
         this.listenersMap = new HashMap<>();
     }
 
+    @Override
     public <E extends Event> void register(Class<E> clazz, EventListener<E> listener) {
         listenersMap.computeIfAbsent(clazz, l -> new ArrayList<>()).add(listener);
     }
 
+    @Override
     public <E extends Event> void unregister(Class<E> clazz, EventListener<E> listener) {
         List<EventListener<? extends Event>> listenerValues = listenersMap.get(clazz);
         if(listenerValues != null){

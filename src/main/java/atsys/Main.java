@@ -1,21 +1,18 @@
 package atsys;
 
 
+import atsys.backtesting.Backtester;
+import atsys.backtesting.components.execution.SimulatedExecutionManager;
 import atsys.backtesting.components.portfolio.NoobPortfolioManager;
+import atsys.backtesting.components.strategy.DummyStrategy;
 import atsys.backtesting.exception.BaseException;
 import atsys.backtesting.model.Backtest;
-import atsys.backtesting.Backtester;
-import atsys.backtesting.components.strategy.DummyStrategy;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 import java.util.ArrayList;
 
 
 public class Main {
-    private static final Logger log = LoggerFactory.getLogger(Main.class);
-
     public static void main(String[] args) throws BaseException {
         tryBacktester();
     }
@@ -27,7 +24,7 @@ public class Main {
                 1000,
                 Instant.now(),
                 Instant.now(),
-                new DummyStrategy(), new NoobPortfolioManager());
+                new DummyStrategy(), new NoobPortfolioManager(), new SimulatedExecutionManager());
 
         Backtester btEngine = new Backtester();
         long startTime;

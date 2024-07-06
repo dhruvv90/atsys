@@ -1,13 +1,16 @@
 package atsys.backtesting;
 
 
+import atsys.backtesting.components.execution.ExecutionManager;
 import atsys.backtesting.components.portfolio.PortfolioManager;
 import atsys.backtesting.components.strategy.Strategy;
 import atsys.backtesting.engine.EventPublisher;
 import atsys.backtesting.engine.EventsRepository;
 import atsys.backtesting.engine.events.Event;
+import atsys.backtesting.engine.events.OrderEvent;
 import atsys.backtesting.engine.events.SignalEvent;
 import atsys.backtesting.engine.events.TickEvent;
+import atsys.backtesting.engine.listeners.OrderEventListener;
 import atsys.backtesting.engine.listeners.SignalEventListener;
 import atsys.backtesting.engine.listeners.TickEventListener;
 import atsys.backtesting.model.Backtest;
@@ -28,6 +31,7 @@ public class BacktestingContext {
 
         registerStrategy();
         registerPortfolioManager();
+        registerExecutionManager();
     }
 
     private void registerStrategy(){
@@ -46,9 +50,17 @@ public class BacktestingContext {
         eventsRepository.register(SignalEvent.class, new SignalEventListener(backtest.getPortfolioManager()));
     }
 
+    private void registerExecutionManager(){
+        ExecutionManager executionManager = backtest.getExecutionManager();
+        executionManager.onInit(this);
+
+        eventsRepository.register(OrderEvent.class, new OrderEventListener(backtest.getExecutionManager()));
+    }
+
     public void destroy() {
         backtest.getStrategy().onComplete();
         backtest.getPortfolioManager().onComplete();
+        backtest.getExecutionManager().onComplete();
     }
 
     public void publishEvent(Event event){

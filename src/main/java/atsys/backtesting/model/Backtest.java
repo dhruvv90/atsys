@@ -1,5 +1,6 @@
 package atsys.backtesting.model;
 
+import atsys.backtesting.components.execution.ExecutionManager;
 import atsys.backtesting.components.portfolio.PortfolioManager;
 import atsys.backtesting.components.strategy.Strategy;
 import lombok.Getter;
@@ -18,11 +19,12 @@ public class Backtest {
     private final Strategy strategy;
     private final PortfolioManager portfolioManager;
     private final Instant createdAt;
+    private final ExecutionManager executionManager;
 
     public Backtest(String name,
                     String description, List<Instrument> instruments,
                     double initialCapital, Instant startDateTime, Instant endDateTime,
-                    Strategy strategy, PortfolioManager portfolioManager) {
+                    Strategy strategy, PortfolioManager portfolioManager, ExecutionManager executionManager) {
         this.name = name;
         this.description = description;
         this.instruments = instruments;
@@ -32,5 +34,6 @@ public class Backtest {
         this.strategy = strategy;
         this.createdAt = Instant.now();
         this.portfolioManager = portfolioManager;
+        this.executionManager = executionManager;
     }
 }

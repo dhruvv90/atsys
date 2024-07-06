@@ -16,7 +16,7 @@ public class TickDataStreamer implements DataStreamer<TickData> {
 
     public void onInit(Backtest backtest) {
         log.info("Ingesting dummy data..");
-        List<TickData> data = DataHelper.generateDummyData();
+        List<TickData> data = DataHelper.generateDummyData(backtest);
         dataIterator = data.iterator();
     }
 

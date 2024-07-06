@@ -5,7 +5,7 @@ import atsys.backtesting.engine.events.SignalEvent;
 
 public class SignalEventListener implements  EventListener<SignalEvent> {
 
-    private PortfolioManager portfolioManager;
+    private final PortfolioManager portfolioManager;
 
     public SignalEventListener(PortfolioManager portfolioManager){
         this.portfolioManager = portfolioManager;

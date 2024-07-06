@@ -29,6 +29,11 @@ public class EventQueueImpl implements EventQueue<Event> {
     }
 
     @Override
+    public Event peek() {
+        return queue.peek();
+    }
+
+    @Override
     public void clear() {
         queue.clear();
     }

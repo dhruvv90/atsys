@@ -1,53 +1,49 @@
 package atsys.backtesting;
 
-import atsys.backtesting.engine.EventEmitter;
-import atsys.backtesting.engine.EventQueue;
+import atsys.backtesting.engine.*;
 import atsys.backtesting.engine.event.Event;
 import atsys.backtesting.engine.event.TickEvent;
 import atsys.backtesting.model.TickData;
 import atsys.backtesting.components.data.TickDataStreamer;
-import atsys.backtesting.engine.EventQueueImpl;
-import atsys.backtesting.engine.listeners.TickEventListener;
 
 
 public class Backtester {
 
-    private final EventQueue<Event> eventQueue;
-    private final TickDataStreamer dataStreamer;
-    private final EventEmitter eventEmitter;
+    private final EventDrivenEngine engine;
+
 
     public Backtester() {
-        this.eventQueue = new EventQueueImpl();
-        this.dataStreamer = new TickDataStreamer();
-        this.eventEmitter = new EventEmitter();
+        this.engine = new EventDrivenEngine();
     }
 
     public void run(Backtest bt) {
+        TickDataStreamer dataStreamer = new TickDataStreamer();
+
+        engine.registerStrategy(bt.getStrategy());
+
+        EventConsumer eventConsumer = engine.getEventConsumer();
+        EventPublisher eventPublisher = engine.getEventPublisher();
+
         bt.onInit();
         dataStreamer.onInit();
-        eventQueue.clear();
 
-        TickEventListener tickListener = new TickEventListener(bt.getStrategy());
-        eventEmitter.register(TickEvent.class, tickListener);
-
-        // Either dataStreamer has some data , or eventQueue has some events
-        while (dataStreamer.hasNext() || !eventQueue.isEmpty()) {
+        // Either dataStreamer has some data , or eventConsumer has some events
+        while (dataStreamer.hasNext() || eventConsumer.hasEvents()) {
 
             // Process all events in queue first..
-            while(!eventQueue.isEmpty()){
-                Event ev = eventQueue.poll();
-                eventEmitter.emit(ev);
+            while(eventConsumer.hasEvents()){
+                Event ev = eventConsumer.getEvent();
+                engine.processEvent(ev);
             }
 
             // If DataStreamer still has data, Load it..
             if(dataStreamer.hasNext()){
                 TickData data = dataStreamer.readData();
-                eventQueue.offer(new TickEvent(data));
+                eventPublisher.publishEvent(new TickEvent(data));
             }
         }
 
-        eventEmitter.unregister(TickEvent.class, tickListener);
-        this.eventQueue.clear();
+//        eventEmitter.unregister(TickEvent.class, tickListener);
         dataStreamer.onComplete();
         bt.onComplete();
     }

@@ -1,6 +1,6 @@
 package atsys.backtesting.components.impl;
 
-import atsys.backtesting.BacktestingContext;
+import atsys.backtesting.engine.BacktestingContext;
 import atsys.backtesting.components.ExecutionManager;
 import atsys.backtesting.engine.events.FillEvent;
 import atsys.backtesting.engine.events.OrderEvent;

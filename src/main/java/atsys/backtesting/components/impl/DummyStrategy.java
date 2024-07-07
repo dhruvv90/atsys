@@ -1,6 +1,6 @@
 package atsys.backtesting.components.impl;
 
-import atsys.backtesting.BacktestingContext;
+import atsys.backtesting.engine.BacktestingContext;
 import atsys.backtesting.components.Strategy;
 import atsys.backtesting.engine.events.SignalEvent;
 import atsys.backtesting.engine.events.TickEvent;

@@ -1,11 +1,9 @@
-package atsys.backtesting;
+package atsys.backtesting.engine;
 
 
 import atsys.backtesting.components.ExecutionManager;
 import atsys.backtesting.components.PortfolioManager;
 import atsys.backtesting.components.Strategy;
-import atsys.backtesting.engine.EventPublisher;
-import atsys.backtesting.engine.EventsRepository;
 import atsys.backtesting.engine.events.*;
 import atsys.backtesting.engine.listeners.FillEventListener;
 import atsys.backtesting.engine.listeners.OrderEventListener;

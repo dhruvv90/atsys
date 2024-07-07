@@ -1,10 +1,10 @@
-package atsys;
+package atsys.backtesting;
 
 
-import atsys.backtesting.Backtester;
 import atsys.backtesting.components.impl.SimulatedExecutionManager;
 import atsys.backtesting.components.impl.NoobPortfolioManager;
 import atsys.backtesting.components.impl.DummyStrategy;
+import atsys.backtesting.engine.Backtester;
 import atsys.backtesting.exception.BaseException;
 import atsys.backtesting.model.Backtest;
 
@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class Main {
+public class BacktestingApplication {
     public static void main(String[] args) throws BaseException {
         tryBacktester();
     }

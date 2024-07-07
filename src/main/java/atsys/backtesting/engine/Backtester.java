@@ -1,8 +1,5 @@
-package atsys.backtesting;
+package atsys.backtesting.engine;
 
-import atsys.backtesting.engine.EventConsumer;
-import atsys.backtesting.engine.EventDrivenEngine;
-import atsys.backtesting.engine.EventPublisher;
 import atsys.backtesting.exception.BaseException;
 import atsys.backtesting.model.Backtest;
 import atsys.backtesting.engine.events.Event;

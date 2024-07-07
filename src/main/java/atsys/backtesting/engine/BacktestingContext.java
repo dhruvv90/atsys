@@ -25,9 +25,9 @@ public class BacktestingContext {
         this.eventPublisher = eventPublisher;
         this.eventsRepository = eventsRepository;
 
-        registerStrategy();
-        registerPortfolioManager();
         registerExecutionManager();
+        registerPortfolioManager();
+        registerStrategy();
     }
 
     private void registerStrategy(){

@@ -1,7 +1,7 @@
 package atsys.backtesting.components;
 
-import atsys.backtesting.engine.events.TickEvent;
+import atsys.backtesting.model.TickData;
 
 public interface Strategy extends LifecycleManager {
-    void handleTick(TickEvent event);
+    void handleTick(TickData tickData);
 }

@@ -3,7 +3,6 @@ package atsys.backtesting.components.impl;
 import atsys.backtesting.engine.BacktestingContext;
 import atsys.backtesting.components.Strategy;
 import atsys.backtesting.engine.events.SignalEvent;
-import atsys.backtesting.engine.events.TickEvent;
 import atsys.backtesting.model.TickData;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,8 +25,7 @@ public class DummyStrategy implements Strategy {
     }
 
     @Override
-    public void handleTick(TickEvent event) {
-        TickData tickData = event.getData();
+    public void handleTick(TickData tickData) {
         String sb = "counter: " + counter + ". Strategy calc. " +
                 "Symbol: " + tickData.getSymbol() +
                 ", timestamp: " + tickData.getTickTimestamp() +

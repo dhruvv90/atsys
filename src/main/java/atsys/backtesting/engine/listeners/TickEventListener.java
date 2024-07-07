@@ -13,6 +13,6 @@ public class TickEventListener implements EventListener<TickEvent> {
 
     @Override
     public void onEvent(TickEvent event) {
-        this.strategy.handleTick(event);
+        this.strategy.handleTick(event.getData());
     }
 }

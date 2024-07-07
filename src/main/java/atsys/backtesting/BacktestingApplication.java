@@ -39,6 +39,7 @@ public class BacktestingApplication {
             btEngine.run(myBacktest);
             endTime = System.currentTimeMillis();
             times.add(endTime - startTime);
+            System.out.println();
         }
 
         System.out.println(Arrays.toString(times.toArray()));

@@ -4,7 +4,7 @@ import atsys.backtesting.model.TickData;
 import lombok.Getter;
 
 @Getter
-public class TickEvent implements Event {
+public class TickEvent extends Event {
 
     private final TickData data;
 

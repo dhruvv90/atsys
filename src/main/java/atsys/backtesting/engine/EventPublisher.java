@@ -2,6 +2,8 @@ package atsys.backtesting.engine;
 
 import atsys.backtesting.engine.events.Event;
 
+import java.time.Instant;
+
 public class EventPublisher {
     private final EventQueue<Event> eventQueue;
 
@@ -10,6 +12,7 @@ public class EventPublisher {
     }
 
     public void publishEvent(Event event){
+        event.setPublishedAt(Instant.now());
         this.eventQueue.offer(event);
     }
 

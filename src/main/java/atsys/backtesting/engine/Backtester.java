@@ -51,7 +51,7 @@ public class Backtester {
 
             // Process all events in queue first..
             while (eventConsumer.hasEvents()) {
-                Event ev = eventConsumer.getEvent();
+                Event ev = eventConsumer.consumeEvent();
                 engine.emitEvent(ev);
             }
 

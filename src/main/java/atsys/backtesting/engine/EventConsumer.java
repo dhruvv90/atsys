@@ -2,6 +2,8 @@ package atsys.backtesting.engine;
 
 import atsys.backtesting.engine.events.Event;
 
+import java.time.Instant;
+
 public class EventConsumer {
 
     private final EventQueue<Event> eventQueue;
@@ -18,7 +20,11 @@ public class EventConsumer {
         return eventQueue.peek();
     }
 
-    public Event getEvent(){
+    public Event consumeEvent(){
+        Event first = peekEvent();
+        if(first != null){
+            first.setConsumedAt(Instant.now());
+        }
         return eventQueue.poll();
     }
 }

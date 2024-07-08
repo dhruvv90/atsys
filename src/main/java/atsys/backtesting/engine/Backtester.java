@@ -6,6 +6,9 @@ import atsys.backtesting.engine.events.TickEvent;
 import atsys.backtesting.model.TickData;
 import atsys.backtesting.components.data.TickDataStreamer;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 /**
  * A Re-usable Event Driven Backtester used to run backtests independently.
@@ -15,10 +18,12 @@ public class Backtester {
 
     private final TickDataStreamer dataStreamer;
     private final EventDrivenEngine engine;
+    private final Map<Backtest, BacktestingReport> backtestingReports;
 
     public Backtester() {
         engine = new EventDrivenEngine();
         dataStreamer = new TickDataStreamer();
+        this.backtestingReports = new HashMap<>();
     }
 
     /**
@@ -31,6 +36,7 @@ public class Backtester {
     }
 
     private void postBacktest(Backtest backtest) {
+        backtestingReports.put(backtest, engine.getReport());
         engine.reset();
         dataStreamer.reset();
     }

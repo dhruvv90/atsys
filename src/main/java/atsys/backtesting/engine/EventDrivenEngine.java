@@ -26,6 +26,9 @@ public class EventDrivenEngine {
 
     private BacktestingContext currentContext;
 
+    @Getter
+    private BacktestingReport report;
+
 
     public EventDrivenEngine() {
         this.eventQueue = new EventQueueImpl();
@@ -33,11 +36,12 @@ public class EventDrivenEngine {
         this.publisher = new QueuePublisher(this.eventQueue);
     }
 
-    private void processEvent(Event e) {
-        if(currentContext == null){
-            log.warn("Engine is not attached to any Backtest. This event emission will be futile!");
-        }
-        eventManager.emit(e);
+    public void initializeForBacktest(Backtest backtest) {
+        currentContext = new BacktestingContext(backtest, publisher, eventManager);
+        this.report = new BacktestingReport();
+
+        // Register KillEvent
+        eventManager.register(KillEvent.class, new KillEventListener());
     }
 
     public void reset() {
@@ -58,7 +62,12 @@ public class EventDrivenEngine {
         }
         Event event = eventQueue.poll();
         event.setConsumedAt(Instant.now());
-        processEvent(event);
+
+        if(currentContext == null){
+            log.warn("Engine is not attached to any Backtest. This event emission might not trigger any Lifecycle components");
+        }
+        eventManager.emit(event);
+        report.recordEvent(event);
     }
 
     @SneakyThrows
@@ -68,10 +77,4 @@ public class EventDrivenEngine {
         }
     }
 
-    public void initializeForBacktest(Backtest backtest) {
-        currentContext = new BacktestingContext(backtest, publisher, eventManager);
-
-        // Register KillEvent
-        eventManager.register(KillEvent.class, new KillEventListener());
-    }
 }

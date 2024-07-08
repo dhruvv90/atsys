@@ -4,10 +4,10 @@ import atsys.backtesting.engine.events.Event;
 
 import java.time.Instant;
 
-public class EventPublisher {
+public class QueuePublisher {
     private final EventQueue<Event> eventQueue;
 
-    EventPublisher(EventQueue<Event> eventQueue){
+    QueuePublisher(EventQueue<Event> eventQueue){
         this.eventQueue = eventQueue;
     }
 

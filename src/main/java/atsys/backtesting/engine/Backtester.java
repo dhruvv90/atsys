@@ -2,7 +2,6 @@ package atsys.backtesting.engine;
 
 import atsys.backtesting.exception.BaseException;
 import atsys.backtesting.model.Backtest;
-import atsys.backtesting.engine.events.Event;
 import atsys.backtesting.engine.events.TickEvent;
 import atsys.backtesting.model.TickData;
 import atsys.backtesting.components.data.TickDataStreamer;
@@ -42,23 +41,19 @@ public class Backtester {
     public void run(Backtest backtest) throws BaseException {
         preBacktest(backtest);
 
-        // extract consumers and producers
-        EventConsumer eventConsumer = engine.getConsumer();
-        EventPublisher eventPublisher = engine.getPublisher();
+        // producer
+        QueuePublisher queuePublisher = engine.getPublisher();
 
-        // Either dataStreamer has some data , or eventConsumer has some events
-        while (dataStreamer.hasNext() || eventConsumer.hasEvents()) {
+        // Either dataStreamer has some data , or engine has some events
+        while (dataStreamer.hasNext() || engine.hasEvents()) {
 
             // Process all events in queue first..
-            while (eventConsumer.hasEvents()) {
-                Event ev = eventConsumer.consumeEvent();
-                engine.emitEvent(ev);
-            }
+            engine.consumeAllEvents();
 
             // If DataStreamer still has data, Load it..
             if (dataStreamer.hasNext()) {
                 TickData data = dataStreamer.readData();
-                eventPublisher.publishEvent(new TickEvent(data));
+                queuePublisher.publishEvent(new TickEvent(data));
             }
         }
 

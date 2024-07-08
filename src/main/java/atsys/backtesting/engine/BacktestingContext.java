@@ -10,20 +10,17 @@ import atsys.backtesting.engine.listeners.OrderEventListener;
 import atsys.backtesting.engine.listeners.SignalEventListener;
 import atsys.backtesting.engine.listeners.TickEventListener;
 import atsys.backtesting.model.Backtest;
-import lombok.Getter;
 
 public class BacktestingContext {
 
-    @Getter
     private final Backtest backtest;
+    private final QueuePublisher queuePublisher;
+    private final EventManager eventManager;
 
-    private final EventPublisher eventPublisher;
-    private final EventsRepository eventsRepository;
-
-    public BacktestingContext(Backtest backtest, EventPublisher eventPublisher, EventsRepository eventsRepository){
+    public BacktestingContext(Backtest backtest, QueuePublisher queuePublisher, EventManager eventManager){
         this.backtest = backtest;
-        this.eventPublisher = eventPublisher;
-        this.eventsRepository = eventsRepository;
+        this.queuePublisher = queuePublisher;
+        this.eventManager = eventManager;
 
         registerExecutionManager();
         registerPortfolioManager();
@@ -35,7 +32,7 @@ public class BacktestingContext {
         strategy.onInit(this);
 
         // Register Strategy as TickEventListener
-        eventsRepository.register(TickEvent.class, new TickEventListener(backtest.getStrategy()));
+        eventManager.register(TickEvent.class, new TickEventListener(backtest.getStrategy()));
     }
 
     private void registerPortfolioManager(){
@@ -43,25 +40,25 @@ public class BacktestingContext {
         portfolioManager.onInit(this);
 
         // Register PortfolioManager
-        eventsRepository.register(SignalEvent.class, new SignalEventListener(backtest.getPortfolioManager()));
-        eventsRepository.register(FillEvent.class, new FillEventListener(backtest.getPortfolioManager()));
+        eventManager.register(SignalEvent.class, new SignalEventListener(backtest.getPortfolioManager()));
+        eventManager.register(FillEvent.class, new FillEventListener(backtest.getPortfolioManager()));
     }
 
     private void registerExecutionManager(){
         ExecutionManager executionManager = backtest.getExecutionManager();
         executionManager.onInit(this);
 
-        eventsRepository.register(OrderEvent.class, new OrderEventListener(backtest.getExecutionManager()));
+        eventManager.register(OrderEvent.class, new OrderEventListener(backtest.getExecutionManager()));
     }
 
-    public void destroy() {
+    public void end() {
         backtest.getStrategy().onComplete();
         backtest.getPortfolioManager().onComplete();
         backtest.getExecutionManager().onComplete();
     }
 
     public void publishEvent(Event event){
-        eventPublisher.publishEvent(event);
+        queuePublisher.publishEvent(event);
     }
 
 }

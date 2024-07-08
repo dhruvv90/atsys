@@ -4,9 +4,13 @@ import atsys.backtesting.engine.events.Event;
 import atsys.backtesting.engine.events.KillEvent;
 import atsys.backtesting.engine.impl.EventQueueImpl;
 import atsys.backtesting.engine.listeners.KillEventListener;
+import atsys.backtesting.exception.BaseException;
 import atsys.backtesting.model.Backtest;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+
+import java.time.Instant;
 
 /**
  * A Re-usable Event Driven Engine used by the backtester
@@ -15,44 +19,59 @@ import lombok.extern.slf4j.Slf4j;
 public class EventDrivenEngine {
 
     private final EventQueue<Event> eventQueue;
-    private final EventsRepository eventsRepository;
+    private final EventManager eventManager;
 
     @Getter
-    private final EventConsumer consumer;
-
-    @Getter
-    private final EventPublisher publisher;
+    private final QueuePublisher publisher;
 
     private BacktestingContext currentContext;
 
 
     public EventDrivenEngine() {
         this.eventQueue = new EventQueueImpl();
-        this.eventsRepository = new EventsRepository();
-
-        this.consumer = new EventConsumer(this.eventQueue);
-        this.publisher = new EventPublisher(this.eventQueue);
+        this.eventManager = new EventManager();
+        this.publisher = new QueuePublisher(this.eventQueue);
     }
 
-    public void emitEvent(Event e) {
+    private void processEvent(Event e) {
         if(currentContext == null){
             log.warn("Engine is not attached to any Backtest. This event emission will be futile!");
         }
-        eventsRepository.emit(e);
+        eventManager.emit(e);
     }
 
     public void reset() {
-        currentContext.destroy();
+        currentContext.end();
         currentContext = null;
 
-        eventsRepository.unregisterAll();
+        eventManager.unregisterAll();
         eventQueue.clear();
     }
 
+    public boolean hasEvents(){
+        return !eventQueue.isEmpty();
+    }
+
+    public void consumeEvent() throws BaseException{
+        if(!hasEvents()){
+            throw new BaseException();
+        }
+        Event event = eventQueue.poll();
+        event.setConsumedAt(Instant.now());
+        processEvent(event);
+    }
+
+    @SneakyThrows
+    public void consumeAllEvents(){
+        while (hasEvents()) {
+            consumeEvent();
+        }
+    }
+
     public void initializeForBacktest(Backtest backtest) {
-        currentContext = new BacktestingContext(backtest, publisher, eventsRepository);
+        currentContext = new BacktestingContext(backtest, publisher, eventManager);
 
         // Register KillEvent
-        eventsRepository.register(KillEvent.class, new KillEventListener());
+        eventManager.register(KillEvent.class, new KillEventListener());
     }
 }

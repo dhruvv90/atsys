@@ -9,10 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EventsRepository {
+public class EventManager {
     private final Map<Class<? extends Event>, List<EventListener<? extends Event>>> listenersMap;
 
-    EventsRepository() {
+    EventManager() {
         this.listenersMap = new HashMap<>();
     }
 

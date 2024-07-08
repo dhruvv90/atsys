@@ -6,7 +6,7 @@ import atsys.backtesting.engine.events.FillEvent;
 import atsys.backtesting.engine.events.OrderEvent;
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+@Slf4j(topic = "Execution")
 public class SimulatedExecutionManager implements ExecutionManager {
 
     private BacktestingContext context;

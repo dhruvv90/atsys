@@ -20,23 +20,26 @@ public class BacktestingApplication {
     }
 
     private static void tryBacktester() throws BaseException {
-        Backtest myBacktest = new Backtest(
-                "myBacktest", "",
-                new ArrayList<>(),
-                1000,
-                Instant.now(),
-                Instant.now(),
-                new DummyStrategy(), new NoobPortfolioManager(), new SimulatedExecutionManager());
-
         Backtester btEngine = new Backtester();
+
+        List<Backtest> backtests = new ArrayList<>();
+        for(int i = 0; i < 3; i++){
+            backtests.add(new Backtest(
+                    "Backtest_" + i, "",
+                    new ArrayList<>(),
+                    1000,
+                    Instant.now(),
+                    Instant.now(),
+                    new DummyStrategy(), new NoobPortfolioManager(), new SimulatedExecutionManager())
+            );
+        }
         long startTime;
         long endTime;
-
         List<Long> times = new ArrayList<>();
 
-        for(int i = 0; i < 3; i++){
+        for(Backtest backtest: backtests){
             startTime = System.currentTimeMillis();
-            btEngine.run(myBacktest);
+            btEngine.run(backtest);
             endTime = System.currentTimeMillis();
             times.add(endTime - startTime);
             System.out.println();

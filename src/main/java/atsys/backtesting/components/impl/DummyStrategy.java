@@ -7,7 +7,7 @@ import atsys.backtesting.model.TickData;
 import lombok.extern.slf4j.Slf4j;
 
 
-@Slf4j
+@Slf4j(topic = "Strategy")
 public class DummyStrategy implements Strategy {
     private int counter;
     private BacktestingContext context;

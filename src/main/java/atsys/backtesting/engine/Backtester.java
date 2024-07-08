@@ -5,6 +5,7 @@ import atsys.backtesting.model.Backtest;
 import atsys.backtesting.engine.events.TickEvent;
 import atsys.backtesting.model.TickData;
 import atsys.backtesting.components.data.TickDataStreamer;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +15,7 @@ import java.util.Map;
  * A Re-usable Event Driven Backtester used to run backtests independently.
  * Engine, Streamer and other components must be reset after each backtest
  */
+@Slf4j(topic = "Backtester")
 public class Backtester {
 
     private final TickDataStreamer dataStreamer;
@@ -31,11 +33,13 @@ public class Backtester {
      * All resource initialization must be here
      */
     private void preBacktest(Backtest backtest){
+        log.info("Initiating Backtest : {}", backtest.getName());
         dataStreamer.initializeForBacktest(backtest);
         engine.initializeForBacktest(backtest);
     }
 
     private void postBacktest(Backtest backtest) {
+        log.info("Ending Backtest : {}", backtest.getName());
         backtestingReports.put(backtest, engine.getReport());
         engine.reset();
         dataStreamer.reset();

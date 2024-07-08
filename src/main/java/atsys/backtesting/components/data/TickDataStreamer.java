@@ -1,7 +1,6 @@
 package atsys.backtesting.components.data;
 
 import atsys.backtesting.exception.DataStreamerException;
-import atsys.backtesting.exception.InvalidDataAccessException;
 import atsys.backtesting.model.Backtest;
 import atsys.backtesting.model.TickData;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 
 
-@Slf4j
+@Slf4j(topic = "Data")
 public class TickDataStreamer {
 
     private Iterator<TickData> dataIterator;

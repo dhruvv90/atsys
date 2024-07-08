@@ -7,7 +7,7 @@ import atsys.backtesting.engine.events.OrderEvent;
 import atsys.backtesting.engine.events.SignalEvent;
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+@Slf4j(topic = "PortfolioManager")
 public class NoobPortfolioManager implements PortfolioManager {
 
     private BacktestingContext context;

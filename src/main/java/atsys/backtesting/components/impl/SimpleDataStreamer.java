@@ -5,6 +5,8 @@ import atsys.backtesting.exception.DataStreamerException;
 import atsys.backtesting.model.Backtest;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -20,8 +22,21 @@ public class SimpleDataStreamer implements DataStreamer<SimpleTickData> {
      */
     public void initializeForBacktest(Backtest<SimpleTickData> backtest) {
         log.info("{} initialized for backtest : {}", this.getClass().getSimpleName(), backtest.getName());
-        List<SimpleTickData> data = DataHelper.generateDummyData(backtest);
+        List<SimpleTickData> data = generateDummyData(backtest);
         dataIterator = data.iterator();
+    }
+
+    private List<SimpleTickData> generateDummyData(Backtest<SimpleTickData> backtest){
+        List<SimpleTickData> result = new ArrayList<>();
+        for(int i = 0; i < 15; i++){
+            SimpleTickData data = new SimpleTickData();
+            data.setSymbol("Symbol("+ i + ")");
+            data.setTickTimestamp(Instant.now());
+            data.setLastTradedTime(Instant.now());
+            data.setLastTradedPrice(Math.random() + Math.random() * 100);
+            result.add(data);
+        }
+        return result;
     }
 
 

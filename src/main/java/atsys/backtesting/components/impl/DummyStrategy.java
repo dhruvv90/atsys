@@ -25,8 +25,8 @@ public class DummyStrategy implements Strategy<SimpleTickData> {
 
     @Override
     public void handleTick(SimpleTickData tickData) {
-        String sb = "counter: " + counter + ". Strategy calc. " +
-                "Symbol: " + tickData.getSymbol() +
+        String sb = "counter: " + counter +
+                ", Symbol: " + tickData.getSymbol() +
                 ", timestamp: " + tickData.getTickTimestamp() +
                 ", LTT: " + tickData.getLastTradedTime() +
                 ", LTP: " + tickData.getLastTradedPrice();

@@ -7,6 +7,7 @@ Some notes on architecture and functionality:
 * Single threaded, Scalable design and capable to run multiple backtests with plug and play components (Type of Asset, Market data, strategies, portfolioManagers etc...)
 * Being purely event driven, it avoids Look-ahead bias
 * Flexibility in changing data-flow strategy at any stage due to dependency on events + plug and play architecture
+* To use with any custom data type, it needs to implement TickData. Data Source and strategy can then be created using that type
 * Once the backtesting engine is initialized , it uses an EventDrivenEngineContext having info about all runs/sessions. Each backtest session uses BacktestingContext, within the main engine context, to process/persist particular session
 * EventDrivenEngine uses re-usable components for running multiple runs/sessions and does cleanup after each run.
 * Only dummy Implementations and no integrations with any data source or exchange yet

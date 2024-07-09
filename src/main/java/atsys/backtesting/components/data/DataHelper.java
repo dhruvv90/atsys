@@ -1,7 +1,7 @@
 package atsys.backtesting.components.data;
 
 import atsys.backtesting.model.Backtest;
-import atsys.backtesting.model.SimpleTickData;
+import atsys.backtesting.components.impl.SimpleTickData;
 
 import java.time.Instant;
 import java.util.ArrayList;

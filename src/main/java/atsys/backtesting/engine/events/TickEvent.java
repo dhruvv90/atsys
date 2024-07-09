@@ -1,6 +1,6 @@
 package atsys.backtesting.engine.events;
 
-import atsys.backtesting.model.SimpleTickData;
+import atsys.backtesting.components.impl.SimpleTickData;
 import lombok.Getter;
 
 @Getter

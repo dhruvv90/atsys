@@ -3,7 +3,7 @@ package atsys.backtesting.engine;
 import atsys.backtesting.exception.BaseException;
 import atsys.backtesting.model.Backtest;
 import atsys.backtesting.engine.events.TickEvent;
-import atsys.backtesting.model.SimpleTickData;
+import atsys.backtesting.components.impl.SimpleTickData;
 import atsys.backtesting.components.data.TickDataStreamer;
 import lombok.extern.slf4j.Slf4j;
 

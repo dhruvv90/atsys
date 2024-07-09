@@ -1,4 +1,4 @@
-package atsys.backtesting.model;
+package atsys.backtesting.components.impl;
 
 import atsys.backtesting.components.TickData;
 import lombok.Getter;

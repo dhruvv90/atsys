@@ -1,14 +1,14 @@
 package atsys.backtesting.engine.events;
 
-import atsys.backtesting.components.impl.SimpleTickData;
+import atsys.backtesting.components.TickData;
 import lombok.Getter;
 
 @Getter
-public class TickEvent extends Event {
+public class TickEvent<T extends TickData> extends Event {
 
-    private final SimpleTickData data;
+    private final T data;
 
-    public TickEvent(SimpleTickData data){
+    public TickEvent(T data){
         this.data = data;
     }
 }

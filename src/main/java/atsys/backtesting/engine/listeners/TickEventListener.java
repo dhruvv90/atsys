@@ -1,18 +1,19 @@
 package atsys.backtesting.engine.listeners;
 
 import atsys.backtesting.components.Strategy;
+import atsys.backtesting.components.TickData;
 import atsys.backtesting.engine.events.TickEvent;
 
-public class TickEventListener implements EventListener<TickEvent> {
+public class TickEventListener<T extends TickData> implements EventListener<TickEvent<T>> {
 
-    private final Strategy strategy;
+    private final Strategy<T> strategy;
 
-    public TickEventListener(Strategy strategy){
+    public TickEventListener(Strategy<T> strategy){
         this.strategy = strategy;
     }
 
     @Override
-    public void onEvent(TickEvent event) {
+    public void onEvent(TickEvent<T> event) {
         this.strategy.handleTick(event.getData());
     }
 }

@@ -3,6 +3,7 @@ package atsys.backtesting.model;
 import atsys.backtesting.components.ExecutionManager;
 import atsys.backtesting.components.PortfolioManager;
 import atsys.backtesting.components.Strategy;
+import atsys.backtesting.components.TickData;
 import lombok.Getter;
 
 import java.time.Instant;
@@ -16,7 +17,7 @@ public class Backtest {
     private final double initialCapital;
     private final Instant startDateTime;
     private final Instant endDateTime;
-    private final Strategy<?> strategy;
+    private final Strategy<? extends TickData> strategy;
     private final PortfolioManager portfolioManager;
     private final Instant createdAt;
     private final ExecutionManager executionManager;
@@ -24,7 +25,7 @@ public class Backtest {
     public Backtest(String name,
                     String description, List<Instrument> instruments,
                     double initialCapital, Instant startDateTime, Instant endDateTime,
-                    Strategy<?> strategy, PortfolioManager portfolioManager, ExecutionManager executionManager) {
+                    Strategy<? extends TickData> strategy, PortfolioManager portfolioManager, ExecutionManager executionManager) {
         this.name = name;
         this.description = description;
         this.instruments = instruments;

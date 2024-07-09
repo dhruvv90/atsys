@@ -3,7 +3,7 @@ package atsys.backtesting.engine;
 import atsys.backtesting.exception.BaseException;
 import atsys.backtesting.model.Backtest;
 import atsys.backtesting.engine.events.TickEvent;
-import atsys.backtesting.model.TickData;
+import atsys.backtesting.model.SimpleTickData;
 import atsys.backtesting.components.data.TickDataStreamer;
 import lombok.extern.slf4j.Slf4j;
 
@@ -62,7 +62,7 @@ public class Backtester {
 
             // If DataStreamer still has data, Load it..
             if (dataStreamer.hasNext()) {
-                TickData data = dataStreamer.readData();
+                SimpleTickData data = dataStreamer.readData();
                 queuePublisher.publishEvent(new TickEvent(data));
             }
         }

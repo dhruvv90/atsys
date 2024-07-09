@@ -28,7 +28,7 @@ public class BacktestingContext {
     }
 
     private void registerStrategy(){
-        Strategy strategy = backtest.getStrategy();
+        Strategy<?> strategy = backtest.getStrategy();
         strategy.onInit(this);
 
         // Register Strategy as TickEventListener

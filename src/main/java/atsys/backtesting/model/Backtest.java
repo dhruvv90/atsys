@@ -10,14 +10,14 @@ import java.time.Instant;
 import java.util.List;
 
 @Getter
-public class Backtest {
+public class Backtest<T extends TickData> {
     private final String name;
     private final String description;
     private final List<Instrument> instruments;
     private final double initialCapital;
     private final Instant startDateTime;
     private final Instant endDateTime;
-    private final Strategy<? extends TickData> strategy;
+    private final Strategy<T> strategy;
     private final PortfolioManager portfolioManager;
     private final Instant createdAt;
     private final ExecutionManager executionManager;
@@ -25,7 +25,7 @@ public class Backtest {
     public Backtest(String name,
                     String description, List<Instrument> instruments,
                     double initialCapital, Instant startDateTime, Instant endDateTime,
-                    Strategy<? extends TickData> strategy, PortfolioManager portfolioManager, ExecutionManager executionManager) {
+                    Strategy<T> strategy, PortfolioManager portfolioManager, ExecutionManager executionManager) {
         this.name = name;
         this.description = description;
         this.instruments = instruments;

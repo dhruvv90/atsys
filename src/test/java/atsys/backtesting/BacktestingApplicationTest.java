@@ -1,8 +1,7 @@
 package atsys.backtesting;
 
-import atsys.backtesting.components.impl.DummyStrategy;
-import atsys.backtesting.components.impl.NoobPortfolioManager;
-import atsys.backtesting.components.impl.SimulatedExecutionManager;
+import atsys.backtesting.components.DataStreamer;
+import atsys.backtesting.components.impl.*;
 import atsys.backtesting.engine.Backtester;
 import atsys.backtesting.exception.BaseException;
 import atsys.backtesting.model.Backtest;
@@ -24,12 +23,17 @@ class BacktestingApplicationTest {
 
     @org.junit.jupiter.api.Test
     void basicTest() throws BaseException {
+        // Initialize Data Streamer
+        DataStreamer<SimpleTickData> dataStreamer = new SimpleDataStreamer();
 
+        // Initialize Backtester
         Backtester btEngine = new Backtester();
 
-        List<Backtest> backtests = new ArrayList<>();
+        // Setup Backtests
+        List<Backtest<SimpleTickData>> backtests = new ArrayList<>();
+
         for(int i = 0; i < 3; i++){
-            backtests.add(new Backtest(
+            backtests.add(new Backtest<>(
                     "Backtest_" + i, "",
                     new ArrayList<>(),
                     1000,
@@ -38,18 +42,21 @@ class BacktestingApplicationTest {
                     new DummyStrategy(), new NoobPortfolioManager(), new SimulatedExecutionManager())
             );
         }
+
+        // Run Backtest in batch
         long startTime;
         long endTime;
         List<Long> times = new ArrayList<>();
 
-        for(Backtest backtest: backtests){
+        for(Backtest<SimpleTickData> backtest: backtests){
             startTime = System.currentTimeMillis();
-            btEngine.run(backtest);
+            btEngine.run(backtest, dataStreamer);
             endTime = System.currentTimeMillis();
             times.add(endTime - startTime);
             System.out.println();
         }
 
+        // Print output
         System.out.println(Arrays.toString(times.toArray()));
     }
 }

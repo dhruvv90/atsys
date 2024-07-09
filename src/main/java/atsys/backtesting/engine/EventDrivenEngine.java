@@ -36,7 +36,7 @@ public class EventDrivenEngine {
         this.publisher = new QueuePublisher(this.eventQueue);
     }
 
-    public void initializeForBacktest(Backtest backtest) {
+    public void initializeForBacktest(Backtest<?> backtest) {
         currentContext = new BacktestingContext(backtest, publisher, eventManager);
         this.report = new BacktestingReport();
 

@@ -1,10 +1,10 @@
 package atsys.backtesting.engine;
 
 import atsys.backtesting.components.TickData;
+import atsys.backtesting.components.DataStreamer;
+import atsys.backtesting.engine.events.TickEvent;
 import atsys.backtesting.exception.BaseException;
 import atsys.backtesting.model.Backtest;
-import atsys.backtesting.engine.events.TickEvent;
-import atsys.backtesting.components.data.TickDataStreamer;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
@@ -18,13 +18,11 @@ import java.util.Map;
 @Slf4j(topic = "Backtester")
 public class Backtester {
 
-    private final TickDataStreamer dataStreamer;
     private final EventDrivenEngine engine;
-    private final Map<Backtest, BacktestingReport> backtestingReports;
+    private final Map<Backtest<?>, BacktestingReport> backtestingReports;
 
     public Backtester() {
         engine = new EventDrivenEngine();
-        dataStreamer = new TickDataStreamer();
         this.backtestingReports = new HashMap<>();
     }
 
@@ -32,13 +30,13 @@ public class Backtester {
      * Prepare Backtester for a particular backtest.
      * All resource initialization must be here
      */
-    private void preBacktest(Backtest backtest){
+    private<T extends TickData> void preBacktest(Backtest<T> backtest, DataStreamer<T> dataStreamer){
         log.info("Initiating Backtest : {}", backtest.getName());
         dataStreamer.initializeForBacktest(backtest);
         engine.initializeForBacktest(backtest);
     }
 
-    private void postBacktest(Backtest backtest) {
+    private <T extends TickData> void postBacktest(Backtest<T> backtest, DataStreamer<T> dataStreamer) {
         log.info("Ending Backtest : {}", backtest.getName());
         backtestingReports.put(backtest, engine.getReport());
         engine.reset();
@@ -48,8 +46,8 @@ public class Backtester {
     /**
      * Run Backtest independently
      */
-    public void run(Backtest backtest) throws BaseException {
-        preBacktest(backtest);
+    public <T extends TickData> void run(Backtest<T> backtest, DataStreamer<T> dataStreamer) throws BaseException {
+        preBacktest(backtest, dataStreamer);
 
         // producer
         QueuePublisher queuePublisher = engine.getPublisher();
@@ -62,11 +60,11 @@ public class Backtester {
 
             // If DataStreamer still has data, Load it..
             if (dataStreamer.hasNext()) {
-                TickData data = dataStreamer.readData();
+                T data = dataStreamer.readData();
                 queuePublisher.publishEvent(new TickEvent<>(data));
             }
         }
 
-        postBacktest(backtest);
+        postBacktest(backtest, dataStreamer);
     }
 }

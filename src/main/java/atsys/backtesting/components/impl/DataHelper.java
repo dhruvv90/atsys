@@ -1,7 +1,6 @@
-package atsys.backtesting.components.data;
+package atsys.backtesting.components.impl;
 
 import atsys.backtesting.model.Backtest;
-import atsys.backtesting.components.impl.SimpleTickData;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -9,7 +8,7 @@ import java.util.List;
 
 public class DataHelper {
 
-    public static List<SimpleTickData> generateDummyData(Backtest backtest){
+    public static List<SimpleTickData> generateDummyData(Backtest<SimpleTickData> backtest){
         List<SimpleTickData> result = new ArrayList<>();
         for(int i = 0; i < 15; i++){
             SimpleTickData data = new SimpleTickData();

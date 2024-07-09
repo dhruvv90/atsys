@@ -13,11 +13,11 @@ import atsys.backtesting.model.Backtest;
 
 public class BacktestingContext {
 
-    private final Backtest backtest;
+    private final Backtest<?> backtest;
     private final QueuePublisher queuePublisher;
     private final EventManager eventManager;
 
-    public BacktestingContext(Backtest backtest, QueuePublisher queuePublisher, EventManager eventManager){
+    public BacktestingContext(Backtest<?> backtest, QueuePublisher queuePublisher, EventManager eventManager){
         this.backtest = backtest;
         this.queuePublisher = queuePublisher;
         this.eventManager = eventManager;
@@ -27,6 +27,7 @@ public class BacktestingContext {
         registerStrategy();
     }
 
+    @SuppressWarnings("unchecked")
     private void registerStrategy(){
         Strategy<?> strategy = backtest.getStrategy();
         strategy.onInit(this);

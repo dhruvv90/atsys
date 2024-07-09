@@ -1,8 +1,8 @@
-package atsys.backtesting.components.data;
+package atsys.backtesting.components.impl;
 
+import atsys.backtesting.components.DataStreamer;
 import atsys.backtesting.exception.DataStreamerException;
 import atsys.backtesting.model.Backtest;
-import atsys.backtesting.components.impl.SimpleTickData;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Iterator;
@@ -10,7 +10,7 @@ import java.util.List;
 
 
 @Slf4j(topic = "Data")
-public class TickDataStreamer {
+public class SimpleDataStreamer implements DataStreamer<SimpleTickData> {
 
     private Iterator<SimpleTickData> dataIterator;
 
@@ -18,7 +18,7 @@ public class TickDataStreamer {
      * Initialize this dataStreamer for a particular backtest.
      * Should ideally preload all data required for a backtest
      */
-    public void initializeForBacktest(Backtest backtest) {
+    public void initializeForBacktest(Backtest<SimpleTickData> backtest) {
         log.info("{} initialized for backtest : {}", this.getClass().getSimpleName(), backtest.getName());
         List<SimpleTickData> data = DataHelper.generateDummyData(backtest);
         dataIterator = data.iterator();

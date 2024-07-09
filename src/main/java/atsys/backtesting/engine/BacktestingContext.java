@@ -27,7 +27,7 @@ public class BacktestingContext {
         registerStrategy();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     private void registerStrategy(){
         Strategy<?> strategy = backtest.getStrategy();
         strategy.onInit(this);

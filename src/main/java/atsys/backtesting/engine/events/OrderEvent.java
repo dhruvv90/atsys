@@ -16,4 +16,9 @@ public class OrderEvent extends Event{
         this.orderType = ordertype;
         this.quantity = quantity;
     }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() +": (" + orderType + ", " + symbol + ", " + quantity + ")";
+    }
 }

@@ -14,7 +14,7 @@ public class NoobPortfolioManager implements PortfolioManager {
 
     @Override
     public void onSignal(SignalEvent event) {
-        log.info("{} processing Signal : {}", this.getClass().getSimpleName(), event.getOrderType() + " " + event.getSymbol());
+        log.info("{} processing Signal : {}", this.getClass().getSimpleName(), event);
         context.publishEvent(new OrderEvent(event.getSymbol(), event.getOrderType(), 11L));
     }
 

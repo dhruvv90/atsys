@@ -14,4 +14,8 @@ public class SignalEvent extends Event {
         this.symbol = symbol;
     }
 
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() +": (" + orderType + ", " + symbol + ")";
+    }
 }

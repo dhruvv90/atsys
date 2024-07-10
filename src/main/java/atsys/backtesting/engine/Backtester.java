@@ -16,7 +16,7 @@ import java.util.Map;
  * A Re-usable Event Driven Backtester used to run backtests independently.
  * Engine, Streamer and other components must be reset after each backtest
  */
-@Slf4j(topic = "Backtester")
+@Slf4j(topic = "Setup")
 public class Backtester {
 
     private final EventDrivenEngine engine;

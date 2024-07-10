@@ -1,6 +1,5 @@
 package atsys.backtesting.components.impl;
 
-import atsys.backtesting.engine.BacktestingContext;
 import atsys.backtesting.components.Strategy;
 import atsys.backtesting.engine.events.SignalEvent;
 import atsys.backtesting.model.OrderType;
@@ -8,19 +7,12 @@ import lombok.extern.slf4j.Slf4j;
 
 
 @Slf4j(topic = "Strategy")
-public class DummyStrategy implements Strategy<SimpleTickData> {
+public class DummyStrategy extends Strategy<SimpleTickData> {
     private int counter;
-    private BacktestingContext context;
-
-    @Override
-    public void onInit(BacktestingContext context) {
-        this.context = context;
-        log.info("Initiating Strategy..");
-    }
 
     @Override
     public void onComplete() {
-        log.info("Ending Strategy..");
+        super.onComplete();
         counter = 0;
     }
 

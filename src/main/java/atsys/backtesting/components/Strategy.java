@@ -5,6 +5,6 @@ package atsys.backtesting.components;
  * It can load other data types within itself, but the main TickData will be 'T'.
  * @param <T>
  */
-public interface Strategy<T extends TickData> extends LifecycleManager {
-    void handleTick(T tickData);
+public abstract class Strategy<T extends TickData> extends LifecycleManager {
+    public abstract void handleTick(T tickData);
 }

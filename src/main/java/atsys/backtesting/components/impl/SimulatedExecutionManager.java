@@ -25,7 +25,7 @@ public class SimulatedExecutionManager implements ExecutionManager {
 
     @Override
     public void processOrder(OrderEvent event) {
-        log.info("{} processing OrderEvent : {}", this.getClass().getSimpleName(), event);
+        log.info("{} processing {}", this.getClass().getSimpleName(), event);
         this.context.publishEvent(new FillEvent(event.getSymbol(), event.getOrderType(), filledQty));
     }
 }

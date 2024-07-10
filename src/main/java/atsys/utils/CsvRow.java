@@ -1,4 +1,4 @@
-package atsys.csv;
+package atsys.utils;
 
 public class CsvRow {
     private final String[] tokens;

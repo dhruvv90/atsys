@@ -3,8 +3,9 @@ package atsys.backtesting.components.impl;
 import atsys.backtesting.components.DataStreamer;
 import atsys.backtesting.exception.DataStreamerException;
 import atsys.backtesting.model.Backtest;
-import atsys.csv.CsvReader;
-import atsys.csv.CsvRow;
+import atsys.utils.CsvReader;
+import atsys.utils.CsvRow;
+import atsys.utils.DatetimeUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,8 +20,7 @@ public class NseHistDataStreamer implements DataStreamer<SimpleTickData> {
         SimpleTickData result = new SimpleTickData();
         result.setSymbol(data.getToken(0));
         result.setLastTradedPrice(Double.parseDouble(data.getToken(7)));
-//        result.setTickTimestamp(LocalDate.parse(data.getToken(2), DateTimeFormatter.ofPattern("dd-MMM-yyyy"))
-//                .atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+        result.setTickTimestamp(DatetimeUtils.parseInstant(data.getToken(2), "dd-MMM-yyyy"));
         result.setInstrumentName(data.getToken(0));
         return result;
     }

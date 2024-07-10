@@ -3,6 +3,7 @@ package atsys.backtesting.components.impl;
 import atsys.backtesting.engine.BacktestingContext;
 import atsys.backtesting.components.Strategy;
 import atsys.backtesting.engine.events.SignalEvent;
+import atsys.backtesting.model.OrderType;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -35,7 +36,7 @@ public class DummyStrategy implements Strategy<SimpleTickData> {
 
         if(counter == 5){
 //            context.getEventPublisher().publishEvent(new KillEvent());
-            context.publishEvent(new SignalEvent());
+            context.publishEvent(new SignalEvent("test", OrderType.BUY));
         }
     }
 }

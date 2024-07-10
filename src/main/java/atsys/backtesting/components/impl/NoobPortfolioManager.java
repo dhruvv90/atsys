@@ -11,11 +11,12 @@ import lombok.extern.slf4j.Slf4j;
 public class NoobPortfolioManager implements PortfolioManager {
 
     private BacktestingContext context;
+    private final Long orderQty = 5L;
 
     @Override
     public void onSignal(SignalEvent event) {
-        log.info("{} processing Signal : {}", this.getClass().getSimpleName(), event);
-        context.publishEvent(new OrderEvent(event.getSymbol(), event.getOrderType(), 11L));
+        log.info("{} processing Signal : {}. Current qty : {}", this.getClass().getSimpleName(), event, context.getPositionCount(event.getSymbol()));
+        context.publishEvent(new OrderEvent(event.getSymbol(), event.getOrderType(), orderQty));
     }
 
     @Override
@@ -32,5 +33,8 @@ public class NoobPortfolioManager implements PortfolioManager {
     @Override
     public void onFill(FillEvent event) {
         log.info("{} processing Fill", this.getClass().getSimpleName());
+
+        String symbol = event.getSymbol();
+        context.recordPosition(symbol, event.getFilledQty());
     }
 }

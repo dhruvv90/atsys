@@ -34,8 +34,7 @@ public class DummyStrategy implements Strategy<SimpleTickData> {
         log.info(sb);
         counter++;
 
-        if(counter == 5){
-//            context.getEventPublisher().publishEvent(new KillEvent());
+        if(counter % 5 == 0){
             context.publishEvent(new SignalEvent("test", OrderType.BUY));
         }
     }

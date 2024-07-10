@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 public class SimulatedExecutionManager implements ExecutionManager {
 
     private BacktestingContext context;
+    private final Long filledQty = 2L;
 
     @Override
     public void onInit(BacktestingContext context) {
@@ -25,6 +26,6 @@ public class SimulatedExecutionManager implements ExecutionManager {
     @Override
     public void processOrder(OrderEvent event) {
         log.info("{} processing OrderEvent : {}", this.getClass().getSimpleName(), event);
-        this.context.publishEvent(new FillEvent());
+        this.context.publishEvent(new FillEvent(event.getSymbol(), event.getOrderType(), filledQty));
     }
 }

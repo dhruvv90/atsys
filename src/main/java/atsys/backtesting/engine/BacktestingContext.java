@@ -11,20 +11,40 @@ import atsys.backtesting.engine.listeners.SignalEventListener;
 import atsys.backtesting.engine.listeners.TickEventListener;
 import atsys.backtesting.model.Backtest;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class BacktestingContext {
 
     private final Backtest<?> backtest;
     private final QueuePublisher queuePublisher;
     private final EventManager eventManager;
+    private final Map<String, Long> positions;
 
     public BacktestingContext(Backtest<?> backtest, QueuePublisher queuePublisher, EventManager eventManager){
         this.backtest = backtest;
         this.queuePublisher = queuePublisher;
         this.eventManager = eventManager;
+        this.positions = new HashMap<>();
 
         registerExecutionManager();
         registerPortfolioManager();
         registerStrategy();
+    }
+
+    public int getAllPositionsCount(){
+        return positions.size();
+    }
+
+    public Long getPositionCount(String symbol){
+        if(!positions.containsKey(symbol)){
+            return 0L;
+        }
+        return positions.get(symbol);
+    }
+
+    public void recordPosition(String symbol, Long quantity){
+        positions.put(symbol, positions.getOrDefault(symbol, 0L) + quantity);
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})

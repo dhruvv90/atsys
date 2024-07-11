@@ -8,11 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j(topic = "Execution")
 public class SimulatedExecutionManager extends ExecutionManager {
 
-    private final Long filledQty = 2L;
-
     @Override
     public void processOrder(OrderEvent event) {
         log.info("{} processing {}", this.getClass().getSimpleName(), event);
-        this.context.publishEvent(new FillEvent(event.getSymbol(), event.getOrderType(), filledQty));
+        this.context.publishEvent(new FillEvent(event.getSymbol(), event.getOrderType(), event.getQuantity()));
     }
 }

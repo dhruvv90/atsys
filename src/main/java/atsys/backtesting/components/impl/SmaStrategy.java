@@ -38,7 +38,7 @@ public class SmaStrategy extends Strategy<SimpleTickData> {
 
         Long currentPos = context.getPositionCount(symbol);
 
-        SignalEvent event = null;
+        SignalEvent event;
         if(currentPos <= 0 && price >= movingAverage){
             event = new SignalEvent(symbol, OrderType.BUY);
             context.publishEvent(event);

@@ -1,21 +1,20 @@
 package atsys.backtesting.engine.events;
 
-import atsys.backtesting.model.OrderType;
+import atsys.backtesting.model.Signal;
+import atsys.backtesting.model.SignalType;
 import lombok.Getter;
 
 @Getter
 public class SignalEvent extends Event {
 
-    private final OrderType orderType;
-    private final String symbol;
+    private final Signal signal;
 
-    public SignalEvent(String symbol, OrderType orderType){
-        this.orderType = orderType;
-        this.symbol = symbol;
+    public SignalEvent(String symbol, SignalType signalType){
+        signal = new Signal(symbol, signalType);
     }
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() +": (" + orderType + ", " + symbol + ")";
+        return signal.toString();
     }
 }

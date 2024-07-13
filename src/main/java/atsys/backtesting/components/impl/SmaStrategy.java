@@ -2,7 +2,7 @@ package atsys.backtesting.components.impl;
 
 import atsys.backtesting.components.Strategy;
 import atsys.backtesting.engine.events.SignalEvent;
-import atsys.backtesting.model.OrderType;
+import atsys.backtesting.model.SignalType;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Deque;
@@ -13,7 +13,7 @@ import java.util.LinkedList;
 public class SmaStrategy extends Strategy<SimpleTickData> {
     private double movingAverage;
     private final Deque<Double> storage;
-    private final int period = 10;
+    private static final int period = 10;
 
     public SmaStrategy(){
         this.storage = new LinkedList<>();
@@ -40,11 +40,11 @@ public class SmaStrategy extends Strategy<SimpleTickData> {
 
         SignalEvent event;
         if(currentPos <= 0 && price >= movingAverage){
-            event = new SignalEvent(symbol, OrderType.BUY);
+            event = new SignalEvent(symbol, SignalType.BUY);
             context.publishEvent(event);
         }
         else if(currentPos >0 && price < movingAverage){
-            event = new SignalEvent(symbol, OrderType.SELL);
+            event = new SignalEvent(symbol, SignalType.SELL);
             context.publishEvent(event);
         }
         log.info("price : " + price + ", ma: " + movingAverage);

@@ -10,6 +10,7 @@ import atsys.backtesting.engine.listeners.OrderEventListener;
 import atsys.backtesting.engine.listeners.SignalEventListener;
 import atsys.backtesting.engine.listeners.TickEventListener;
 import atsys.backtesting.model.Backtest;
+import atsys.backtesting.model.Order;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,12 +21,15 @@ public class BacktestingContext {
     private final QueuePublisher queuePublisher;
     private final EventManager eventManager;
     private final Map<String, Long> positions;
+    private final Map<Long, Order> orders;
+
 
     public BacktestingContext(Backtest<?> backtest, QueuePublisher queuePublisher, EventManager eventManager){
         this.backtest = backtest;
         this.queuePublisher = queuePublisher;
         this.eventManager = eventManager;
         this.positions = new HashMap<>();
+        this.orders = new HashMap<>();
 
         registerExecutionManager();
         registerPortfolioManager();
@@ -43,8 +47,9 @@ public class BacktestingContext {
         return positions.get(symbol);
     }
 
-    public void recordPosition(String symbol, Long quantity){
-        positions.put(symbol, positions.getOrDefault(symbol, 0L) + quantity);
+    public void recordOrder(Order order){
+        orders.putIfAbsent(order.getId(), order);
+        positions.put(order.getSymbol(), order.getCurrQty());
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})

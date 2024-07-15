@@ -20,19 +20,23 @@ public class NoobPortfolioManager extends PortfolioManager {
         Long currPos = context.getPositionCount(signal.getSymbol());
         log.info("processing {}. current qty : {}", event, currPos);
 
+        OrderEvent orderEvent = null;
         if(currPos <= 0 && signal.getSignalType() == SignalType.BUY){
-            context.publishEvent(new OrderEvent(signal.getSymbol(), OrderType.BUY, orderQty));
+            orderEvent = new OrderEvent(signal.getSymbol(), OrderType.BUY, orderQty);
         }
         else if(currPos > 0 && signal.getSignalType() == SignalType.SELL){
-            context.publishEvent(new OrderEvent(signal.getSymbol(), OrderType.SELL, -1 * orderQty));
+            orderEvent = new OrderEvent(signal.getSymbol(), OrderType.SELL, -1 * orderQty);
+        }
+
+        if(orderEvent != null){
+            context.recordOrder(orderEvent.getOrder());
+            context.publishEvent(orderEvent);
         }
     }
 
     @Override
     public void onFill(FillEvent event) {
         log.info("processing {}", event);
-
-        String symbol = event.getOrder().getSymbol();
-        context.recordPosition(symbol, event.getFilledQty());
+        context.recordOrder(event.getOrder());
     }
 }

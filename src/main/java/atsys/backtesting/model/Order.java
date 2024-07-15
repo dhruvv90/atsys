@@ -1,13 +1,14 @@
 package atsys.backtesting.model;
 
+import atsys.backtesting.engine.OrderIdGenerator;
 import atsys.backtesting.exception.InvalidOrderStateTransition;
 import lombok.Getter;
-import lombok.Setter;
-import lombok.SneakyThrows;
 
 
 @Getter
 public class Order {
+
+    private final long id;
     private final String symbol;
     private final OrderType orderType;
     private final Long initialQty;
@@ -19,6 +20,7 @@ public class Order {
         this.orderType = orderType;
         this.initialQty = initialQty;
         this.orderStatus = OrderStatus.CREATED;
+        this.id = OrderIdGenerator.generateId();
     }
 
     public void place() throws InvalidOrderStateTransition {

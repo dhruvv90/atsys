@@ -1,22 +1,60 @@
 package atsys.backtesting.model;
 
+import atsys.backtesting.exception.InvalidOrderStateTransition;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.SneakyThrows;
 
 
 @Getter
 public class Order {
     private final String symbol;
     private final OrderType orderType;
-    private final Long quantity;
+    private final Long initialQty;
+    private Long currQty = 0L;
+    private OrderStatus orderStatus;
 
-    public Order(String symbol, OrderType orderType, Long quantity) {
+    public Order(String symbol, OrderType orderType, Long initialQty) {
         this.symbol = symbol;
         this.orderType = orderType;
-        this.quantity = quantity;
+        this.initialQty = initialQty;
+        this.orderStatus = OrderStatus.CREATED;
+    }
+
+    public void place() throws InvalidOrderStateTransition {
+        if(orderStatus != OrderStatus.CREATED){
+            throw new InvalidOrderStateTransition();
+        }
+        this.orderStatus = OrderStatus.OPEN;
+    }
+
+    public void cancel() throws InvalidOrderStateTransition {
+        if(orderStatus != OrderStatus.OPEN){
+            throw new InvalidOrderStateTransition();
+        }
+        this.orderStatus = OrderStatus.CANCELLED;
+    }
+
+    public void reject() throws InvalidOrderStateTransition {
+        if(orderStatus != OrderStatus.OPEN){
+            throw new InvalidOrderStateTransition();
+        }
+        this.orderStatus = OrderStatus.REJECTED;
+    }
+
+    public void fill(Long fillQty) throws InvalidOrderStateTransition {
+        if(orderStatus != OrderStatus.OPEN){
+            throw new InvalidOrderStateTransition();
+        }
+        currQty = fillQty;
+        if(fillQty.equals(initialQty)){
+            this.orderStatus = OrderStatus.COMPLETED;
+        }
     }
 
     @Override
     public String toString() {
-        return String.join(" ", this.getClass().getSimpleName(), "(", symbol, ",", orderType.toString(), ", ", quantity.toString(), ")");
+        return String.join("", this.getClass().getSimpleName(),
+                "(", symbol, ",", orderType.toString(), ", ", initialQty.toString(), ", " + orderStatus + ")");
     }
 }

@@ -14,7 +14,6 @@ public class Signal {
 
     @Override
     public String toString() {
-        return String.join(" ", this.getClass().getSimpleName(), "(", symbol, ",", signalType.toString(), ")");
-
+        return String.join("", this.getClass().getSimpleName(), "(", symbol, ",", signalType.toString(), ")");
     }
 }

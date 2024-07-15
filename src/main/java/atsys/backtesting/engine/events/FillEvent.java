@@ -15,6 +15,6 @@ public class FillEvent extends Event {
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() + order + ", filled : " + filledQty + ")";
+        return this.getClass().getSimpleName() + order + ", filled:" + filledQty + ")";
     }
 }

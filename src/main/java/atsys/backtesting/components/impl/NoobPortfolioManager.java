@@ -9,7 +9,7 @@ import atsys.backtesting.model.Signal;
 import atsys.backtesting.model.SignalType;
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j(topic = "PortfolioManager")
+@Slf4j(topic = "NoobPortfolioManager")
 public class NoobPortfolioManager extends PortfolioManager {
 
     private static final long orderQty = 5L;
@@ -18,7 +18,7 @@ public class NoobPortfolioManager extends PortfolioManager {
     public void onSignal(SignalEvent event) {
         Signal signal = event.getSignal();
         Long currPos = context.getPositionCount(signal.getSymbol());
-        log.info("{} processing {}. Current qty : {}", this.getClass().getSimpleName(), event, currPos);
+        log.info("processing {}. current qty : {}", event, currPos);
 
         if(currPos <= 0 && signal.getSignalType() == SignalType.BUY){
             context.publishEvent(new OrderEvent(signal.getSymbol(), OrderType.BUY, orderQty));
@@ -30,7 +30,7 @@ public class NoobPortfolioManager extends PortfolioManager {
 
     @Override
     public void onFill(FillEvent event) {
-        log.info("{} processing {}", this.getClass().getSimpleName(), event);
+        log.info("processing {}", event);
 
         String symbol = event.getOrder().getSymbol();
         context.recordPosition(symbol, event.getFilledQty());

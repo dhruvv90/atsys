@@ -1,10 +1,10 @@
 package atsys.backtesting.components;
 
-import atsys.backtesting.engine.events.FillEvent;
-import atsys.backtesting.engine.events.SignalEvent;
+import atsys.backtesting.model.Order;
+import atsys.backtesting.model.Signal;
 
 public abstract class PortfolioManager extends LifecycleManager {
 
-    public abstract void onSignal(SignalEvent event);
-    public abstract void onFill(FillEvent event);
+    public abstract void onSignal(Signal signal);
+    public abstract void onFill(Order order);
 }

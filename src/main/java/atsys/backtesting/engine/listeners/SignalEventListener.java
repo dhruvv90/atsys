@@ -13,6 +13,6 @@ public class SignalEventListener implements  EventListener<SignalEvent> {
 
     @Override
     public void onEvent(SignalEvent event) {
-        this.portfolioManager.onSignal(event);
+        this.portfolioManager.onSignal(event.getSignal());
     }
 }

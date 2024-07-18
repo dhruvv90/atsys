@@ -1,8 +1,8 @@
 package atsys.backtesting.components;
 
-import atsys.backtesting.engine.events.OrderEvent;
+import atsys.backtesting.model.Order;
 
 public abstract class ExecutionManager extends LifecycleManager {
 
-    public abstract void processOrder(OrderEvent event);
+    public abstract void processOrder(Order order);
 }

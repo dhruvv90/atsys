@@ -13,6 +13,6 @@ public class OrderEventListener implements EventListener<OrderEvent> {
 
     @Override
     public void onEvent(OrderEvent event) {
-        this.executionManager.processOrder(event);
+        this.executionManager.processOrder(event.getOrder());
     }
 }

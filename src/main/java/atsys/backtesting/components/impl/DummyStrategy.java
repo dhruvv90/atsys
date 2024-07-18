@@ -9,12 +9,6 @@ public class DummyStrategy extends Strategy<SimpleTickData> {
     private int counter;
 
     @Override
-    public void onComplete() {
-        super.onComplete();
-        counter = 0;
-    }
-
-    @Override
     public void handleTick(SimpleTickData tickData) {
         String sb = "counter: " + counter +
                 ", Symbol: " + tickData.getSymbol() +

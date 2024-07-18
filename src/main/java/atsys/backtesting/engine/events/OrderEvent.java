@@ -13,9 +13,4 @@ public class OrderEvent extends Event{
     public OrderEvent(String symbol, OrderType ordertype, Long quantity){
         this.order = new Order(symbol, ordertype, quantity);
     }
-
-    @Override
-    public String toString() {
-        return order.toString();
-    }
 }

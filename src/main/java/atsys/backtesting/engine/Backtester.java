@@ -38,10 +38,10 @@ public class Backtester {
     }
 
     private <T extends TickData> void postBacktest(Backtest<T> backtest, DataStreamer<T> dataStreamer) {
-        log.info("Ending Backtest : {}", backtest.getName());
         backtestingReports.put(backtest, engine.getReport());
         engine.reset();
         dataStreamer.reset();
+        log.info("Ending Backtest : {}", backtest.getName());
     }
 
     /**

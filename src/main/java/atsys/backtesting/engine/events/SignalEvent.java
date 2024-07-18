@@ -12,9 +12,4 @@ public class SignalEvent extends Event {
     public SignalEvent(String symbol, SignalType signalType){
         signal = new Signal(symbol, signalType);
     }
-
-    @Override
-    public String toString() {
-        return signal.toString();
-    }
 }

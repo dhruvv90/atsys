@@ -2,13 +2,16 @@ package atsys.backtesting.engine;
 
 
 import atsys.backtesting.components.ComponentsService;
+import atsys.backtesting.components.TickData;
 import atsys.backtesting.components.order.Order;
 import atsys.backtesting.components.order.OrderService;
 import atsys.backtesting.components.order.OrderType;
 import atsys.backtesting.engine.events.Event;
 import atsys.backtesting.engine.events.FillEvent;
 import atsys.backtesting.engine.events.OrderEvent;
+import atsys.backtesting.engine.events.TickEvent;
 import atsys.backtesting.model.Backtest;
+import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +23,9 @@ public class BacktestingContext {
     private final Map<String, Long> positions;
     private final OrderService orderService;
     private final ComponentsService componentsService;
+
+    @Getter
+    private TickData lastTickData;
 
 
     public BacktestingContext(Backtest<?> backtest, QueuePublisher queuePublisher, EventManager eventManager){
@@ -51,6 +57,11 @@ public class BacktestingContext {
 
     // should be private unless we add supporting custom events..
     public void publishEvent(Event event){
+        if(event.getClass().isAssignableFrom(TickEvent.class)){
+            TickEvent<?> tickEvent = (TickEvent<?>) event;
+            lastTickData = tickEvent.getData();
+        }
+
         queuePublisher.publishEvent(event);
     }
 

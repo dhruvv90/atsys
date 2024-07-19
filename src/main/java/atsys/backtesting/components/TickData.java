@@ -1,5 +1,9 @@
 package atsys.backtesting.components;
 
-public interface TickData {
+import java.time.Instant;
 
+public interface TickData {
+    Instant getTickTimestamp();
+    double getLastTradedPrice();
+    String getSymbol();
 }

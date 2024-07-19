@@ -4,6 +4,8 @@ import atsys.backtesting.components.ExecutionManager;
 import atsys.backtesting.components.PortfolioManager;
 import atsys.backtesting.components.Strategy;
 import atsys.backtesting.components.TickData;
+import atsys.backtesting.components.impl.NoobPortfolioManager;
+import atsys.backtesting.components.impl.SimulatedExecutionManager;
 import lombok.Getter;
 
 import java.time.Instant;
@@ -17,24 +19,35 @@ public class Backtest<T extends TickData> {
     private final double initialCapital;
     private final Instant startDateTime;
     private final Instant endDateTime;
-    private final Strategy<T> strategy;
-    private final PortfolioManager portfolioManager;
     private final Instant createdAt;
-    private final ExecutionManager executionManager;
+
+    // component Classes
+    private final Class<? extends ExecutionManager> executionMgrClazz;
+    private final Class<? extends Strategy<T>> strategyClazz;
+    private final Class<? extends PortfolioManager> portfolioClazz;
 
     public Backtest(String name,
                     String description, List<Instrument> instruments,
                     double initialCapital, Instant startDateTime, Instant endDateTime,
-                    Strategy<T> strategy, PortfolioManager portfolioManager, ExecutionManager executionManager) {
+                    Class<? extends Strategy<T>> strategyClazz,
+                     Class<? extends PortfolioManager> portfolioClazz, Class<? extends ExecutionManager> executionMgrClazz) {
         this.name = name;
         this.description = description;
         this.instruments = instruments;
         this.initialCapital = initialCapital;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
-        this.strategy = strategy;
+        this.strategyClazz = strategyClazz;
         this.createdAt = Instant.now();
-        this.portfolioManager = portfolioManager;
-        this.executionManager = executionManager;
+        this.portfolioClazz = portfolioClazz;
+        this.executionMgrClazz = executionMgrClazz;
+    }
+
+    public Backtest(String name,
+                    String description, List<Instrument> instruments,
+                    double initialCapital, Instant startDateTime, Instant endDateTime,
+                    Class<? extends Strategy<T>> strategyClazz) {
+        this(name, description, instruments, initialCapital, startDateTime, endDateTime, strategyClazz,
+                NoobPortfolioManager.class, SimulatedExecutionManager.class);
     }
 }

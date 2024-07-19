@@ -39,7 +39,7 @@ class BaseTest {
                     1000,
                     Instant.now(),
                     Instant.now(),
-                    new DummyStrategy(), new NoobPortfolioManager(), new SimulatedExecutionManager())
+                    DummyStrategy.class, NoobPortfolioManager.class, SimulatedExecutionManager.class)
             );
         }
 
@@ -74,7 +74,7 @@ class BaseTest {
                     1000,
                     Instant.now(),
                     Instant.now(),
-                    new DummyStrategy(), new NoobPortfolioManager(), new SimulatedExecutionManager())
+                    DummyStrategy.class)
             );
         }
 
@@ -106,11 +106,9 @@ class BaseTest {
                 1000,
                 Instant.now(),
                 Instant.now(),
-                new SmaStrategy(), new NoobPortfolioManager(), new SimulatedExecutionManager());
-
+                SmaStrategy.class);
 
         // Run Backtest in batch
-
         long startTime = System.currentTimeMillis();
         backtester.run(backtest, dataStreamer);
         long endTime = System.currentTimeMillis();

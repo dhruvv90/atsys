@@ -29,6 +29,5 @@ public class NoobPortfolioManager extends PortfolioManager {
     @Override
     public void onFill(Order order) {
         log.info("processing order: {}, filled: {}", order, order.getCurrQty());
-//        context.recordOrder(order);
     }
 }

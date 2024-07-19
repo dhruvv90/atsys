@@ -2,16 +2,15 @@ package atsys.backtesting.engine;
 
 
 import atsys.backtesting.components.ComponentsService;
-import atsys.backtesting.components.TickData;
 import atsys.backtesting.components.order.Order;
 import atsys.backtesting.components.order.OrderService;
 import atsys.backtesting.components.order.OrderType;
 import atsys.backtesting.engine.events.Event;
 import atsys.backtesting.engine.events.FillEvent;
 import atsys.backtesting.engine.events.OrderEvent;
-import atsys.backtesting.engine.events.TickEvent;
+import atsys.backtesting.engine.events.SignalEvent;
 import atsys.backtesting.model.Backtest;
-import lombok.Getter;
+import atsys.backtesting.model.SignalType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,10 +22,6 @@ public class BacktestingContext {
     private final Map<String, Long> positions;
     private final OrderService orderService;
     private final ComponentsService componentsService;
-
-    @Getter
-    private TickData lastTickData;
-
 
     public BacktestingContext(Backtest<?> backtest, QueuePublisher queuePublisher, EventManager eventManager){
         this.queuePublisher = queuePublisher;
@@ -56,12 +51,7 @@ public class BacktestingContext {
     }
 
     // should be private unless we add supporting custom events..
-    public void publishEvent(Event event){
-        if(event.getClass().isAssignableFrom(TickEvent.class)){
-            TickEvent<?> tickEvent = (TickEvent<?>) event;
-            lastTickData = tickEvent.getData();
-        }
-
+    private void publishEvent(Event event){
         queuePublisher.publishEvent(event);
     }
 
@@ -70,6 +60,12 @@ public class BacktestingContext {
         OrderEvent event = new OrderEvent(order);
         publishEvent(event);
     }
+
+    public void publishSignal(String symbol, SignalType signalType){
+        SignalEvent event = new SignalEvent(symbol, signalType);
+        publishEvent(event);
+    }
+
 
     public void publishFill(Order order, Long filledQty){
         orderService.onOrderPlaceSuccess(order, filledQty);

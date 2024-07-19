@@ -1,6 +1,7 @@
 package atsys.backtesting.components.impl;
 
 import atsys.backtesting.components.Strategy;
+import atsys.backtesting.model.SignalType;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Deque;
@@ -37,10 +38,10 @@ public class SmaStrategy extends Strategy<SimpleTickData> {
         Long currentPos = context.getPositionCount(symbol);
 
         if(currentPos <= 0 && price >= movingAverage){
-            publishBuySignal(symbol);
+            context.publishSignal(symbol, SignalType.BUY);
         }
         else if(currentPos >0 && price < movingAverage){
-            publishSellSignal(symbol);
+            context.publishSignal(symbol, SignalType.SELL);
         }
         log.info("price : " + price + ", ma: " + movingAverage);
     }

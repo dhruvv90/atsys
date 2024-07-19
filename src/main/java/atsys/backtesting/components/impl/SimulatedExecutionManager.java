@@ -1,8 +1,7 @@
 package atsys.backtesting.components.impl;
 
 import atsys.backtesting.components.ExecutionManager;
-import atsys.backtesting.engine.events.FillEvent;
-import atsys.backtesting.model.Order;
+import atsys.backtesting.components.order.Order;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,8 +14,6 @@ public class SimulatedExecutionManager extends ExecutionManager {
         log.info("processing {}", order);
         Long processedQty = order.getInitialQty();
 
-        order.place();
-        order.fill(order.getInitialQty());
-        this.context.publishEvent(new FillEvent(order, processedQty));
+        context.publishFill(order, processedQty);
     }
 }

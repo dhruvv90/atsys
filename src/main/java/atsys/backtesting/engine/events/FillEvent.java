@@ -1,6 +1,6 @@
 package atsys.backtesting.engine.events;
 
-import atsys.backtesting.model.Order;
+import atsys.backtesting.components.order.Order;
 import lombok.Getter;
 
 @Getter

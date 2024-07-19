@@ -1,8 +1,7 @@
 package atsys.backtesting.engine.events;
 
 
-import atsys.backtesting.model.Order;
-import atsys.backtesting.model.OrderType;
+import atsys.backtesting.components.order.Order;
 import lombok.Getter;
 
 @Getter
@@ -10,7 +9,7 @@ public class OrderEvent extends Event{
 
     private final Order order;
 
-    public OrderEvent(String symbol, OrderType ordertype, Long quantity){
-        this.order = new Order(symbol, ordertype, quantity);
+    public OrderEvent(Order order){
+        this.order = order;
     }
 }

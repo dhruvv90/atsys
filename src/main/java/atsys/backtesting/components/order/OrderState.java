@@ -1,6 +1,6 @@
-package atsys.backtesting.model;
+package atsys.backtesting.components.order;
 
-public enum OrderStatus {
+public enum OrderState {
     CREATED,
     OPEN,
     COMPLETED,

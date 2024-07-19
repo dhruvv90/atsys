@@ -23,11 +23,11 @@ public class NoobPortfolioManager extends PortfolioManager {
             orderQty *= -1;
             context.publishOrder(signal.getSymbol(), OrderType.SELL, orderQty);
         }
-        log.info("processing {}. currQty: {}, newOrder: {}", signal, currPos, orderQty);
+        log.info("tick: {}, processing {}. currQty: {}, newOrder: {}", context.getLastTick().getLastTradedPrice(), signal, currPos, orderQty);
     }
 
     @Override
     public void onFill(Order order) {
-        log.info("processing order: {}, filled: {}", order, order.getCurrQty());
+        log.info("tick: {}, processing order: {}, filled: {}", context.getLastTick().getLastTradedPrice(), order, order.getCurrQty());
     }
 }

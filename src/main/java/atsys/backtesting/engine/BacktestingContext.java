@@ -2,6 +2,7 @@ package atsys.backtesting.engine;
 
 
 import atsys.backtesting.components.ComponentsService;
+import atsys.backtesting.components.TickData;
 import atsys.backtesting.components.order.Order;
 import atsys.backtesting.components.order.OrderService;
 import atsys.backtesting.components.order.OrderType;
@@ -75,4 +76,7 @@ public class BacktestingContext {
         publishEvent(event);
     }
 
+    public TickData getLastTick(){
+        return queuePublisher.getLastTick();
+    }
 }

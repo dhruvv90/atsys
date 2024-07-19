@@ -11,7 +11,7 @@ public class SimulatedExecutionManager extends ExecutionManager {
     @Override
     @SneakyThrows
     public void processOrder(Order order) {
-        log.info("processing {}", order);
+        log.info("tick {}, processing {}", context.getLastTick().getLastTradedPrice(), order);
         Long processedQty = order.getInitialQty();
 
         context.publishFill(order, processedQty);

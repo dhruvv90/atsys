@@ -6,10 +6,8 @@ import lombok.Getter;
 @Getter
 public class FillEvent extends Event {
     private final Order order;
-    private final Long filledQty;
 
-    public FillEvent(Order order, Long filledQty){
+    public FillEvent(Order order){
         this.order = order;
-        this.filledQty = filledQty;
     }
 }

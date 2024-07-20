@@ -27,13 +27,15 @@ public class OrderService {
         return order;
     }
 
-    public void onOrderPlaceSuccess(Order order, Long fillQty) {
+    public void onOrderPlaceSuccess(Order order, Long fillQty, Double fillPrice) {
         OrderState state = order.getOrderState();
         if(state != OrderState.OPEN && state != OrderState.CREATED){
             log.info("Order : " + order.getId() + " is not Open or new. Already actioned");
             return;
         }
         order.setCurrQty(fillQty);
+        order.setAvgExecutedPrice(fillPrice);
+
         if(order.getInitialQty().equals(order.getCurrQty())){
             order.setOrderState(OrderState.COMPLETED);
         }

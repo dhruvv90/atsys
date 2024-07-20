@@ -2,10 +2,9 @@ package atsys.backtesting.engine;
 
 import atsys.backtesting.engine.events.Event;
 import atsys.backtesting.engine.events.KillEvent;
-import atsys.backtesting.engine.impl.EventQueueImpl;
 import atsys.backtesting.engine.listeners.KillEventListener;
-import atsys.backtesting.exception.BaseException;
-import atsys.backtesting.model.Backtest;
+import atsys.backtesting.engine.exception.BaseException;
+import atsys.backtesting.engine.model.Backtest;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;

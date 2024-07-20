@@ -1,11 +1,11 @@
 package atsys.backtesting.engine;
 
-import atsys.backtesting.components.TickData;
-import atsys.backtesting.components.DataStreamer;
+import atsys.backtesting.engine.components.TickData;
+import atsys.backtesting.engine.components.DataStreamer;
 import atsys.backtesting.engine.events.TickEvent;
-import atsys.backtesting.exception.BaseException;
-import atsys.backtesting.exception.DataStreamerException;
-import atsys.backtesting.model.Backtest;
+import atsys.backtesting.engine.exception.BaseException;
+import atsys.backtesting.engine.exception.DataStreamerException;
+import atsys.backtesting.engine.model.Backtest;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;

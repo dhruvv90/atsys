@@ -1,17 +1,17 @@
 package atsys.backtesting.engine;
 
 
-import atsys.backtesting.components.ComponentsService;
-import atsys.backtesting.components.TickData;
-import atsys.backtesting.components.order.Order;
-import atsys.backtesting.components.order.OrderService;
-import atsys.backtesting.components.order.OrderType;
+import atsys.backtesting.engine.components.ComponentsService;
+import atsys.backtesting.engine.components.TickData;
+import atsys.backtesting.engine.order.Order;
+import atsys.backtesting.engine.order.OrderService;
+import atsys.backtesting.engine.order.OrderType;
 import atsys.backtesting.engine.events.Event;
 import atsys.backtesting.engine.events.FillEvent;
 import atsys.backtesting.engine.events.OrderEvent;
 import atsys.backtesting.engine.events.SignalEvent;
-import atsys.backtesting.model.Backtest;
-import atsys.backtesting.model.SignalType;
+import atsys.backtesting.engine.model.Backtest;
+import atsys.backtesting.engine.model.SignalType;
 
 import java.util.HashMap;
 import java.util.Map;

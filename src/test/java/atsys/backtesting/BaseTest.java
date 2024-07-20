@@ -1,10 +1,15 @@
 package atsys.backtesting;
 
-import atsys.backtesting.components.DataStreamer;
-import atsys.backtesting.components.impl.*;
+import atsys.backtesting.engine.components.DataStreamer;
+import atsys.backtesting.impl.components.NseHistDataStreamer;
+import atsys.backtesting.impl.components.SimpleDataStreamer;
+import atsys.backtesting.impl.components.SimpleTickData;
+import atsys.backtesting.impl.components.*;
+import atsys.backtesting.impl.strategies.DummyStrategy;
+import atsys.backtesting.impl.strategies.SmaStrategy;
 import atsys.backtesting.engine.Backtester;
-import atsys.backtesting.exception.BaseException;
-import atsys.backtesting.model.Backtest;
+import atsys.backtesting.engine.exception.BaseException;
+import atsys.backtesting.engine.model.Backtest;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;

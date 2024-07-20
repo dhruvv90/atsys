@@ -1,10 +1,10 @@
 package atsys.backtesting.engine;
 
-import atsys.backtesting.engine.components.TickData;
 import atsys.backtesting.engine.components.DataStreamer;
+import atsys.backtesting.engine.components.TickData;
 import atsys.backtesting.engine.events.TickEvent;
 import atsys.backtesting.engine.exception.BaseException;
-import atsys.backtesting.engine.exception.DataStreamerException;
+import atsys.backtesting.engine.exception.InitializationException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
@@ -30,7 +30,7 @@ public class Backtester {
      * Prepare Backtester for a particular backtest.
      * All resource initialization must be here
      */
-    private<T extends TickData> void preBacktest(Backtest<T> backtest, DataStreamer<T> dataStreamer) throws DataStreamerException {
+    private<T extends TickData> void preBacktest(Backtest<T> backtest, DataStreamer<T> dataStreamer) throws InitializationException {
         log.info("Initiating Backtest : {}", backtest.getName());
         dataStreamer.initializeForBacktest(backtest);
         engine.initializeForBacktest(backtest);

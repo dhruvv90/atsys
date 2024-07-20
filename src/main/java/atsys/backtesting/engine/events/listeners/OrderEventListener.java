@@ -2,6 +2,7 @@ package atsys.backtesting.engine.events.listeners;
 
 import atsys.backtesting.engine.components.ExecutionManager;
 import atsys.backtesting.engine.events.OrderEvent;
+import atsys.backtesting.engine.exception.BaseException;
 
 public class OrderEventListener implements EventListener<OrderEvent> {
 
@@ -12,7 +13,7 @@ public class OrderEventListener implements EventListener<OrderEvent> {
     }
 
     @Override
-    public void onEvent(OrderEvent event) {
+    public void onEvent(OrderEvent event) throws BaseException {
         this.executionManager.processOrder(event.getOrder());
     }
 }

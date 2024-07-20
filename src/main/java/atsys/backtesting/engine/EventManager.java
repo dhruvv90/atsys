@@ -3,6 +3,7 @@ package atsys.backtesting.engine;
 
 import atsys.backtesting.engine.events.Event;
 import atsys.backtesting.engine.events.listeners.EventListener;
+import atsys.backtesting.engine.exception.BaseException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,7 +37,7 @@ public class EventManager {
 
 
     @SuppressWarnings("unchecked")
-    public <E extends Event> void emit(E event) {
+    public <E extends Event> void emit(E event) throws BaseException {
         List<EventListener<? extends Event>> listeners = listenersMap.get(event.getClass());
         if (listeners != null) {
             for (EventListener<? extends Event> listener : listeners) {

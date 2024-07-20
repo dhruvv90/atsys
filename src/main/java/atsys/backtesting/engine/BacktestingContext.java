@@ -11,6 +11,8 @@ import atsys.backtesting.engine.events.FillEvent;
 import atsys.backtesting.engine.events.OrderEvent;
 import atsys.backtesting.engine.events.SignalEvent;
 import atsys.backtesting.engine.components.signal.SignalType;
+import atsys.backtesting.engine.exception.InitializationException;
+import atsys.backtesting.engine.exception.InvalidOrderStateTransitionException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +25,7 @@ public class BacktestingContext {
     private final OrderService orderService;
     private final ComponentsService componentsService;
 
-    public BacktestingContext(Backtest<?> backtest, QueuePublisher queuePublisher, EventManager eventManager){
+    public BacktestingContext(Backtest<?> backtest, QueuePublisher queuePublisher, EventManager eventManager) throws InitializationException {
         this.queuePublisher = queuePublisher;
         this.eventManager = eventManager;
         this.positions = new HashMap<>();
@@ -31,6 +33,7 @@ public class BacktestingContext {
 
         this.componentsService = new ComponentsService(this, backtest, eventManager);
         this.componentsService.registerComponents();
+
     }
 
     @Deprecated
@@ -67,7 +70,7 @@ public class BacktestingContext {
     }
 
 
-    public void publishFill(Order order, Long filledQty){
+    public void publishFill(Order order, Long filledQty) throws InvalidOrderStateTransitionException {
         orderService.onOrderPlaceSuccess(order, filledQty);
         FillEvent event = new FillEvent(order, filledQty);
 

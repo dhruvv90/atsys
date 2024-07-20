@@ -1,7 +1,6 @@
 package atsys.backtesting.engine.components.order;
 
-import atsys.backtesting.engine.exception.InvalidOrderStateTransition;
-import lombok.SneakyThrows;
+import atsys.backtesting.engine.exception.InvalidOrderStateTransitionException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,11 +26,10 @@ public class OrderService {
         return order;
     }
 
-    @SneakyThrows
-    public void onOrderPlaceSuccess(Order order, Long fillQty)  {
+    public void onOrderPlaceSuccess(Order order, Long fillQty) throws InvalidOrderStateTransitionException {
         OrderState state = order.getOrderState();
         if(state != OrderState.OPEN && state != OrderState.CREATED){
-            throw new InvalidOrderStateTransition();
+            throw new InvalidOrderStateTransitionException();
         }
         order.setCurrQty(fillQty);
         if(order.getInitialQty().equals(order.getCurrQty())){
@@ -42,18 +40,16 @@ public class OrderService {
         }
     }
 
-    @SneakyThrows
-    public void onOrderCancel(Order order)  {
+    public void onOrderCancel(Order order) throws InvalidOrderStateTransitionException {
         if(order.getOrderState() != OrderState.OPEN){
-            throw new InvalidOrderStateTransition();
+            throw new InvalidOrderStateTransitionException();
         }
         order.setOrderState(OrderState.CANCELLED);
     }
 
-    @SneakyThrows
-    public void onOrderReject(Order order)  {
+    public void onOrderReject(Order order) throws InvalidOrderStateTransitionException {
         if(order.getOrderState() != OrderState.OPEN){
-            throw new InvalidOrderStateTransition();
+            throw new InvalidOrderStateTransitionException();
         }
         order.setOrderState(OrderState.REJECTED);
     }

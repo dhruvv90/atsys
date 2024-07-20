@@ -4,8 +4,8 @@ import atsys.backtesting.engine.events.Event;
 import atsys.backtesting.engine.events.KillEvent;
 import atsys.backtesting.engine.events.listeners.KillEventListener;
 import atsys.backtesting.engine.exception.BaseException;
+import atsys.backtesting.engine.exception.InitializationException;
 import lombok.Getter;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.Instant;
@@ -34,7 +34,7 @@ public class EventDrivenEngine {
         this.publisher = new QueuePublisher(this.eventQueue);
     }
 
-    public void initializeForBacktest(Backtest<?> backtest) {
+    public void initializeForBacktest(Backtest<?> backtest) throws InitializationException {
         currentContext = new BacktestingContext(backtest, publisher, eventManager);
         this.report = new BacktestingReport();
 
@@ -68,8 +68,7 @@ public class EventDrivenEngine {
         report.recordEvent(event);
     }
 
-    @SneakyThrows
-    public void consumeAllEvents(){
+    public void consumeAllEvents() throws BaseException{
         while (hasEvents()) {
             consumeEvent();
         }

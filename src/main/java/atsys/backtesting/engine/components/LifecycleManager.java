@@ -1,6 +1,7 @@
 package atsys.backtesting.engine.components;
 
 import atsys.backtesting.engine.BacktestingContext;
+import atsys.backtesting.engine.exception.InitializationException;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -11,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 public abstract class LifecycleManager {
     protected BacktestingContext context;
 
-    public void onInit(BacktestingContext context){
+    public void onInit(BacktestingContext context) throws InitializationException {
         this.context = context;
         log.info("Initiating : " + this.getClass().getSimpleName());
     }

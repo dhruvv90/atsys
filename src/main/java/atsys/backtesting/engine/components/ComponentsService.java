@@ -11,7 +11,7 @@ import atsys.backtesting.engine.events.listeners.FillEventListener;
 import atsys.backtesting.engine.events.listeners.OrderEventListener;
 import atsys.backtesting.engine.events.listeners.SignalEventListener;
 import atsys.backtesting.engine.events.listeners.TickEventListener;
-import lombok.SneakyThrows;
+import atsys.backtesting.engine.exception.InitializationException;
 
 
 public class ComponentsService {
@@ -31,7 +31,7 @@ public class ComponentsService {
         this.context = context;
     }
 
-    public void registerComponents(){
+    public void registerComponents() throws InitializationException{
         registerExecutionManager();
         registerPortfolioManager();
         registerStrategy();
@@ -43,35 +43,48 @@ public class ComponentsService {
         executionManager.onComplete();
     }
 
-    @SneakyThrows
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private void registerStrategy() {
-        var clazz = backtest.getStrategyClazz();
-        strategy = clazz.getDeclaredConstructor().newInstance();
-        strategy.onInit(context);
+    private void registerStrategy() throws InitializationException {
+        try{
+            var clazz = backtest.getStrategyClazz();
+            strategy = clazz.getDeclaredConstructor().newInstance();
+            strategy.onInit(context);
 
-        // Event Registration
-        eventManager.register(TickEvent.class, new TickEventListener(strategy));
+            // Event Registration
+            eventManager.register(TickEvent.class, new TickEventListener(strategy));
+        }
+        catch(Exception e){
+            throw new InitializationException(e);
+        }
+
     }
 
-    @SneakyThrows
-    private void registerPortfolioManager(){
-        var clazz = backtest.getPortfolioClazz();
-        portfolioManager = clazz.getDeclaredConstructor().newInstance();
-        portfolioManager.onInit(context);
+    private void registerPortfolioManager() throws InitializationException {
+        try{
+            var clazz = backtest.getPortfolioClazz();
+            portfolioManager = clazz.getDeclaredConstructor().newInstance();
+            portfolioManager.onInit(context);
 
-        // Event Registration
-        eventManager.register(SignalEvent.class, new SignalEventListener(portfolioManager));
-        eventManager.register(FillEvent.class, new FillEventListener(portfolioManager));
+            // Event Registration
+            eventManager.register(SignalEvent.class, new SignalEventListener(portfolioManager));
+            eventManager.register(FillEvent.class, new FillEventListener(portfolioManager));
+        }
+        catch (Exception e){
+            throw new InitializationException(e);
+        }
     }
 
-    @SneakyThrows
-    private void registerExecutionManager(){
-        var clazz = backtest.getExecutionMgrClazz();
-        executionManager = clazz.getDeclaredConstructor().newInstance();
-        executionManager.onInit(context);
+    private void registerExecutionManager() throws InitializationException{
+        try{
+            var clazz = backtest.getExecutionMgrClazz();
+            executionManager = clazz.getDeclaredConstructor().newInstance();
+            executionManager.onInit(context);
 
-        // Event Registration
-        eventManager.register(OrderEvent.class, new OrderEventListener(executionManager));
+            // Event Registration
+            eventManager.register(OrderEvent.class, new OrderEventListener(executionManager));
+        }
+        catch (Exception e){
+            throw new InitializationException(e);
+        }
     }
 }

@@ -1,7 +1,7 @@
 package atsys.backtesting.impl.components;
 
 import atsys.backtesting.engine.components.DataStreamer;
-import atsys.backtesting.engine.exception.DataStreamerException;
+import atsys.backtesting.engine.exception.DataStreamingException;
 import atsys.backtesting.engine.Backtest;
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,9 +40,9 @@ public class SimpleDataStreamer implements DataStreamer<SimpleTickData> {
     }
 
 
-    public SimpleTickData readData() throws DataStreamerException {
+    public SimpleTickData readData() throws DataStreamingException {
         if(!this.hasNext()){
-            throw new DataStreamerException();
+            throw new DataStreamingException();
         }
         return dataIterator.next();
     }

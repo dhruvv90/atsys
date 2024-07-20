@@ -1,8 +1,9 @@
 package atsys.backtesting.impl.components;
 
 import atsys.backtesting.engine.components.DataStreamer;
-import atsys.backtesting.engine.exception.DataStreamerException;
+import atsys.backtesting.engine.exception.DataStreamingException;
 import atsys.backtesting.engine.Backtest;
+import atsys.backtesting.engine.exception.InitializationException;
 import atsys.utils.CsvReader;
 import atsys.utils.CsvRow;
 import atsys.utils.DatetimeUtils;
@@ -26,7 +27,7 @@ public class NseHistDataStreamer implements DataStreamer<SimpleTickData> {
     }
 
     @Override
-    public void initializeForBacktest(Backtest<SimpleTickData> backtest) throws DataStreamerException {
+    public void initializeForBacktest(Backtest<SimpleTickData> backtest) throws InitializationException {
         try {
             List<SimpleTickData> result = new ArrayList<>();
             var reader = new CsvReader();
@@ -36,7 +37,7 @@ public class NseHistDataStreamer implements DataStreamer<SimpleTickData> {
             }
             iterator = result.iterator();
         } catch (IOException e) {
-            throw new DataStreamerException();
+            throw new InitializationException(e);
         }
     }
 
@@ -46,9 +47,9 @@ public class NseHistDataStreamer implements DataStreamer<SimpleTickData> {
     }
 
     @Override
-    public SimpleTickData readData() throws DataStreamerException {
+    public SimpleTickData readData() throws DataStreamingException {
         if(!this.hasNext()){
-            throw new DataStreamerException();
+            throw new DataStreamingException();
         }
         return iterator.next();
     }

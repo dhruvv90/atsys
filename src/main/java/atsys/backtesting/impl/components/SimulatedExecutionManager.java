@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 public class SimulatedExecutionManager extends ExecutionManager {
 
     @Override
-    public void processOrder(Order order) throws InvalidOrderStateTransitionException {
+    public void processOrder(Order order) {
         log.info("tick {}, processing {}", context.getLastTick().getLastTradedPrice(), order);
         Long processedQty = order.getInitialQty();
 

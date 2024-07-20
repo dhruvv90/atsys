@@ -1,12 +1,14 @@
 package atsys.backtesting.impl.strategies;
 
 import atsys.backtesting.engine.components.Strategy;
+import atsys.backtesting.engine.components.position.Position;
 import atsys.backtesting.impl.components.SimpleTickData;
 import atsys.backtesting.engine.components.signal.SignalType;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.Optional;
 
 
 @Slf4j(topic = "Strategy")
@@ -36,12 +38,14 @@ public class SmaStrategy extends Strategy<SimpleTickData> {
             storage.addLast(price);
         }
 
-        Long currentPos = context.getPositionCount(symbol);
+        Optional<Position> currentPos = context.getPosition(symbol);
+        long currQty = currentPos.map(Position::getQuantity).orElse(0L);
 
-        if(currentPos <= 0 && price >= movingAverage){
+
+        if(currQty <= 0 && price >= movingAverage){
             context.publishSignal(symbol, SignalType.BUY);
         }
-        else if(currentPos >0 && price < movingAverage){
+        else if(currQty >0 && price < movingAverage){
             context.publishSignal(symbol, SignalType.SELL);
         }
         log.info("price : " + price + ", ma: " + movingAverage);

@@ -1,11 +1,12 @@
 package atsys.backtesting.engine;
 
-
 import atsys.backtesting.engine.components.ComponentsService;
 import atsys.backtesting.engine.components.TickData;
 import atsys.backtesting.engine.components.order.Order;
 import atsys.backtesting.engine.components.order.OrderService;
 import atsys.backtesting.engine.components.order.OrderType;
+import atsys.backtesting.engine.components.position.Position;
+import atsys.backtesting.engine.components.position.PositionService;
 import atsys.backtesting.engine.components.signal.SignalType;
 import atsys.backtesting.engine.events.Event;
 import atsys.backtesting.engine.events.FillEvent;
@@ -13,39 +14,26 @@ import atsys.backtesting.engine.events.OrderEvent;
 import atsys.backtesting.engine.events.SignalEvent;
 import atsys.backtesting.engine.exception.InitializationException;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Optional;
+
 
 public class BacktestingContext {
 
     private final QueuePublisher queuePublisher;
     private final EventManager eventManager;
-    private final Map<String, Long> positions;
     private final OrderService orderService;
+    private final PositionService positionService;
     private final ComponentsService componentsService;
 
     public BacktestingContext(Backtest<?> backtest, QueuePublisher queuePublisher, EventManager eventManager) throws InitializationException {
         this.queuePublisher = queuePublisher;
         this.eventManager = eventManager;
-        this.positions = new HashMap<>();
+        this.positionService = new PositionService();
         this.orderService = new OrderService();
 
         this.componentsService = new ComponentsService(this, backtest, eventManager);
         this.componentsService.registerComponents();
 
-    }
-
-    @Deprecated
-    public int getAllPositionsCount(){
-        return positions.size();
-    }
-
-    @Deprecated
-    public Long getPositionCount(String symbol){
-        if(!positions.containsKey(symbol)){
-            return 0L;
-        }
-        return positions.get(symbol);
     }
 
     public void end() {
@@ -73,8 +61,12 @@ public class BacktestingContext {
         orderService.onOrderPlaceSuccess(order, filledQty);
         FillEvent event = new FillEvent(order, filledQty);
 
-        positions.put(order.getSymbol(), filledQty);
+        positionService.addPosition(order.getSymbol(), filledQty);
         publishEvent(event);
+    }
+
+    public Optional<Position> getPosition(String symbol){
+        return positionService.getPosition(symbol);
     }
 
     public TickData getLastTick(){

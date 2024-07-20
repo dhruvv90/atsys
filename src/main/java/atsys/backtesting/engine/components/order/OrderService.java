@@ -1,11 +1,12 @@
 package atsys.backtesting.engine.components.order;
 
-import atsys.backtesting.engine.exception.InvalidOrderStateTransitionException;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
+@Slf4j
 public class OrderService {
     private final AtomicLong counter;
     private final List<Order> orders;
@@ -26,10 +27,11 @@ public class OrderService {
         return order;
     }
 
-    public void onOrderPlaceSuccess(Order order, Long fillQty) throws InvalidOrderStateTransitionException {
+    public void onOrderPlaceSuccess(Order order, Long fillQty) {
         OrderState state = order.getOrderState();
         if(state != OrderState.OPEN && state != OrderState.CREATED){
-            throw new InvalidOrderStateTransitionException();
+            log.info("Order : " + order.getId() + " is not Open or new. Already actioned");
+            return;
         }
         order.setCurrQty(fillQty);
         if(order.getInitialQty().equals(order.getCurrQty())){
@@ -40,17 +42,17 @@ public class OrderService {
         }
     }
 
-    public void onOrderCancel(Order order) throws InvalidOrderStateTransitionException {
-        if(order.getOrderState() != OrderState.OPEN){
-            throw new InvalidOrderStateTransitionException();
-        }
-        order.setOrderState(OrderState.CANCELLED);
-    }
-
-    public void onOrderReject(Order order) throws InvalidOrderStateTransitionException {
-        if(order.getOrderState() != OrderState.OPEN){
-            throw new InvalidOrderStateTransitionException();
-        }
-        order.setOrderState(OrderState.REJECTED);
-    }
+//    public void onOrderCancel(Order order) throws InvalidOrderStateTransitionException {
+//        if(order.getOrderState() != OrderState.OPEN){
+//            throw new InvalidOrderStateTransitionException();
+//        }
+//        order.setOrderState(OrderState.CANCELLED);
+//    }
+//
+//    public void onOrderReject(Order order) throws InvalidOrderStateTransitionException {
+//        if(order.getOrderState() != OrderState.OPEN){
+//            throw new InvalidOrderStateTransitionException();
+//        }
+//        order.setOrderState(OrderState.REJECTED);
+//    }
 }

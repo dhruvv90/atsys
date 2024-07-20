@@ -6,13 +6,12 @@ import atsys.backtesting.engine.components.TickData;
 import atsys.backtesting.engine.components.order.Order;
 import atsys.backtesting.engine.components.order.OrderService;
 import atsys.backtesting.engine.components.order.OrderType;
+import atsys.backtesting.engine.components.signal.SignalType;
 import atsys.backtesting.engine.events.Event;
 import atsys.backtesting.engine.events.FillEvent;
 import atsys.backtesting.engine.events.OrderEvent;
 import atsys.backtesting.engine.events.SignalEvent;
-import atsys.backtesting.engine.components.signal.SignalType;
 import atsys.backtesting.engine.exception.InitializationException;
-import atsys.backtesting.engine.exception.InvalidOrderStateTransitionException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -70,7 +69,7 @@ public class BacktestingContext {
     }
 
 
-    public void publishFill(Order order, Long filledQty) throws InvalidOrderStateTransitionException {
+    public void publishFill(Order order, Long filledQty) {
         orderService.onOrderPlaceSuccess(order, filledQty);
         FillEvent event = new FillEvent(order, filledQty);
 

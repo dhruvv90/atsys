@@ -2,6 +2,7 @@ package atsys.backtesting.engine.components.order;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -27,15 +28,33 @@ public class OrderService {
         return order;
     }
 
-    public void onOrderPlaceSuccess(Order order, Long fillQty, Double fillPrice) {
-        OrderState state = order.getOrderState();
-        if(state != OrderState.OPEN && state != OrderState.CREATED){
-            log.info("Order : " + order.getId() + " is not Open or new. Already actioned");
+    public void updateOrderSuccess(Order order, Long fillQty, Double fillPrice) {
+        if(fillQty <= 0){
+            log.error("Order : "+ order.getId() + " not updated. Recieved <= fillQty");
             return;
         }
-        order.setCurrQty(fillQty);
-        order.setAvgExecutedPrice(fillPrice);
 
+        OrderState state = order.getOrderState();
+        if(state == OrderState.CREATED){
+            order.setCurrQty(fillQty);
+            order.setAvgExecutedPrice(fillPrice / fillQty);
+        }
+        else if(state == OrderState.OPEN){
+            Long currQty = order.getCurrQty();
+            Double currPrice = order.getAvgExecutedPrice();
+
+            long newQty = currQty + fillQty;
+            Double newPrice = (currPrice * currQty + fillPrice) / newQty;
+
+            order.setCurrQty(newQty);
+            order.setAvgExecutedPrice(newPrice);
+        }
+        else{
+            log.warn("Order : " + order.getId() + " is not Open or new. Already actioned");
+            return;
+        }
+
+        order.setLastExchangeTime(Instant.now());
         if(order.getInitialQty().equals(order.getCurrQty())){
             order.setOrderState(OrderState.COMPLETED);
         }

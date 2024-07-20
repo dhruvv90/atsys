@@ -58,7 +58,8 @@ public class BacktestingContext {
 
 
     public void publishFill(Order order, Long filledQty, Double filledPrice) {
-        orderService.onOrderPlaceSuccess(order, filledQty, filledPrice);
+        // Updates the order
+        orderService.updateOrderSuccess(order, filledQty, filledPrice);
 
         FillEvent event = new FillEvent(order);
         positionService.addPosition(order.getSymbol(), filledQty);

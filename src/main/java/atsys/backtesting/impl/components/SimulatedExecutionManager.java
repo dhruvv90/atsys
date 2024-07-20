@@ -13,6 +13,6 @@ public class SimulatedExecutionManager extends ExecutionManager {
         Long processedQty = order.getInitialQty();
         Double filledPrice = context.getLastTick().getLastTradedPrice();
 
-        context.publishFill(order, processedQty, filledPrice);
+        context.publishFill(order, processedQty, filledPrice * processedQty);
     }
 }

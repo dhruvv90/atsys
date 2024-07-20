@@ -1,9 +1,6 @@
-package atsys.backtesting.engine.model;
+package atsys.backtesting.engine;
 
-import atsys.backtesting.engine.components.ExecutionManager;
-import atsys.backtesting.engine.components.PortfolioManager;
-import atsys.backtesting.engine.components.Strategy;
-import atsys.backtesting.engine.components.TickData;
+import atsys.backtesting.engine.components.*;
 import atsys.backtesting.impl.components.NoobPortfolioManager;
 import atsys.backtesting.impl.components.SimulatedExecutionManager;
 import lombok.Getter;

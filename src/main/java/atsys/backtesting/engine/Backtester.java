@@ -5,7 +5,6 @@ import atsys.backtesting.engine.components.DataStreamer;
 import atsys.backtesting.engine.events.TickEvent;
 import atsys.backtesting.engine.exception.BaseException;
 import atsys.backtesting.engine.exception.DataStreamerException;
-import atsys.backtesting.engine.model.Backtest;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;

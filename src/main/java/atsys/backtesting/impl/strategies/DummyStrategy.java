@@ -2,7 +2,7 @@ package atsys.backtesting.impl.strategies;
 
 import atsys.backtesting.engine.components.Strategy;
 import atsys.backtesting.impl.components.SimpleTickData;
-import atsys.backtesting.engine.model.SignalType;
+import atsys.backtesting.engine.components.signal.SignalType;
 import lombok.extern.slf4j.Slf4j;
 
 

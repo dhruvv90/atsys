@@ -1,10 +1,10 @@
 package atsys.backtesting.impl.components;
 
 import atsys.backtesting.engine.components.PortfolioManager;
-import atsys.backtesting.engine.order.Order;
-import atsys.backtesting.engine.order.OrderType;
-import atsys.backtesting.engine.model.Signal;
-import atsys.backtesting.engine.model.SignalType;
+import atsys.backtesting.engine.components.order.Order;
+import atsys.backtesting.engine.components.order.OrderType;
+import atsys.backtesting.engine.components.signal.Signal;
+import atsys.backtesting.engine.components.signal.SignalType;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j(topic = "NoobPortfolioManager")

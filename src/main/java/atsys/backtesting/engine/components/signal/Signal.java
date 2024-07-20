@@ -1,4 +1,4 @@
-package atsys.backtesting.engine.model;
+package atsys.backtesting.engine.components.signal;
 
 import lombok.Getter;
 

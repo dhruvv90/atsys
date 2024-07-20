@@ -2,7 +2,7 @@ package atsys.backtesting.impl.components;
 
 import atsys.backtesting.engine.components.DataStreamer;
 import atsys.backtesting.engine.exception.DataStreamerException;
-import atsys.backtesting.engine.model.Backtest;
+import atsys.backtesting.engine.Backtest;
 import atsys.utils.CsvReader;
 import atsys.utils.CsvRow;
 import atsys.utils.DatetimeUtils;

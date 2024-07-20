@@ -9,7 +9,7 @@ import atsys.backtesting.impl.strategies.DummyStrategy;
 import atsys.backtesting.impl.strategies.SmaStrategy;
 import atsys.backtesting.engine.Backtester;
 import atsys.backtesting.engine.exception.BaseException;
-import atsys.backtesting.engine.model.Backtest;
+import atsys.backtesting.engine.Backtest;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;

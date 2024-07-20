@@ -1,7 +1,7 @@
 package atsys.backtesting.engine.events;
 
-import atsys.backtesting.engine.model.Signal;
-import atsys.backtesting.engine.model.SignalType;
+import atsys.backtesting.engine.components.signal.Signal;
+import atsys.backtesting.engine.components.signal.SignalType;
 import lombok.Getter;
 
 @Getter

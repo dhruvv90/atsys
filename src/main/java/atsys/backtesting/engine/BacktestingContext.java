@@ -7,6 +7,7 @@ import atsys.backtesting.engine.components.order.OrderService;
 import atsys.backtesting.engine.components.order.OrderType;
 import atsys.backtesting.engine.components.position.Position;
 import atsys.backtesting.engine.components.position.PositionService;
+import atsys.backtesting.engine.components.signal.Signal;
 import atsys.backtesting.engine.components.signal.SignalType;
 import atsys.backtesting.engine.events.Event;
 import atsys.backtesting.engine.events.FillEvent;
@@ -52,7 +53,8 @@ public class BacktestingContext {
     }
 
     public void publishSignal(String symbol, SignalType signalType){
-        SignalEvent event = new SignalEvent(symbol, signalType);
+        Signal signal = new Signal(symbol, signalType);
+        SignalEvent event = new SignalEvent(signal);
         publishEvent(event);
     }
 

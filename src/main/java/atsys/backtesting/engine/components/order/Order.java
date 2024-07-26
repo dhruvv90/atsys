@@ -18,7 +18,7 @@ public class Order {
     @Setter
     private Double avgExecutedPrice;
     @Setter
-    private Long currQty = 0L;
+    private Long filledQty;
     @Setter
     private OrderState orderState;
 
@@ -26,12 +26,12 @@ public class Order {
     private final Instant createdAt;
     private final Instrument instrument;
     private final OrderType orderType;
-    private final Long initialQty;
+    private final Long totalQty;
 
-    Order(Long id, Instrument instrument, OrderType orderType, Long initialQty) {
+    Order(Long id, Instrument instrument, OrderType orderType, Long totalQty) {
         this.instrument = instrument;
         this.orderType = orderType;
-        this.initialQty = initialQty;
+        this.totalQty = totalQty;
         this.orderState = OrderState.CREATED;
         this.id = id;
         this.createdAt = Instant.now();
@@ -46,8 +46,8 @@ public class Order {
                                 String.valueOf(id),
                                 instrument.toString(),
                                 orderType.toString(),
-                                "init: " + initialQty,
-                                "curr: " + currQty.toString(),
+                                "init: " + totalQty,
+                                "curr: " + filledQty,
                                 orderState.toString())
                         + ")";
     }

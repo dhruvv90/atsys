@@ -37,17 +37,17 @@ public class OrderService {
 
         OrderState state = order.getOrderState();
         if(state == OrderState.CREATED){
-            order.setCurrQty(fillQty);
+            order.setFilledQty(fillQty);
             order.setAvgExecutedPrice(fillPrice / fillQty);
         }
         else if(state == OrderState.OPEN){
-            Long currQty = order.getCurrQty();
+            Long currQty = order.getFilledQty();
             Double currPrice = order.getAvgExecutedPrice();
 
             long newQty = currQty + fillQty;
             Double newPrice = (currPrice * currQty + fillPrice) / newQty;
 
-            order.setCurrQty(newQty);
+            order.setFilledQty(newQty);
             order.setAvgExecutedPrice(newPrice);
         }
         else{
@@ -56,7 +56,7 @@ public class OrderService {
         }
 
         order.setLastExchangeTime(Instant.now());
-        if(order.getInitialQty().equals(order.getCurrQty())){
+        if(order.getTotalQty().equals(order.getFilledQty())){
             order.setOrderState(OrderState.COMPLETED);
         }
         else{

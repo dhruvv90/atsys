@@ -5,7 +5,6 @@ import atsys.backtesting.engine.components.TickData;
 import atsys.backtesting.engine.components.asset.Instrument;
 import atsys.backtesting.engine.components.order.Order;
 import atsys.backtesting.engine.components.order.OrderService;
-import atsys.backtesting.engine.components.order.OrderType;
 import atsys.backtesting.engine.components.position.Position;
 import atsys.backtesting.engine.components.position.PositionService;
 import atsys.backtesting.engine.components.signal.Signal;
@@ -43,17 +42,17 @@ public class BacktestingContext {
     }
 
     // should be private unless we add supporting custom events..
-    private void publishEvent(Event event){
+    private void publishEvent(Event event) {
         queuePublisher.publishEvent(event);
     }
 
-    public void publishOrder(Instrument instrument, OrderType orderType, Long quantity){
-        Order order = orderService.createOrder(instrument, orderType, quantity);
+    public void publishOrder(Instrument instrument, Long quantity) {
+        Order order = orderService.createOrder(instrument, quantity);
         OrderEvent event = new OrderEvent(order);
         publishEvent(event);
     }
 
-    public void publishSignal(Instrument instrument, SignalType signalType){
+    public void publishSignal(Instrument instrument, SignalType signalType) {
         Signal signal = new Signal(instrument, signalType);
         SignalEvent event = new SignalEvent(signal);
         publishEvent(event);
@@ -69,11 +68,11 @@ public class BacktestingContext {
         publishEvent(event);
     }
 
-    public Optional<Position> getPosition(Instrument instrument){
+    public Optional<Position> getPosition(Instrument instrument) {
         return positionService.getPosition(instrument);
     }
 
-    public TickData getLastTick(){
+    public TickData getLastTick() {
         return queuePublisher.getLastTick();
     }
 }

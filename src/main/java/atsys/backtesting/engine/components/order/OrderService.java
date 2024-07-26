@@ -1,5 +1,6 @@
 package atsys.backtesting.engine.components.order;
 
+import atsys.backtesting.engine.components.asset.Instrument;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.Instant;
@@ -21,9 +22,9 @@ public class OrderService {
         return counter.incrementAndGet();
     }
 
-    public Order createOrder(String symbol, OrderType orderType, Long quantity){
+    public Order createOrder(Instrument instrument, OrderType orderType, Long quantity){
         long id = generateId();
-        Order order = new Order(id, symbol, orderType, quantity);
+        Order order = new Order(id, instrument, orderType, quantity);
         orders.add(order);
         return order;
     }

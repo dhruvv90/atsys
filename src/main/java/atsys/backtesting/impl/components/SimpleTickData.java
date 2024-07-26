@@ -1,6 +1,7 @@
 package atsys.backtesting.impl.components;
 
 import atsys.backtesting.engine.components.TickData;
+import atsys.backtesting.engine.components.asset.Instrument;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +14,5 @@ public class SimpleTickData implements TickData {
     private Instant lastTradedTime;
     private double lastTradedQuantity;
     private double lastTradedPrice;
-    private String symbol;
-    private String instrumentName;
+    private Instrument instrument;
 }

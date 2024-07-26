@@ -2,6 +2,7 @@ package atsys.backtesting.engine;
 
 import atsys.backtesting.engine.components.ComponentsService;
 import atsys.backtesting.engine.components.TickData;
+import atsys.backtesting.engine.components.asset.Instrument;
 import atsys.backtesting.engine.components.order.Order;
 import atsys.backtesting.engine.components.order.OrderService;
 import atsys.backtesting.engine.components.order.OrderType;
@@ -46,14 +47,14 @@ public class BacktestingContext {
         queuePublisher.publishEvent(event);
     }
 
-    public void publishOrder(String symbol, OrderType orderType, Long quantity){
-        Order order = orderService.createOrder(symbol, orderType, quantity);
+    public void publishOrder(Instrument instrument, OrderType orderType, Long quantity){
+        Order order = orderService.createOrder(instrument, orderType, quantity);
         OrderEvent event = new OrderEvent(order);
         publishEvent(event);
     }
 
-    public void publishSignal(String symbol, SignalType signalType){
-        Signal signal = new Signal(symbol, signalType);
+    public void publishSignal(Instrument instrument, SignalType signalType){
+        Signal signal = new Signal(instrument, signalType);
         SignalEvent event = new SignalEvent(signal);
         publishEvent(event);
     }
@@ -64,12 +65,12 @@ public class BacktestingContext {
         orderService.updateOrderSuccess(order, filledQty, filledPrice);
 
         FillEvent event = new FillEvent(order);
-        positionService.addPosition(order.getSymbol(), filledQty);
+        positionService.addPosition(order.getInstrument(), filledQty);
         publishEvent(event);
     }
 
-    public Optional<Position> getPosition(String symbol){
-        return positionService.getPosition(symbol);
+    public Optional<Position> getPosition(Instrument instrument){
+        return positionService.getPosition(instrument);
     }
 
     public TickData getLastTick(){

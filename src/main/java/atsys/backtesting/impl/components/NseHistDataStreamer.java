@@ -1,8 +1,9 @@
 package atsys.backtesting.impl.components;
 
-import atsys.backtesting.engine.components.DataStreamer;
-import atsys.backtesting.engine.exception.DataStreamingException;
 import atsys.backtesting.engine.Backtest;
+import atsys.backtesting.engine.components.DataStreamer;
+import atsys.backtesting.engine.components.asset.Equity;
+import atsys.backtesting.engine.exception.DataStreamingException;
 import atsys.backtesting.engine.exception.InitializationException;
 import atsys.utils.CsvReader;
 import atsys.utils.CsvRow;
@@ -19,10 +20,9 @@ public class NseHistDataStreamer implements DataStreamer<SimpleTickData> {
 
     private SimpleTickData transform(CsvRow data) {
         SimpleTickData result = new SimpleTickData();
-        result.setSymbol(data.getToken(0));
+        result.setInstrument(new Equity(data.getToken(0)));
         result.setLastTradedPrice(Double.parseDouble(data.getToken(7)));
         result.setTickTimestamp(DatetimeUtils.parseInstant(data.getToken(2), "dd-MMM-yyyy"));
-        result.setInstrumentName(data.getToken(0));
         return result;
     }
 

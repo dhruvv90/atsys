@@ -23,7 +23,6 @@ class BaseTest {
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
-
     }
 
     @org.junit.jupiter.api.AfterEach
@@ -40,7 +39,7 @@ class BaseTest {
         for(int i = 0; i < 3; i++){
             backtests.add(new Backtest<>(
                     "Backtest_" + i, "",
-                    new ArrayList<>(),
+                    "sym",
                     1000,
                     Instant.now(),
                     Instant.now(),
@@ -75,7 +74,7 @@ class BaseTest {
         for(int i = 0; i < 1; i++){
             backtests.add(new Backtest<>(
                     "Backtest_" + i, "",
-                    new ArrayList<>(),
+                    "sym",
                     1000,
                     Instant.now(),
                     Instant.now(),
@@ -107,7 +106,7 @@ class BaseTest {
         // Setup Backtests
         Backtest<SimpleTickData> backtest =  new Backtest<>(
                 "Bt SmaStrategy", "",
-                new ArrayList<>(),
+                "sym",
                 1000,
                 Instant.now(),
                 Instant.now(),

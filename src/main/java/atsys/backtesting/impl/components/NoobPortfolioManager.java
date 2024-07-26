@@ -1,6 +1,7 @@
 package atsys.backtesting.impl.components;
 
 import atsys.backtesting.engine.components.PortfolioManager;
+import atsys.backtesting.engine.components.asset.Instrument;
 import atsys.backtesting.engine.components.order.Order;
 import atsys.backtesting.engine.components.order.OrderType;
 import atsys.backtesting.engine.components.position.Position;
@@ -14,15 +15,16 @@ public class NoobPortfolioManager extends PortfolioManager {
 
     @Override
     public void onSignal(Signal signal) {
-        long currPos = context.getPosition(signal.getSymbol()).map(Position::getQuantity).orElse(0L);
+        Instrument instrument = signal.getInstrument();
+        long currPos = context.getPosition(instrument).map(Position::getQuantity).orElse(0L);
         long orderQty = 5;
 
         if(currPos <= 0 && signal.getSignalType() == SignalType.BUY){
-            context.publishOrder(signal.getSymbol(), OrderType.BUY, orderQty);
+            context.publishOrder(instrument, OrderType.BUY, orderQty);
         }
         else if(currPos > 0 && signal.getSignalType() == SignalType.SELL){
             orderQty *= -1;
-            context.publishOrder(signal.getSymbol(), OrderType.SELL, orderQty);
+            context.publishOrder(instrument, OrderType.SELL, orderQty);
         }
         log.info("tick: {}, processing {}. currQty: {}, newOrder: {}", context.getLastTick().getLastTradedPrice(), signal, currPos, orderQty);
     }

@@ -1,6 +1,7 @@
 package atsys.backtesting.impl.components;
 
 import atsys.backtesting.engine.components.DataStreamer;
+import atsys.backtesting.engine.components.asset.Equity;
 import atsys.backtesting.engine.exception.DataStreamingException;
 import atsys.backtesting.engine.Backtest;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +31,7 @@ public class SimpleDataStreamer implements DataStreamer<SimpleTickData> {
         List<SimpleTickData> result = new ArrayList<>();
         for(int i = 0; i < 15; i++){
             SimpleTickData data = new SimpleTickData();
-            data.setSymbol("Symbol("+ i + ")");
+            data.setInstrument(new Equity("testSymbol"));
             data.setTickTimestamp(Instant.now());
             data.setLastTradedTime(Instant.now());
             data.setLastTradedPrice(Math.random() + Math.random() * 100);

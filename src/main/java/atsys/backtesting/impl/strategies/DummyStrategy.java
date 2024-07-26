@@ -13,7 +13,7 @@ public class DummyStrategy extends Strategy<SimpleTickData> {
     @Override
     public void handleTick(SimpleTickData tickData) {
         String sb = "counter: " + counter +
-                ", Symbol: " + tickData.getSymbol() +
+                ", Symbol: " + tickData.getInstrument() +
                 ", timestamp: " + tickData.getTickTimestamp() +
                 ", LTT: " + tickData.getLastTradedTime() +
                 ", LTP: " + tickData.getLastTradedPrice();
@@ -21,7 +21,7 @@ public class DummyStrategy extends Strategy<SimpleTickData> {
         counter++;
 
         if(counter % 5 == 0){
-            context.publishSignal("test", SignalType.BUY);
+            context.publishSignal(tickData.getInstrument(), SignalType.BUY);
         }
     }
 }

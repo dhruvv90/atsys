@@ -1,11 +1,12 @@
 package atsys.backtesting.engine.components.position;
 
+import atsys.backtesting.engine.components.asset.Instrument;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 public class Position {
-    private final String symbol;
+    private final Instrument instrument;
 
     @Setter
     private long quantity;
@@ -22,7 +23,7 @@ public class Position {
     @Setter
     private double percentageChange;
 
-    Position(String symbol){
-        this.symbol = symbol;
+    Position(Instrument instrument){
+        this.instrument = instrument;
     }
 }

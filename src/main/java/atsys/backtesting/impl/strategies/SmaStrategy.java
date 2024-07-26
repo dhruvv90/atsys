@@ -1,6 +1,7 @@
 package atsys.backtesting.impl.strategies;
 
 import atsys.backtesting.engine.components.Strategy;
+import atsys.backtesting.engine.components.asset.Instrument;
 import atsys.backtesting.engine.components.position.Position;
 import atsys.backtesting.impl.components.SimpleTickData;
 import atsys.backtesting.engine.components.signal.SignalType;
@@ -25,7 +26,7 @@ public class SmaStrategy extends Strategy<SimpleTickData> {
     @Override
     public void handleTick(SimpleTickData tickData) {
         double price = tickData.getLastTradedPrice();
-        String symbol = tickData.getSymbol();
+        Instrument instrument = tickData.getInstrument();
 
         if(storage.size() < period){
             storage.addLast(price);
@@ -38,15 +39,15 @@ public class SmaStrategy extends Strategy<SimpleTickData> {
             storage.addLast(price);
         }
 
-        Optional<Position> currentPos = context.getPosition(symbol);
+        Optional<Position> currentPos = context.getPosition(instrument);
         long currQty = currentPos.map(Position::getQuantity).orElse(0L);
 
 
         if(currQty <= 0 && price >= movingAverage){
-            context.publishSignal(symbol, SignalType.BUY);
+            context.publishSignal(instrument, SignalType.BUY);
         }
         else if(currQty >0 && price < movingAverage){
-            context.publishSignal(symbol, SignalType.SELL);
+            context.publishSignal(instrument, SignalType.SELL);
         }
         log.info("price : " + price + ", ma: " + movingAverage);
     }

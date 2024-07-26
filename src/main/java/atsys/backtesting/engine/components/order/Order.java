@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.util.Objects;
 
 
 @Getter
@@ -19,8 +20,6 @@ public class Order {
     private Double avgExecutedPrice;
     @Setter
     private Long filledQty;
-    @Setter
-    private OrderState orderState;
 
     private final Long id;
     private final Instant createdAt;
@@ -32,7 +31,6 @@ public class Order {
         this.instrument = instrument;
         this.orderType = orderType;
         this.totalQty = totalQty;
-        this.orderState = OrderState.CREATED;
         this.id = id;
         this.createdAt = Instant.now();
     }
@@ -47,8 +45,20 @@ public class Order {
                                 instrument.toString(),
                                 orderType.toString(),
                                 "init: " + totalQty,
-                                "curr: " + filledQty,
-                                orderState.toString())
+                                "curr: " + filledQty)
                         + ")";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return Objects.equals(id, order.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }

@@ -1,23 +1,28 @@
 package atsys.backtesting.engine.components.order;
 
 import atsys.backtesting.engine.components.asset.Instrument;
+import atsys.backtesting.engine.exception.InvalidOrderStateTransitionException;
 import atsys.backtesting.engine.exception.InvalidParameterException;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Slf4j
 public class OrderService {
     private final AtomicLong counter;
     private final List<Order> orders;
+    private final Map<Order, OrderState> orderStates;
 
     public OrderService() {
         this.orders = new ArrayList<>();
         this.counter = new AtomicLong();
+        this.orderStates = new HashMap<>();
     }
 
     private long generateId() {
@@ -34,11 +39,17 @@ public class OrderService {
         OrderType orderType = quantity > 0 ? OrderType.BUY : OrderType.SELL;
         Order order = new Order(id, instrument, orderType, quantity);
         orders.add(order);
+        orderStates.put(order, OrderState.CREATED);
         return order;
     }
 
+    @SneakyThrows
     public void updateOrderSuccess(Order order, Long fillQty, Double fillPrice) {
-        OrderState state = order.getOrderState();
+        OrderState state = orderStates.get(order);
+        if(state == null){
+            throw new InvalidOrderStateTransitionException();
+        }
+
         if (state == OrderState.CREATED) {
             order.setFilledQty(fillQty);
             order.setAvgExecutedPrice(fillPrice);
@@ -60,9 +71,9 @@ public class OrderService {
 
         order.setLastExchangeTime(Instant.now());
         if (order.getTotalQty().equals(order.getFilledQty())) {
-            order.setOrderState(OrderState.COMPLETED);
+            orderStates.put(order, OrderState.COMPLETED);
         } else {
-            order.setOrderState(OrderState.OPEN);
+            orderStates.put(order, OrderState.OPEN);
         }
     }
 

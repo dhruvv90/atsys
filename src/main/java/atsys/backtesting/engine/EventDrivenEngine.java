@@ -1,6 +1,6 @@
 package atsys.backtesting.engine;
 
-import atsys.backtesting.engine.components.ComponentsInitializer;
+import atsys.backtesting.engine.components.ComponentsManager;
 import atsys.backtesting.engine.components.DataStreamer;
 import atsys.backtesting.engine.components.TickData;
 import atsys.backtesting.engine.events.Event;
@@ -22,13 +22,13 @@ public class EventDrivenEngine {
 
     @Getter
     private final BacktestingReport report;
-    private final ComponentsInitializer componentsInitializer;
+    private final ComponentsManager componentsManager;
     private final Backtest<?> backtest;
 
 
     public EventDrivenEngine(Backtest<?> backtest) throws InitializationException {
         this.backtest = backtest;
-        this.componentsInitializer = new ComponentsInitializer(backtest);
+        this.componentsManager = new ComponentsManager(backtest);
         this.report = new BacktestingReport();
     }
 
@@ -36,10 +36,10 @@ public class EventDrivenEngine {
     public void run() throws BaseException {
         log.info("Initiating Backtest : {}", backtest.getName());
 
-        DataStreamer<?> dataStreamer = componentsInitializer.getDataStreamer();
-        EventManager eventManager = componentsInitializer.getEventManager();
-        EventQueue<?> eventQueue = componentsInitializer.getEventQueue();
-        QueuePublisher queuePublisher = componentsInitializer.getQueuePublisher();
+        DataStreamer<?> dataStreamer = componentsManager.getDataStreamer();
+        EventManager eventManager = componentsManager.getEventManager();
+        EventQueue<?> eventQueue = componentsManager.getEventQueue();
+        QueuePublisher queuePublisher = componentsManager.getQueuePublisher();
 
         // Register KillEvent
         eventManager.register(KillEvent.class, new KillEventListener());
@@ -63,7 +63,7 @@ public class EventDrivenEngine {
             }
         }
 
-        componentsInitializer.onBacktestEnd();
+        componentsManager.onBacktestEnd();
         log.info("Ending Backtest : {}", backtest.getName());
     }
 }

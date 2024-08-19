@@ -12,7 +12,7 @@ import atsys.backtesting.engine.exception.InitializationException;
 import lombok.Getter;
 
 
-public class ComponentsInitializer {
+public class ComponentsManager {
     @Getter
     private final EventManager eventManager;
 
@@ -37,7 +37,7 @@ public class ComponentsInitializer {
 
 
     @SuppressWarnings("unchecked")
-    public ComponentsInitializer(Backtest<?> backtest) throws InitializationException {
+    public ComponentsManager(Backtest<?> backtest) throws InitializationException {
         this.backtest = (Backtest<TickData>) backtest;
 
         // create event queue and its components

@@ -24,8 +24,6 @@ public class ComponentsManager {
     @Getter
     private DataStreamer<TickData> dataStreamer;
 
-    private final BacktestingContext context;
-
     @Getter
     private final QueuePublisher queuePublisher;
 
@@ -50,17 +48,18 @@ public class ComponentsManager {
         this.positionService = new PositionService();
 
         // Create Backtesting context
-        this.context = new BacktestingContext(this.backtest, queuePublisher, orderService, positionService);
+        BacktestingContext context = new BacktestingContext(this.backtest, queuePublisher, orderService, positionService);
 
         // Register components
-        registerComponents();
+        registerComponents(context);
     }
 
-    private void registerComponents() throws InitializationException {
+    private void registerComponents(BacktestingContext context) throws InitializationException {
         registerDataStreamer();
-        registerStrategy();
-        registerPortfolioManager();
-        registerExecutionManager();
+
+        registerStrategy(context);
+        registerPortfolioManager(context);
+        registerExecutionManager(context);
     }
 
     public void onBacktestEnd() {
@@ -82,7 +81,7 @@ public class ComponentsManager {
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private void registerStrategy() throws InitializationException {
+    private void registerStrategy(BacktestingContext context) throws InitializationException {
         try {
             var clazz = backtest.getStrategyClazz();
             strategy = clazz.getDeclaredConstructor().newInstance();
@@ -96,7 +95,7 @@ public class ComponentsManager {
 
     }
 
-    private void registerPortfolioManager() throws InitializationException {
+    private void registerPortfolioManager(BacktestingContext context) throws InitializationException {
         try {
             var clazz = backtest.getPortfolioClazz();
             portfolioManager = clazz.getDeclaredConstructor().newInstance();
@@ -110,7 +109,7 @@ public class ComponentsManager {
         }
     }
 
-    private void registerExecutionManager() throws InitializationException {
+    private void registerExecutionManager(BacktestingContext context) throws InitializationException {
         try {
             var clazz = backtest.getExecutionMgrClazz();
             executionManager = clazz.getDeclaredConstructor().newInstance();

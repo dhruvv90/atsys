@@ -13,7 +13,7 @@ public class QueuePublisher {
     @Getter
     private TickData lastTick;
 
-    QueuePublisher(EventQueue<Event> eventQueue){
+    public QueuePublisher(EventQueue<Event> eventQueue){
         this.eventQueue = eventQueue;
     }
 

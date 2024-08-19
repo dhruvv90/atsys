@@ -53,9 +53,4 @@ public class NseHistDataStreamer implements DataStreamer<SimpleTickData> {
         }
         return iterator.next();
     }
-
-    @Override
-    public void reset() {
-
-    }
 }

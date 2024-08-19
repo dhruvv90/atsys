@@ -1,7 +1,11 @@
 package atsys.backtesting.engine;
 
+import atsys.backtesting.engine.components.ComponentsInitializer;
+import atsys.backtesting.engine.components.DataStreamer;
+import atsys.backtesting.engine.components.TickData;
 import atsys.backtesting.engine.events.Event;
 import atsys.backtesting.engine.events.KillEvent;
+import atsys.backtesting.engine.events.TickEvent;
 import atsys.backtesting.engine.events.listeners.KillEventListener;
 import atsys.backtesting.engine.exception.BaseException;
 import atsys.backtesting.engine.exception.InitializationException;
@@ -16,62 +20,50 @@ import java.time.Instant;
 @Slf4j
 public class EventDrivenEngine {
 
-    private final EventQueue<Event> eventQueue;
-    private final EventManager eventManager;
-
     @Getter
-    private final QueuePublisher publisher;
-
-    private BacktestingContext currentContext;
-
-    @Getter
-    private BacktestingReport report;
+    private final BacktestingReport report;
+    private final ComponentsInitializer componentsInitializer;
+    private final Backtest<?> backtest;
 
 
-    public EventDrivenEngine() {
-        this.eventQueue = new EventQueueImpl();
-        this.eventManager = new EventManager();
-        this.publisher = new QueuePublisher(this.eventQueue);
+    public EventDrivenEngine(Backtest<?> backtest) throws InitializationException {
+        this.backtest = backtest;
+        this.componentsInitializer = new ComponentsInitializer(backtest);
+        this.report = new BacktestingReport();
     }
 
-    public void initializeForBacktest(Backtest<?> backtest) throws InitializationException {
-        currentContext = new BacktestingContext(backtest, publisher, eventManager);
-        this.report = new BacktestingReport();
+
+    public void run() throws BaseException {
+        log.info("Initiating Backtest : {}", backtest.getName());
+
+        DataStreamer<?> dataStreamer = componentsInitializer.getDataStreamer();
+        EventManager eventManager = componentsInitializer.getEventManager();
+        EventQueue<?> eventQueue = componentsInitializer.getEventQueue();
+        QueuePublisher queuePublisher = componentsInitializer.getQueuePublisher();
 
         // Register KillEvent
         eventManager.register(KillEvent.class, new KillEventListener());
-    }
 
-    public void reset() {
-        currentContext.end();
-        currentContext = null;
+        // Either dataStreamer has some data , or engine has some events
+        while (dataStreamer.hasNext() || !eventQueue.isEmpty()) {
 
-        eventManager.unregisterAll();
-        eventQueue.clear();
-    }
+            // Process all events in queue first..
+            while (!eventQueue.isEmpty()) {
+                Event event = eventQueue.poll();
+                event.setConsumedAt(Instant.now());
 
-    public boolean hasEvents(){
-        return !eventQueue.isEmpty();
-    }
+                eventManager.emit(event);
+                report.recordEvent(event);
+            }
 
-    public void consumeEvent() throws BaseException{
-        if(!hasEvents()){
-            throw new BaseException();
+            // If DataStreamer still has data, Load it
+            if (dataStreamer.hasNext()) {
+                TickData data = dataStreamer.readData();
+                queuePublisher.publishEvent(new TickEvent<>(data));
+            }
         }
-        Event event = eventQueue.poll();
-        event.setConsumedAt(Instant.now());
 
-        if(currentContext == null){
-            log.warn("Engine is not attached to any Backtest. This event emission might not trigger any Lifecycle components");
-        }
-        eventManager.emit(event);
-        report.recordEvent(event);
+        componentsInitializer.onBacktestEnd();
+        log.info("Ending Backtest : {}", backtest.getName());
     }
-
-    public void consumeAllEvents() throws BaseException{
-        while (hasEvents()) {
-            consumeEvent();
-        }
-    }
-
 }

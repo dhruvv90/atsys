@@ -1,15 +1,14 @@
 package atsys.backtesting;
 
+import atsys.backtesting.engine.Backtest;
+import atsys.backtesting.engine.Backtester;
 import atsys.backtesting.engine.components.DataStreamer;
+import atsys.backtesting.engine.exception.BaseException;
 import atsys.backtesting.impl.components.NseHistDataStreamer;
 import atsys.backtesting.impl.components.SimpleDataStreamer;
 import atsys.backtesting.impl.components.SimpleTickData;
-import atsys.backtesting.impl.components.*;
 import atsys.backtesting.impl.strategies.DummyStrategy;
 import atsys.backtesting.impl.strategies.SmaStrategy;
-import atsys.backtesting.engine.Backtester;
-import atsys.backtesting.engine.exception.BaseException;
-import atsys.backtesting.engine.Backtest;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
@@ -19,18 +18,11 @@ import java.util.List;
 
 class BaseTest {
     private final Backtester backtester = new Backtester();
-    long startTime, endTime;
 
-    @org.junit.jupiter.api.BeforeEach
-    void setUp() {
-    }
-
-    @org.junit.jupiter.api.AfterEach
-    void tearDown() {
-    }
-
-    @org.junit.jupiter.api.Test
+    @Test
     void basicTest() throws BaseException {
+        long startTime, endTime;
+
         DataStreamer<SimpleTickData> dataStreamer = new SimpleDataStreamer();
 
         // Setup Backtests
@@ -43,7 +35,7 @@ class BaseTest {
                     1000,
                     Instant.now(),
                     Instant.now(),
-                    DummyStrategy.class, NoobPortfolioManager.class, SimulatedExecutionManager.class)
+                    DummyStrategy.class, dataStreamer)
             );
         }
 
@@ -52,7 +44,7 @@ class BaseTest {
 
         for(Backtest<SimpleTickData> backtest: backtests){
             startTime = System.currentTimeMillis();
-            backtester.run(backtest, dataStreamer);
+            backtester.runBacktest(backtest);
             endTime = System.currentTimeMillis();
             times.add(endTime - startTime);
             System.out.println();
@@ -63,7 +55,7 @@ class BaseTest {
     }
 
 
-    @org.junit.jupiter.api.Test
+    @Test
     void NseHistoricalTest() throws BaseException {
         DataStreamer<SimpleTickData> dataStreamer = new NseHistDataStreamer();
 
@@ -78,7 +70,7 @@ class BaseTest {
                     1000,
                     Instant.now(),
                     Instant.now(),
-                    DummyStrategy.class)
+                    DummyStrategy.class, dataStreamer)
             );
         }
 
@@ -89,7 +81,7 @@ class BaseTest {
 
         for(Backtest<SimpleTickData> backtest: backtests){
             startTime = System.currentTimeMillis();
-            backtester.run(backtest, dataStreamer);
+            backtester.runBacktest(backtest);
             endTime = System.currentTimeMillis();
             times.add(endTime - startTime);
             System.out.println();
@@ -110,11 +102,11 @@ class BaseTest {
                 1000,
                 Instant.now(),
                 Instant.now(),
-                SmaStrategy.class);
+                SmaStrategy.class, dataStreamer);
 
         // Run Backtest in batch
         long startTime = System.currentTimeMillis();
-        backtester.run(backtest, dataStreamer);
+        backtester.runBacktest(backtest);
         long endTime = System.currentTimeMillis();
         // Print output
         System.out.println(endTime - startTime);

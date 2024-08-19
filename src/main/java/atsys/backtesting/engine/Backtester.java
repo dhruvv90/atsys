@@ -1,14 +1,7 @@
 package atsys.backtesting.engine;
 
-import atsys.backtesting.engine.components.DataStreamer;
-import atsys.backtesting.engine.components.TickData;
-import atsys.backtesting.engine.events.TickEvent;
 import atsys.backtesting.engine.exception.BaseException;
-import atsys.backtesting.engine.exception.InitializationException;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -18,53 +11,11 @@ import java.util.Map;
 @Slf4j(topic = "Setup")
 public class Backtester {
 
-    private final EventDrivenEngine engine;
-    private final Map<Backtest<?>, BacktestingReport> backtestingReports;
-
-    public Backtester() {
-        engine = new EventDrivenEngine();
-        this.backtestingReports = new HashMap<>();
-    }
-
-    /**
-     * Prepare Backtester for a particular backtest.
-     * All resource initialization must be here
-     */
-    private<T extends TickData> void preBacktest(Backtest<T> backtest, DataStreamer<T> dataStreamer) throws InitializationException {
-        log.info("Initiating Backtest : {}", backtest.getName());
-        dataStreamer.initializeForBacktest(backtest);
-        engine.initializeForBacktest(backtest);
-    }
-
-    private <T extends TickData> void postBacktest(Backtest<T> backtest, DataStreamer<T> dataStreamer) {
-        backtestingReports.put(backtest, engine.getReport());
-        engine.reset();
-        dataStreamer.reset();
-        log.info("Ending Backtest : {}", backtest.getName());
-    }
-
     /**
      * Run Backtest independently
      */
-    public <T extends TickData> void run(Backtest<T> backtest, DataStreamer<T> dataStreamer) throws BaseException {
-        preBacktest(backtest, dataStreamer);
-
-        // producer
-        QueuePublisher queuePublisher = engine.getPublisher();
-
-        // Either dataStreamer has some data , or engine has some events
-        while (dataStreamer.hasNext() || engine.hasEvents()) {
-
-            // Process all events in queue first..
-            engine.consumeAllEvents();
-
-            // If DataStreamer still has data, Load it..
-            if (dataStreamer.hasNext()) {
-                T data = dataStreamer.readData();
-                queuePublisher.publishEvent(new TickEvent<>(data));
-            }
-        }
-
-        postBacktest(backtest, dataStreamer);
+    public void runBacktest(Backtest<?> backtest) throws BaseException {
+        EventDrivenEngine engine = new EventDrivenEngine(backtest);
+        engine.run();
     }
 }

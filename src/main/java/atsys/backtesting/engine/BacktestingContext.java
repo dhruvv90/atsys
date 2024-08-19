@@ -1,6 +1,5 @@
 package atsys.backtesting.engine;
 
-import atsys.backtesting.engine.components.ComponentsService;
 import atsys.backtesting.engine.components.TickData;
 import atsys.backtesting.engine.components.asset.Instrument;
 import atsys.backtesting.engine.components.order.Order;
@@ -13,7 +12,7 @@ import atsys.backtesting.engine.events.Event;
 import atsys.backtesting.engine.events.FillEvent;
 import atsys.backtesting.engine.events.OrderEvent;
 import atsys.backtesting.engine.events.SignalEvent;
-import atsys.backtesting.engine.exception.InitializationException;
+import lombok.Getter;
 
 import java.util.Optional;
 
@@ -21,25 +20,25 @@ import java.util.Optional;
 public class BacktestingContext {
 
     private final QueuePublisher queuePublisher;
-    private final EventManager eventManager;
     private final OrderService orderService;
     private final PositionService positionService;
-    private final ComponentsService componentsService;
 
-    public BacktestingContext(Backtest<?> backtest, QueuePublisher queuePublisher, EventManager eventManager) throws InitializationException {
+    @Getter
+    private final Backtest<?> backtest;
+
+    public BacktestingContext(
+            Backtest<?> backtest,
+            QueuePublisher queuePublisher,
+            OrderService orderService,
+            PositionService positionService
+    )  {
+        this.backtest = backtest;
         this.queuePublisher = queuePublisher;
-        this.eventManager = eventManager;
-        this.positionService = new PositionService();
-        this.orderService = new OrderService();
 
-        this.componentsService = new ComponentsService(this, backtest, eventManager);
-        this.componentsService.registerComponents();
-
+        this.orderService = orderService;
+        this.positionService = positionService;
     }
 
-    public void end() {
-        componentsService.onComplete();
-    }
 
     // should be private unless we add supporting custom events..
     private void publishEvent(Event event) {

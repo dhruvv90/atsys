@@ -8,5 +8,4 @@ public interface DataStreamer<T extends TickData>  {
     void initializeForBacktest(Backtest<T> backtest) throws InitializationException;
     boolean hasNext();
     T readData() throws DataStreamingException;
-    void reset();
 }

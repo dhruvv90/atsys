@@ -51,8 +51,4 @@ public class SimpleDataStreamer implements DataStreamer<SimpleTickData> {
     public boolean hasNext() {
         return dataIterator.hasNext();
     }
-
-    public void reset() {
-        log.info("{} is reset for new backtest", this.getClass().getSimpleName());
-    }
 }

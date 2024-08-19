@@ -1,9 +1,6 @@
 package atsys.backtesting.engine;
 
-import atsys.backtesting.engine.components.ExecutionManager;
-import atsys.backtesting.engine.components.PortfolioManager;
-import atsys.backtesting.engine.components.Strategy;
-import atsys.backtesting.engine.components.TickData;
+import atsys.backtesting.engine.components.*;
 import atsys.backtesting.impl.components.NoobPortfolioManager;
 import atsys.backtesting.impl.components.SimulatedExecutionManager;
 import lombok.Getter;
@@ -24,12 +21,15 @@ public class Backtest<T extends TickData> {
     private final Class<? extends ExecutionManager> executionMgrClazz;
     private final Class<? extends Strategy<T>> strategyClazz;
     private final Class<? extends PortfolioManager> portfolioClazz;
+    private final DataStreamer<T> dataStreamer;
 
     public Backtest(String name,
                     String description, String symbol,
                     double initialCapital, Instant startDateTime, Instant endDateTime,
                     Class<? extends Strategy<T>> strategyClazz,
-                     Class<? extends PortfolioManager> portfolioClazz, Class<? extends ExecutionManager> executionMgrClazz) {
+                     Class<? extends PortfolioManager> portfolioClazz, Class<? extends ExecutionManager> executionMgrClazz,
+                    DataStreamer<T> dataStreamer
+                    ) {
         this.name = name;
         this.description = description;
         this.symbol = symbol;
@@ -40,13 +40,14 @@ public class Backtest<T extends TickData> {
         this.createdAt = Instant.now();
         this.portfolioClazz = portfolioClazz;
         this.executionMgrClazz = executionMgrClazz;
+        this.dataStreamer = dataStreamer;
     }
 
     public Backtest(String name,
                     String description, String symbol,
                     double initialCapital, Instant startDateTime, Instant endDateTime,
-                    Class<? extends Strategy<T>> strategyClazz) {
+                    Class<? extends Strategy<T>> strategyClazz,  DataStreamer<T> dataStreamer) {
         this(name, description, symbol, initialCapital, startDateTime, endDateTime, strategyClazz,
-                NoobPortfolioManager.class, SimulatedExecutionManager.class);
+                NoobPortfolioManager.class, SimulatedExecutionManager.class, dataStreamer );
     }
 }

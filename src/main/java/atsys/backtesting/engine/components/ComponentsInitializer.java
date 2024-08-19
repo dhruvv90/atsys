@@ -1,66 +1,103 @@
 package atsys.backtesting.engine.components;
 
-import atsys.backtesting.engine.Backtest;
-import atsys.backtesting.engine.BacktestingContext;
-import atsys.backtesting.engine.EventManager;
-import atsys.backtesting.engine.events.FillEvent;
-import atsys.backtesting.engine.events.OrderEvent;
-import atsys.backtesting.engine.events.SignalEvent;
-import atsys.backtesting.engine.events.TickEvent;
+import atsys.backtesting.engine.*;
+import atsys.backtesting.engine.components.order.OrderService;
+import atsys.backtesting.engine.components.position.PositionService;
+import atsys.backtesting.engine.events.*;
 import atsys.backtesting.engine.events.listeners.FillEventListener;
 import atsys.backtesting.engine.events.listeners.OrderEventListener;
 import atsys.backtesting.engine.events.listeners.SignalEventListener;
 import atsys.backtesting.engine.events.listeners.TickEventListener;
 import atsys.backtesting.engine.exception.InitializationException;
+import lombok.Getter;
 
 
-public class ComponentsService {
+public class ComponentsInitializer {
+    @Getter
     private final EventManager eventManager;
-    private final Backtest<?> backtest;
+
+    @Getter
+    private final EventQueue<Event> eventQueue;
+    private final OrderService orderService;
+    private final PositionService positionService;
+
+    @Getter
+    private DataStreamer<TickData> dataStreamer;
+
     private final BacktestingContext context;
 
+    @Getter
+    private final QueuePublisher queuePublisher;
+
     // Components
-    private Strategy<?> strategy;
+    private final Backtest<TickData> backtest;
+    private Strategy<TickData> strategy;
     private PortfolioManager portfolioManager;
     private ExecutionManager executionManager;
 
 
-    public ComponentsService(BacktestingContext context, Backtest<?> backtest, EventManager eventManager){
-        this.eventManager = eventManager;
-        this.backtest = backtest;
-        this.context = context;
+    @SuppressWarnings("unchecked")
+    public ComponentsInitializer(Backtest<?> backtest) throws InitializationException {
+        this.backtest = (Backtest<TickData>) backtest;
+
+        // create event queue and its components
+        this.eventQueue = new EventQueueImpl();
+        this.queuePublisher = new QueuePublisher(this.eventQueue);
+        this.eventManager = new EventManager();
+
+        // Create Services
+        this.orderService = new OrderService();
+        this.positionService = new PositionService();
+
+        // Create Backtesting context
+        this.context = new BacktestingContext(this.backtest, queuePublisher, orderService, positionService);
+
+        // Register components
+        registerComponents();
     }
 
-    public void registerComponents() throws InitializationException{
-        registerExecutionManager();
-        registerPortfolioManager();
+    private void registerComponents() throws InitializationException {
+        registerDataStreamer();
         registerStrategy();
+        registerPortfolioManager();
+        registerExecutionManager();
     }
 
-    public void onComplete(){
+    public void onBacktestEnd() {
+        eventManager.unregisterAll();
+
         strategy.onComplete();
         portfolioManager.onComplete();
         executionManager.onComplete();
     }
 
+    private void registerDataStreamer() throws InitializationException {
+        try {
+            dataStreamer = backtest.getDataStreamer();
+            dataStreamer.initializeForBacktest(backtest);
+
+        } catch (Exception e) {
+            throw new InitializationException(e);
+        }
+    }
+
     @SuppressWarnings({"unchecked", "rawtypes"})
     private void registerStrategy() throws InitializationException {
-        try{
+        try {
             var clazz = backtest.getStrategyClazz();
             strategy = clazz.getDeclaredConstructor().newInstance();
             strategy.onInit(context);
 
             // Event Registration
             eventManager.register(TickEvent.class, new TickEventListener(strategy));
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             throw new InitializationException(e);
         }
 
     }
 
     private void registerPortfolioManager() throws InitializationException {
-        try{
+        try {
             var clazz = backtest.getPortfolioClazz();
             portfolioManager = clazz.getDeclaredConstructor().newInstance();
             portfolioManager.onInit(context);
@@ -68,22 +105,20 @@ public class ComponentsService {
             // Event Registration
             eventManager.register(SignalEvent.class, new SignalEventListener(portfolioManager));
             eventManager.register(FillEvent.class, new FillEventListener(portfolioManager));
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new InitializationException(e);
         }
     }
 
-    private void registerExecutionManager() throws InitializationException{
-        try{
+    private void registerExecutionManager() throws InitializationException {
+        try {
             var clazz = backtest.getExecutionMgrClazz();
             executionManager = clazz.getDeclaredConstructor().newInstance();
             executionManager.onInit(context);
 
             // Event Registration
             eventManager.register(OrderEvent.class, new OrderEventListener(executionManager));
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new InitializationException(e);
         }
     }

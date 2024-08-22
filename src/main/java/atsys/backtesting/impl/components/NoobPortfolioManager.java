@@ -30,7 +30,7 @@ public class NoobPortfolioManager extends PortfolioManager {
 
     @Override
     public void onFill(Order order) {
-        log.info("tick: {}, processing order: {}, filled: {} at {}", context.getLastTick().getLastTradedPrice(), order, order.getFilledQty()
-        , order.getAvgExecutedPrice());
+        log.info("tick: {}, processing order: {}, filled: {} at {}", context.getLastTick().getLastTradedPrice(), order, order.getQuantity()
+        , order.getQuantity());
     }
 }

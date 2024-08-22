@@ -6,47 +6,37 @@ import lombok.Setter;
 
 import java.time.Instant;
 import java.util.Objects;
+import java.util.UUID;
 
 
 @Getter
+@Setter
 public class Order {
-    @Setter
-    private Long exchangeId;
-    @Setter
-    private Instant lastExchangeTime;
-    @Setter
-    private String exchangeMessage;
-    @Setter
-    private Double avgExecutedPrice;
-    @Setter
-    private Long filledQty;
 
-    private final Long id;
-    private final Instant createdAt;
+    private final String orderId;
     private final Instrument instrument;
-    private final OrderType orderType;
-    private final Long totalQty;
+    private final OrderType orderType = OrderType.MARKET;
+    private final long quantity;
+    //    private double avgExecutedPrice;
+    private OrderStatus orderStatus;
+    private final Instant createdAt;
+    private final OrderSide orderSide;
+    private final OrderValidity validity = OrderValidity.DAY;
+//    private final String traderId;
+//    private final String brokerId;
 
-    Order(Long id, Instrument instrument, OrderType orderType, Long totalQty) {
+    Order(Instrument instrument, long quantity, OrderSide orderSide) {
         this.instrument = instrument;
-        this.orderType = orderType;
-        this.totalQty = totalQty;
-        this.id = id;
+        this.quantity = quantity;
+        this.orderSide = orderSide;
         this.createdAt = Instant.now();
+        this.orderId = UUID.randomUUID().toString();
     }
 
     @Override
     public String toString() {
-        return
-                this.getClass().getSimpleName()
-                        + "(" +
-                        String.join(",",
-                                String.valueOf(id),
-                                instrument.toString(),
-                                orderType.toString(),
-                                "init: " + totalQty,
-                                "curr: " + filledQty)
-                        + ")";
+        return this.getClass().getSimpleName() + "{" +
+                String.join(",", "orderId" + orderId, "instrument: " + instrument, "side: " + orderSide) + "}";
     }
 
     @Override
@@ -54,11 +44,11 @@ public class Order {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return Objects.equals(id, order.id);
+        return Objects.equals(orderId, order.orderId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(orderId);
     }
 }

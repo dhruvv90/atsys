@@ -10,7 +10,7 @@ public class SimulatedExecutionManager extends ExecutionManager {
     @Override
     public void processOrder(Order order) {
         log.info("tick {}, processing {}", context.getLastTick().getLastTradedPrice(), order);
-        Long filledQty = order.getTotalQty();
+        Long filledQty = order.getQuantity();
         Double filledPrice = context.getLastTick().getLastTradedPrice();
 
         context.publishFill(order, filledQty, filledPrice);

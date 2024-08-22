@@ -1,5 +1,5 @@
 package atsys.backtesting.engine.components.order;
 
-public enum OrderType {
-    MARKET, LIMIT
+public enum OrderSide {
+    BUY, SELL
 }

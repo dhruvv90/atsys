@@ -17,6 +17,7 @@ public class Trade {
     private final long quantity;
     private final Decimal avgPrice;
     private final TradeType tradeType;
+    private final Decimal tradeValue;
 
     // Constructor managed by the Builder
     public Trade(
@@ -32,6 +33,7 @@ public class Trade {
         this.quantity = quantity;
         this.avgPrice = avgPrice;
         this.tradeType= tradeType;
+        this.tradeValue = avgPrice.multiply(quantity);
     }
 
     @Override

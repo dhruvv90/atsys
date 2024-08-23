@@ -18,20 +18,23 @@ public class SimulatedExecutionManager extends ExecutionManager {
     @Override
     public void processOrder(Order order) {
         log.info("tick {}, processing {}", context.getLastTick().getLastTradedPrice(), order);
-        Long filledQty = order.getQuantity();
-        Decimal filledPrice = context.getLastTick().getLastTradedPrice();
+        Decimal ltp = context.getLastTick().getLastTradedPrice();
 
         OrderFill fill = new OrderFill(order.getOrderId(), OrderFillStatus.SUCCESS, order.getOrderId());
         context.publishFill(fill);
 
-        Trade trade = createTrade(order);
-        context.publishTrade(trade);
+        if(order.getTotalQty() == 1){
+            publishTrade(order, order.getTotalQty(), ltp);
+        }
+        else{
+            publishTrade(order, order.getTotalQty()-1, ltp);
+            publishTrade(order, 1, ltp.multiply(1.12));
+        }
     }
 
-    private Trade createTrade(Order order){
+    private void publishTrade(Order order, long quantity, Decimal price) {
         TradeType type = order.getOrderSide().equals(OrderSide.BUY) ? TradeType.BUY : TradeType.SELL;
-
-        return new Trade(UUID.randomUUID().toString(), order.getOrderId(), order.getInstrument(), order.getQuantity(),
-                context.getLastTick().getLastTradedPrice(), type);
+        Trade trade = new Trade(UUID.randomUUID().toString(), order.getOrderId(), order.getInstrument(), quantity, price, type);
+        context.publishTrade(trade);
     }
 }

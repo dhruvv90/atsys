@@ -2,6 +2,7 @@ package atsys.backtesting.engine.components.order;
 
 import atsys.backtesting.engine.components.asset.Instrument;
 import atsys.backtesting.engine.components.trade.Trade;
+import atsys.utils.Decimal;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,24 +19,31 @@ public class Order {
     @Setter
     private String exchangeOrderId;
     private final Instrument instrument;
-    private final OrderType orderType = OrderType.MARKET;
-    private final long quantity;
-    //    private double avgExecutedPrice;
+    private final OrderType orderType;
+    private final long totalQty;
+    private long filledQty;
+
     @Setter
-    private OrderStatus orderStatus = OrderStatus.CREATED;
+    private Decimal avgPrice = Decimal.ZERO;
+
+    @Setter
+    private OrderStatus orderStatus;
     private final Instant createdAt;
     private final OrderSide orderSide;
-    private final OrderValidity validity = OrderValidity.DAY;
+    private final OrderValidity validity;
 //    private final String traderId;
 //    private final String brokerId;
     private List<Trade> trades = new LinkedList<>();
 
-    Order(String orderId, Instrument instrument, long quantity, OrderSide orderSide) {
+    Order(String orderId, Instrument instrument, long totalQty, OrderSide orderSide) {
         this.instrument = instrument;
-        this.quantity = quantity;
+        this.totalQty = totalQty;
         this.orderSide = orderSide;
         this.createdAt = Instant.now();
         this.orderId = orderId;
+        validity = OrderValidity.DAY;
+        orderStatus = OrderStatus.CREATED_INTERNAL;
+        orderType = OrderType.MARKET;
     }
 
     @Override
@@ -43,9 +51,10 @@ public class Order {
         return this.getClass().getSimpleName()
                 + "{"
                 + "id=" + orderId
-                + ",sym=" + instrument
-                + ",qty=" + quantity
                 + ","+ orderSide
+                + ",sym=" + instrument
+                + ",totalQty=" + totalQty
+                + ",filledQty=" + filledQty
                 + ",status=" +orderStatus
                 + "}";
     }
@@ -64,6 +73,15 @@ public class Order {
     }
 
     public void addTrade(Trade trade){
+        avgPrice = avgPrice.multiply(filledQty).add(trade.getTradeValue())
+                        .divide(filledQty + trade.getQuantity());
+        filledQty += trade.getQuantity();
+        if(filledQty == totalQty){
+            this.orderStatus = OrderStatus.COMPLETED;
+        }
+        else{
+            this.orderStatus = OrderStatus.COMPLETED_PARTIAL;
+        }
         trades.add(trade);
     }
 }

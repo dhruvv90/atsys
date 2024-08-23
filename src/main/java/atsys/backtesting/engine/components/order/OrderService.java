@@ -6,7 +6,9 @@ import atsys.backtesting.engine.exception.InvalidParameterException;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Slf4j
@@ -55,7 +57,7 @@ public class OrderService {
 
         // change status
         if (Objects.requireNonNull(fill.getOrderFillStatus()) == OrderFillStatus.SUCCESS) {
-            order.setOrderStatus(OrderStatus.COMPLETED);
+            order.setOrderStatus(OrderStatus.OPEN);
 
         } else if (fill.getOrderFillStatus() == OrderFillStatus.REJECTED) {
             order.setOrderStatus(OrderStatus.REJECTED);

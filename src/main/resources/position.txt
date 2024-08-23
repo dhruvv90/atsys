@@ -1,0 +1,66 @@
+import java.math.BigDecimal;
+import java.util.LinkedList;
+import java.util.List;
+
+public class Position {
+
+    private final String instrumentId; // Identifier for the instrument
+    private long totalQuantity; // Total quantity currently held
+    private BigDecimal averageBuyPrice; // Average price of the bought quantity
+    private BigDecimal realizedPnL; // Realized profit and loss
+    private final List<Trade> buyTrades; // FIFO list of buy trades executed
+    private final List<Trade> sellTrades; // List of sell trades executed
+
+    public Position(String instrumentId) {
+        this.instrumentId = instrumentId;
+        this.totalQuantity = 0;
+        this.averageBuyPrice = BigDecimal.ZERO;
+        this.realizedPnL = BigDecimal.ZERO;
+        this.buyTrades = new LinkedList<>();
+        this.sellTrades = new LinkedList<>();
+    }
+
+    public void process(Trade trade) {
+        if (trade.isBuy()) {
+            buyTrades.add(trade);  // Add to FIFO list of buys
+            updateAverageBuyPrice(trade);
+            totalQuantity += trade.getQuantity();
+        } else {
+            sellTrades.add(trade);  // Track sell trades
+            calculateRealizedPnL(trade);  // Apply FIFO to calculate P&L
+            totalQuantity -= trade.getQuantity();
+            processSellTrade(trade);
+        }
+    }
+
+    private void updateAverageBuyPrice(Trade trade) {
+        BigDecimal totalCost = averageBuyPrice.multiply(BigDecimal.valueOf(totalQuantity))
+            .add(trade.getPrice().multiply(BigDecimal.valueOf(trade.getQuantity())));
+        totalQuantity += trade.getQuantity();
+        averageBuyPrice = totalCost.divide(BigDecimal.valueOf(totalQuantity), BigDecimal.ROUND_HALF_UP);
+    }
+
+    private void calculateRealizedPnL(Trade sellTrade) {
+        long quantityToSell = sellTrade.getQuantity();
+        while (quantityToSell > 0 && !buyTrades.isEmpty()) {
+            Trade firstBuyTrade = buyTrades.get(0);  // FIFO - first buy trade
+            long sellableQuantity = Math.min(firstBuyTrade.getQuantity(), quantityToSell);
+
+            // Calculate PnL using the price difference between the sell and the buy trades
+            BigDecimal pnl = sellTrade.getPrice().subtract(firstBuyTrade.getPrice())
+                .multiply(BigDecimal.valueOf(sellableQuantity));
+            realizedPnL = realizedPnL.add(pnl);
+
+            quantityToSell -= sellableQuantity;
+
+            // Update or remove the buy trade depending on how much was sold
+            if (firstBuyTrade.getQuantity() == sellableQuantity) {
+                buyTrades.remove(0);  // Fully sold, remove from FIFO
+            } else {
+                firstBuyTrade.setQuantity(firstBuyTrade.getQuantity() - sellableQuantity);
+            }
+        }
+    }
+
+    private void processSellTrade(Trade trade) {
+        // Additional logic for sell trades can be added here

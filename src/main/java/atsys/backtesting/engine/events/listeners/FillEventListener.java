@@ -12,6 +12,6 @@ public class FillEventListener implements  EventListener<FillEvent> {
 
     @Override
     public void onEvent(FillEvent event) {
-        portfolioManager.onFill(event.getOrder());
+        portfolioManager.onFill(event.getOrderFill());
     }
 }

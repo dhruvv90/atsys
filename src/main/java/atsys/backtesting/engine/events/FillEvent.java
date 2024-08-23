@@ -1,13 +1,13 @@
 package atsys.backtesting.engine.events;
 
-import atsys.backtesting.engine.components.order.Order;
+import atsys.backtesting.engine.components.order.OrderFill;
 import lombok.Getter;
 
 @Getter
 public class FillEvent extends Event {
-    private final Order order;
+    private final OrderFill orderFill;
 
-    public FillEvent(Order order){
-        this.order = order;
+    public FillEvent(OrderFill orderFill){
+        this.orderFill = orderFill;
     }
 }

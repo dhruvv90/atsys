@@ -99,6 +99,8 @@ public class ComponentsManager {
         try {
             var clazz = backtest.getPortfolioClazz();
             portfolioManager = clazz.getDeclaredConstructor().newInstance();
+
+            portfolioManager.setOrderService(orderService);
             portfolioManager.onInit(context);
 
             // Event Registration

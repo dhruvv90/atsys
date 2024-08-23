@@ -2,7 +2,7 @@ package atsys.backtesting.impl.components;
 
 import atsys.backtesting.engine.components.PortfolioManager;
 import atsys.backtesting.engine.components.asset.Instrument;
-import atsys.backtesting.engine.components.order.Order;
+import atsys.backtesting.engine.components.order.OrderFill;
 import atsys.backtesting.engine.components.position.Position;
 import atsys.backtesting.engine.components.signal.Signal;
 import atsys.backtesting.engine.components.signal.SignalType;
@@ -29,8 +29,8 @@ public class NoobPortfolioManager extends PortfolioManager {
     }
 
     @Override
-    public void onFill(Order order) {
-        log.info("tick: {}, processing order: {}, filled: {} at {}", context.getLastTick().getLastTradedPrice(), order, order.getQuantity()
-        , order.getQuantity());
+    public void onFill(OrderFill fill) {
+        log.info("tick: {}, processing fill: {}", context.getLastTick().getLastTradedPrice(), fill);
+        orderService.processOrderFill(fill);
     }
 }

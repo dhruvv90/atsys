@@ -3,6 +3,7 @@ package atsys.backtesting.engine;
 import atsys.backtesting.engine.components.TickData;
 import atsys.backtesting.engine.components.asset.Instrument;
 import atsys.backtesting.engine.components.order.Order;
+import atsys.backtesting.engine.components.order.OrderFill;
 import atsys.backtesting.engine.components.order.OrderService;
 import atsys.backtesting.engine.components.position.Position;
 import atsys.backtesting.engine.components.position.PositionService;
@@ -57,13 +58,9 @@ public class BacktestingContext {
         publishEvent(event);
     }
 
-
-    public void publishFill(Order order, Long filledQty, Double filledPrice) {
-        // Updates the order
-        orderService.updateOrderSuccess(order, filledQty, filledPrice);
-
-        FillEvent event = new FillEvent(order);
-        positionService.addPosition(order.getInstrument(), filledQty);
+    public void publishFill(OrderFill fill) {
+        orderService.stageOrder(fill);
+        FillEvent event = new FillEvent(fill);
         publishEvent(event);
     }
 

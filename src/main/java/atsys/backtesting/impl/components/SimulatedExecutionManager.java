@@ -2,6 +2,8 @@ package atsys.backtesting.impl.components;
 
 import atsys.backtesting.engine.components.ExecutionManager;
 import atsys.backtesting.engine.components.order.Order;
+import atsys.backtesting.engine.components.order.OrderFill;
+import atsys.backtesting.engine.components.order.OrderFillStatus;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j(topic = "SimulatedExecutionManager")
@@ -13,6 +15,7 @@ public class SimulatedExecutionManager extends ExecutionManager {
         Long filledQty = order.getQuantity();
         Double filledPrice = context.getLastTick().getLastTradedPrice();
 
-        context.publishFill(order, filledQty, filledPrice);
+        OrderFill fill = new OrderFill(order.getOrderId(), OrderFillStatus.SUCCESS, order.getOrderId());
+        context.publishFill(fill);
     }
 }

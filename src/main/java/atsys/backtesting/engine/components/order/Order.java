@@ -6,42 +6,43 @@ import lombok.Setter;
 
 import java.time.Instant;
 import java.util.Objects;
-import java.util.UUID;
 
 
 @Getter
-@Setter
 public class Order {
 
     private final String orderId;
+    @Setter
     private String exchangeOrderId;
     private final Instrument instrument;
     private final OrderType orderType = OrderType.MARKET;
     private final long quantity;
     //    private double avgExecutedPrice;
-    private OrderStatus orderStatus;
+    @Setter
+    private OrderStatus orderStatus = OrderStatus.CREATED;
     private final Instant createdAt;
     private final OrderSide orderSide;
     private final OrderValidity validity = OrderValidity.DAY;
 //    private final String traderId;
 //    private final String brokerId;
 
-    Order(Instrument instrument, long quantity, OrderSide orderSide) {
+    Order(String orderId, Instrument instrument, long quantity, OrderSide orderSide) {
         this.instrument = instrument;
         this.quantity = quantity;
         this.orderSide = orderSide;
         this.createdAt = Instant.now();
-        this.orderId = UUID.randomUUID().toString();
+        this.orderId = orderId;
     }
 
     @Override
     public String toString() {
         return this.getClass().getSimpleName()
                 + "{"
-                + String.join(", ",
-                        instrument.toString(),
-                        orderSide.toString(),
-                        String.valueOf(quantity))
+                + "id=" + orderId
+                + ",sym=" + instrument
+                + ",qty=" + quantity
+                + ","+ orderSide
+                + ",status=" +orderStatus
                 + "}";
     }
 

@@ -38,6 +38,6 @@ public class NoobPortfolioManager extends PortfolioManager {
     @Override
     public void onTrade(Trade trade) {
         log.info("tick: {}, processing trade: {}", context.getLastTick().getLastTradedPrice(), trade);
-        orderService.processTrade(trade);
+        orderService.addTradeToOrder(trade);
     }
 }

@@ -1,10 +1,13 @@
 package atsys.backtesting.engine.components.order;
 
 import atsys.backtesting.engine.components.asset.Instrument;
+import atsys.backtesting.engine.components.trade.Trade;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -25,6 +28,7 @@ public class Order {
     private final OrderValidity validity = OrderValidity.DAY;
 //    private final String traderId;
 //    private final String brokerId;
+    private List<Trade> trades = new LinkedList<>();
 
     Order(String orderId, Instrument instrument, long quantity, OrderSide orderSide) {
         this.instrument = instrument;
@@ -57,5 +61,9 @@ public class Order {
     @Override
     public int hashCode() {
         return Objects.hashCode(orderId);
+    }
+
+    public void addTrade(Trade trade){
+        trades.add(trade);
     }
 }

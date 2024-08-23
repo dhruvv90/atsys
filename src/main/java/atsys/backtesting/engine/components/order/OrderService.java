@@ -67,7 +67,9 @@ public class OrderService {
         order.setOrderStatus(OrderStatus.STAGED);
     }
 
-    public void processTrade(Trade trade) {
-        // process trade
+    public void addTradeToOrder(Trade trade) {
+        String orderId = trade.getOrderId();
+        Order order = getOrderOrThrow(orderId);
+        order.addTrade(trade);
     }
 }

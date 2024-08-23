@@ -17,7 +17,7 @@ import java.util.Optional;
 public class SmaStrategy extends Strategy<SimpleTickData> {
     private Decimal movingAverage;
     private final Deque<Decimal> storage;
-    private static final int period = 10;
+    private static final int PERIOD = 10;
 
     public SmaStrategy() {
         this.storage = new LinkedList<>();
@@ -29,7 +29,7 @@ public class SmaStrategy extends Strategy<SimpleTickData> {
         Decimal price = tickData.getLastTradedPrice();
         Instrument instrument = tickData.getInstrument();
 
-        if (storage.size() < period) {
+        if (storage.size() < PERIOD) {
             storage.addLast(price);
             movingAverage = ((movingAverage.multiply(storage.size() - 1)).add(price))
                     .divide(storage.size());

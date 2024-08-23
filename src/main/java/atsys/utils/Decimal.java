@@ -7,9 +7,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Objects;
 
+@Getter
 public class Decimal {
 
-    @Getter
     private final BigDecimal value;
     private static final int DEFAULT_SCALE = 6;
     private static final RoundingMode DEFAULT_ROUNDING_MODE = RoundingMode.HALF_EVEN;

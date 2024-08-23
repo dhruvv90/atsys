@@ -33,7 +33,7 @@ public class Order {
     private final OrderValidity validity;
 //    private final String traderId;
 //    private final String brokerId;
-    private List<Trade> trades = new LinkedList<>();
+    private final List<Trade> trades = new LinkedList<>();
 
     Order(String orderId, Instrument instrument, long totalQty, OrderSide orderSide) {
         this.instrument = instrument;

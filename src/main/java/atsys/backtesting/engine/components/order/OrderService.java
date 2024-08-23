@@ -1,6 +1,7 @@
 package atsys.backtesting.engine.components.order;
 
 import atsys.backtesting.engine.components.asset.Instrument;
+import atsys.backtesting.engine.components.trade.Trade;
 import atsys.backtesting.engine.exception.InvalidParameterException;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -64,5 +65,9 @@ public class OrderService {
     public void stageOrder(OrderFill fill){
         Order order = getOrderOrThrow(fill.getOrderId());
         order.setOrderStatus(OrderStatus.STAGED);
+    }
+
+    public void processTrade(Trade trade) {
+        // process trade
     }
 }

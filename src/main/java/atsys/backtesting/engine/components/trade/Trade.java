@@ -15,22 +15,22 @@ public class Trade {
     private final Instrument instrument;
     private final long quantity;
     private final double avgPrice;
-    private final String exchangeMessage;
+    private final TradeType tradeType;
 
     // Constructor managed by the Builder
-    Trade(
+    public Trade(
             String tradeId,
             String orderId,
             Instrument instrument,
             long quantity,
             double avgPrice,
-            String exchangeMessage) {
+            TradeType tradeType) {
         this.tradeId = tradeId;
         this.orderId = orderId;
         this.instrument = instrument;
         this.quantity = quantity;
         this.avgPrice = avgPrice;
-        this.exchangeMessage = exchangeMessage;
+        this.tradeType= tradeType;
     }
 
     @Override
@@ -39,6 +39,7 @@ public class Trade {
                 + "{"
                 + "id=" + tradeId
                 + ",sym=" + instrument
+                + ",type=" + tradeType
                 + ",qty=" + quantity
                 + ",price=" + avgPrice
                 + "}";

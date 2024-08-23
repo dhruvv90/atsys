@@ -6,6 +6,7 @@ import atsys.backtesting.engine.components.order.OrderFill;
 import atsys.backtesting.engine.components.position.Position;
 import atsys.backtesting.engine.components.signal.Signal;
 import atsys.backtesting.engine.components.signal.SignalType;
+import atsys.backtesting.engine.components.trade.Trade;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j(topic = "NoobPortfolioManager")
@@ -32,5 +33,11 @@ public class NoobPortfolioManager extends PortfolioManager {
     public void onFill(OrderFill fill) {
         log.info("tick: {}, processing fill: {}", context.getLastTick().getLastTradedPrice(), fill);
         orderService.processOrderFill(fill);
+    }
+
+    @Override
+    public void onTrade(Trade trade) {
+        log.info("tick: {}, processing trade: {}", context.getLastTick().getLastTradedPrice(), trade);
+        orderService.processTrade(trade);
     }
 }

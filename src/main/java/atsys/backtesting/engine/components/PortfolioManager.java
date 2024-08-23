@@ -3,6 +3,7 @@ package atsys.backtesting.engine.components;
 import atsys.backtesting.engine.components.order.OrderFill;
 import atsys.backtesting.engine.components.order.OrderService;
 import atsys.backtesting.engine.components.signal.Signal;
+import atsys.backtesting.engine.components.trade.Trade;
 import lombok.Setter;
 
 @Setter
@@ -11,5 +12,6 @@ public abstract class PortfolioManager extends LifecycleManager {
 
     public abstract void onSignal(Signal signal);
     public abstract void onFill(OrderFill fill);
+    public abstract void onTrade(Trade trade);
 
 }

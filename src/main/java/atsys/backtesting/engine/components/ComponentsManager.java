@@ -4,10 +4,7 @@ import atsys.backtesting.engine.*;
 import atsys.backtesting.engine.components.order.OrderService;
 import atsys.backtesting.engine.components.position.PositionService;
 import atsys.backtesting.engine.events.*;
-import atsys.backtesting.engine.events.listeners.FillEventListener;
-import atsys.backtesting.engine.events.listeners.OrderEventListener;
-import atsys.backtesting.engine.events.listeners.SignalEventListener;
-import atsys.backtesting.engine.events.listeners.TickEventListener;
+import atsys.backtesting.engine.events.listeners.*;
 import atsys.backtesting.engine.exception.InitializationException;
 import lombok.Getter;
 
@@ -106,6 +103,7 @@ public class ComponentsManager {
             // Event Registration
             eventManager.register(SignalEvent.class, new SignalEventListener(portfolioManager));
             eventManager.register(FillEvent.class, new FillEventListener(portfolioManager));
+            eventManager.register(TradeEvent.class, new TradeEventListener(portfolioManager));
         } catch (Exception e) {
             throw new InitializationException(e);
         }

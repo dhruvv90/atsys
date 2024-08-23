@@ -9,10 +9,8 @@ import atsys.backtesting.engine.components.position.Position;
 import atsys.backtesting.engine.components.position.PositionService;
 import atsys.backtesting.engine.components.signal.Signal;
 import atsys.backtesting.engine.components.signal.SignalType;
-import atsys.backtesting.engine.events.Event;
-import atsys.backtesting.engine.events.FillEvent;
-import atsys.backtesting.engine.events.OrderEvent;
-import atsys.backtesting.engine.events.SignalEvent;
+import atsys.backtesting.engine.components.trade.Trade;
+import atsys.backtesting.engine.events.*;
 import lombok.Getter;
 
 import java.util.Optional;
@@ -64,6 +62,11 @@ public class BacktestingContext {
         publishEvent(event);
     }
 
+    public void publishTrade(Trade trade) {
+        TradeEvent event = new TradeEvent(trade);
+        publishEvent(event);
+    }
+
     public Optional<Position> getPosition(Instrument instrument) {
         return positionService.getPosition(instrument);
     }
@@ -71,4 +74,5 @@ public class BacktestingContext {
     public TickData getLastTick() {
         return queuePublisher.getLastTick();
     }
+
 }

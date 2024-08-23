@@ -14,6 +14,7 @@ import java.util.UUID;
 public class Order {
 
     private final String orderId;
+    private String exchangeOrderId;
     private final Instrument instrument;
     private final OrderType orderType = OrderType.MARKET;
     private final long quantity;
@@ -35,8 +36,13 @@ public class Order {
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() + "{" +
-                String.join(",", "orderId" + orderId, "instrument: " + instrument, "side: " + orderSide) + "}";
+        return this.getClass().getSimpleName()
+                + "{"
+                + String.join(", ",
+                        instrument.toString(),
+                        orderSide.toString(),
+                        String.valueOf(quantity))
+                + "}";
     }
 
     @Override

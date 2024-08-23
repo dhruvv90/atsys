@@ -4,45 +4,44 @@ import atsys.backtesting.engine.components.asset.Instrument;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.Instant;
 import java.util.Objects;
 
 @Getter
 @Setter
 public class Trade {
 
-    private final String exchangeTradeId;
-    private final String exchangeOrderId;
+    private final String tradeId;
+    private final String orderId;
     private final Instrument instrument;
     private final long quantity;
-    private final double price;
-    private final Instant timestamp;
+    private final double avgPrice;
     private final String exchangeMessage;
 
     // Constructor managed by the Builder
     Trade(
-            String exchangeTradeId,
-            String exchangeOrderId,
+            String tradeId,
+            String orderId,
             Instrument instrument,
             long quantity,
-            double price,
+            double avgPrice,
             String exchangeMessage) {
-        this.exchangeTradeId = exchangeTradeId;
-        this.exchangeOrderId = exchangeOrderId;
+        this.tradeId = tradeId;
+        this.orderId = orderId;
         this.instrument = instrument;
         this.quantity = quantity;
-        this.price = price;
+        this.avgPrice = avgPrice;
         this.exchangeMessage = exchangeMessage;
-        this.timestamp = Instant.now();
     }
 
     @Override
     public String toString() {
-        return String.format("%s{%s, qty=%d, price=%.2f}",
-                this.getClass().getSimpleName(),
-                instrument.getName(),
-                quantity,
-                price);
+        return this.getClass().getSimpleName()
+                + "{"
+                + "id=" + tradeId
+                + ",sym=" + instrument
+                + ",qty=" + quantity
+                + ",price=" + avgPrice
+                + "}";
     }
 
     @Override
@@ -50,11 +49,11 @@ public class Trade {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Trade trade = (Trade) o;
-        return Objects.equals(exchangeTradeId, trade.exchangeTradeId);
+        return Objects.equals(tradeId, trade.tradeId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(exchangeTradeId);
+        return Objects.hash(tradeId);
     }
 }

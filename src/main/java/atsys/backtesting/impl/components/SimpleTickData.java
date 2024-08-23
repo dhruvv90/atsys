@@ -14,6 +14,6 @@ public class SimpleTickData implements TickData {
     private Instant tickTimestamp;
     private Instant lastTradedTime;
     private int lastTradedQuantity;
-    private Decimal lastTradedPrice;
+    private Decimal lastTradedPrice = Decimal.ZERO;
     private Instrument instrument;
 }

@@ -1,6 +1,7 @@
 package atsys.backtesting.engine.components.trade;
 
 import atsys.backtesting.engine.components.asset.Instrument;
+import atsys.utils.Decimal;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +15,7 @@ public class Trade {
     private final String orderId;
     private final Instrument instrument;
     private final long quantity;
-    private final double avgPrice;
+    private final Decimal avgPrice;
     private final TradeType tradeType;
 
     // Constructor managed by the Builder
@@ -23,7 +24,7 @@ public class Trade {
             String orderId,
             Instrument instrument,
             long quantity,
-            double avgPrice,
+            Decimal avgPrice,
             TradeType tradeType) {
         this.tradeId = tradeId;
         this.orderId = orderId;

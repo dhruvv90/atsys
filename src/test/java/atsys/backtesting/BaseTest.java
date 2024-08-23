@@ -9,6 +9,7 @@ import atsys.backtesting.impl.components.SimpleDataStreamer;
 import atsys.backtesting.impl.components.SimpleTickData;
 import atsys.backtesting.impl.strategies.DummyStrategy;
 import atsys.backtesting.impl.strategies.SmaStrategy;
+import atsys.utils.Decimal;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
@@ -32,7 +33,7 @@ class BaseTest {
             backtests.add(new Backtest<>(
                     "Backtest_" + i, "",
                     "sym",
-                    1000,
+                    Decimal.valueOf(1000),
                     Instant.now(),
                     Instant.now(),
                     DummyStrategy.class, dataStreamer)
@@ -67,7 +68,7 @@ class BaseTest {
             backtests.add(new Backtest<>(
                     "Backtest_" + i, "",
                     "sym",
-                    1000,
+                    Decimal.valueOf(1000),
                     Instant.now(),
                     Instant.now(),
                     DummyStrategy.class, dataStreamer)
@@ -99,7 +100,7 @@ class BaseTest {
         Backtest<SimpleTickData> backtest =  new Backtest<>(
                 "Bt SmaStrategy", "",
                 "sym",
-                1000,
+                Decimal.valueOf(1000),
                 Instant.now(),
                 Instant.now(),
                 SmaStrategy.class, dataStreamer);

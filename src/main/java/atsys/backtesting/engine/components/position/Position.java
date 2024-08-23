@@ -1,6 +1,7 @@
 package atsys.backtesting.engine.components.position;
 
 import atsys.backtesting.engine.components.asset.Instrument;
+import atsys.utils.Decimal;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,16 +13,16 @@ public class Position {
     private long quantity;
 
     @Setter
-    private double averagePrice;
+    private Decimal averagePrice;
 
     @Setter
-    private double lastTradedPrice;
+    private Decimal lastTradedPrice;
 
     @Setter
-    private double pnl;
+    private Decimal pnl;
 
     @Setter
-    private double percentageChange;
+    private Decimal percentageChange;
 
     Position(Instrument instrument){
         this.instrument = instrument;

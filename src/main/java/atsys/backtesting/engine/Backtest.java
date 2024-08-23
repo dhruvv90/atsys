@@ -3,6 +3,7 @@ package atsys.backtesting.engine;
 import atsys.backtesting.engine.components.*;
 import atsys.backtesting.impl.components.NoobPortfolioManager;
 import atsys.backtesting.impl.components.SimulatedExecutionManager;
+import atsys.utils.Decimal;
 import lombok.Getter;
 
 import java.time.Instant;
@@ -12,7 +13,7 @@ public class Backtest<T extends TickData> {
     private final String name;
     private final String description;
     private final String symbol;
-    private final double initialCapital;
+    private final Decimal initialCapital;
     private final Instant startDateTime;
     private final Instant endDateTime;
     private final Instant createdAt;
@@ -25,7 +26,7 @@ public class Backtest<T extends TickData> {
 
     public Backtest(String name,
                     String description, String symbol,
-                    double initialCapital, Instant startDateTime, Instant endDateTime,
+                    Decimal initialCapital, Instant startDateTime, Instant endDateTime,
                     Class<? extends Strategy<T>> strategyClazz,
                      Class<? extends PortfolioManager> portfolioClazz, Class<? extends ExecutionManager> executionMgrClazz,
                     DataStreamer<T> dataStreamer
@@ -45,7 +46,7 @@ public class Backtest<T extends TickData> {
 
     public Backtest(String name,
                     String description, String symbol,
-                    double initialCapital, Instant startDateTime, Instant endDateTime,
+                    Decimal initialCapital, Instant startDateTime, Instant endDateTime,
                     Class<? extends Strategy<T>> strategyClazz,  DataStreamer<T> dataStreamer) {
         this(name, description, symbol, initialCapital, startDateTime, endDateTime, strategyClazz,
                 NoobPortfolioManager.class, SimulatedExecutionManager.class, dataStreamer );

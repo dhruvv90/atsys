@@ -7,6 +7,7 @@ import atsys.backtesting.engine.components.order.OrderFillStatus;
 import atsys.backtesting.engine.components.order.OrderSide;
 import atsys.backtesting.engine.components.trade.Trade;
 import atsys.backtesting.engine.components.trade.TradeType;
+import atsys.utils.Decimal;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.UUID;
@@ -18,7 +19,7 @@ public class SimulatedExecutionManager extends ExecutionManager {
     public void processOrder(Order order) {
         log.info("tick {}, processing {}", context.getLastTick().getLastTradedPrice(), order);
         Long filledQty = order.getQuantity();
-        Double filledPrice = context.getLastTick().getLastTradedPrice();
+        Decimal filledPrice = context.getLastTick().getLastTradedPrice();
 
         OrderFill fill = new OrderFill(order.getOrderId(), OrderFillStatus.SUCCESS, order.getOrderId());
         context.publishFill(fill);

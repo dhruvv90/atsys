@@ -8,6 +8,7 @@ import atsys.backtesting.engine.exception.InitializationException;
 import atsys.utils.CsvReader;
 import atsys.utils.CsvRow;
 import atsys.utils.DatetimeUtils;
+import atsys.utils.Decimal;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class NseHistDataStreamer implements DataStreamer<SimpleTickData> {
     private SimpleTickData transform(CsvRow data) {
         SimpleTickData result = new SimpleTickData();
         result.setInstrument(new Equity(data.getToken(0)));
-        result.setLastTradedPrice(Double.parseDouble(data.getToken(7)));
+        result.setLastTradedPrice(Decimal.valueOf(data.getToken(7)));
         result.setTickTimestamp(DatetimeUtils.parseInstant(data.getToken(2), "dd-MMM-yyyy"));
         return result;
     }

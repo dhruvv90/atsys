@@ -4,6 +4,7 @@ import atsys.backtesting.engine.components.DataStreamer;
 import atsys.backtesting.engine.components.asset.Equity;
 import atsys.backtesting.engine.exception.DataStreamingException;
 import atsys.backtesting.engine.Backtest;
+import atsys.utils.Decimal;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.Instant;
@@ -34,7 +35,7 @@ public class SimpleDataStreamer implements DataStreamer<SimpleTickData> {
             data.setInstrument(new Equity("testSymbol"));
             data.setTickTimestamp(Instant.now());
             data.setLastTradedTime(Instant.now());
-            data.setLastTradedPrice(Math.random() + Math.random() * 100);
+            data.setLastTradedPrice(Decimal.valueOf(Math.random() + Math.random() * 100));
             result.add(data);
         }
         return result;

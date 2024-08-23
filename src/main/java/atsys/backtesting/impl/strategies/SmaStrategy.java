@@ -3,8 +3,9 @@ package atsys.backtesting.impl.strategies;
 import atsys.backtesting.engine.components.Strategy;
 import atsys.backtesting.engine.components.asset.Instrument;
 import atsys.backtesting.engine.components.position.Position;
-import atsys.backtesting.impl.components.SimpleTickData;
 import atsys.backtesting.engine.components.signal.SignalType;
+import atsys.backtesting.impl.components.SimpleTickData;
+import atsys.utils.Decimal;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Deque;
@@ -14,28 +15,31 @@ import java.util.Optional;
 
 @Slf4j(topic = "Strategy")
 public class SmaStrategy extends Strategy<SimpleTickData> {
-    private double movingAverage;
-    private final Deque<Double> storage;
+    private Decimal movingAverage;
+    private final Deque<Decimal> storage;
     private static final int period = 10;
 
-    public SmaStrategy(){
+    public SmaStrategy() {
         this.storage = new LinkedList<>();
-
+        this.movingAverage = Decimal.ZERO;
     }
 
     @Override
     public void handleTick(SimpleTickData tickData) {
-        double price = tickData.getLastTradedPrice();
+        Decimal price = tickData.getLastTradedPrice();
         Instrument instrument = tickData.getInstrument();
 
-        if(storage.size() < period){
+        if (storage.size() < period) {
             storage.addLast(price);
-            movingAverage = ((movingAverage * (storage.size() - 1)) + price) / storage.size();
-            log.info("price : "+ price + ", no trade!");
+            movingAverage = ((movingAverage.multiply(storage.size() - 1)).add(price))
+                    .divide(storage.size());
+
+            log.info("price : " + price + ", no trade!");
             return;
         }
         else{
-            movingAverage = ((movingAverage * storage.size()) - storage.pollFirst() + price) / (storage.size() + 1);
+            movingAverage = ((movingAverage.multiply(storage.size())).subtract(storage.pollFirst()).add(price))
+                    .divide((storage.size() + 1));
             storage.addLast(price);
         }
 
@@ -43,10 +47,9 @@ public class SmaStrategy extends Strategy<SimpleTickData> {
         long currQty = currentPos.map(Position::getQuantity).orElse(0L);
 
 
-        if(currQty <= 0 && price >= movingAverage){
+        if (currQty <= 0 && price.compareTo(movingAverage) >= 0) {
             context.publishSignal(instrument, SignalType.BUY);
-        }
-        else if(currQty >0 && price < movingAverage){
+        } else if (currQty > 0 && price.compareTo(movingAverage) < 0) {
             context.publishSignal(instrument, SignalType.SELL);
         }
         log.info("price : " + price + ", ma: " + movingAverage);

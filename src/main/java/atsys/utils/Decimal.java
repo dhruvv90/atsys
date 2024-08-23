@@ -13,6 +13,7 @@ public class Decimal {
     private final BigDecimal value;
     private static final int DEFAULT_SCALE = 6;
     private static final RoundingMode DEFAULT_ROUNDING_MODE = RoundingMode.HALF_EVEN;
+    public static final Decimal ZERO = Decimal.valueOf(0);
 
     // Constructors
     private Decimal(BigDecimal value) {
@@ -111,6 +112,14 @@ public class Decimal {
 
     public Decimal divide(int divisor) {
         return divide(Decimal.valueOf(divisor));
+    }
+
+    public int compareTo(double other){
+        return value.compareTo(Decimal.valueOf(other).value);
+    }
+
+    public int compareTo(Decimal other){
+        return value.compareTo(other.value);
     }
 
     @Override

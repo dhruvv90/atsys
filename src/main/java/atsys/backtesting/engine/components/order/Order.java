@@ -1,7 +1,7 @@
 package atsys.backtesting.engine.components.order;
 
 import atsys.backtesting.engine.components.asset.Instrument;
-import atsys.backtesting.engine.components.trade.Trade;
+import atsys.backtesting.engine.components.portfolio.Trade;
 import atsys.utils.Decimal;
 import lombok.Getter;
 import lombok.Setter;

@@ -3,7 +3,7 @@ package atsys.backtesting.engine.components;
 import atsys.backtesting.engine.components.order.OrderFill;
 import atsys.backtesting.engine.components.order.OrderService;
 import atsys.backtesting.engine.components.signal.Signal;
-import atsys.backtesting.engine.components.trade.Trade;
+import atsys.backtesting.engine.components.portfolio.Trade;
 import lombok.Setter;
 
 @Setter

@@ -3,10 +3,10 @@ package atsys.backtesting.impl.components;
 import atsys.backtesting.engine.components.PortfolioManager;
 import atsys.backtesting.engine.components.asset.Instrument;
 import atsys.backtesting.engine.components.order.OrderFill;
-import atsys.backtesting.engine.components.position.Position;
+import atsys.backtesting.engine.components.portfolio.Position;
 import atsys.backtesting.engine.components.signal.Signal;
 import atsys.backtesting.engine.components.signal.SignalType;
-import atsys.backtesting.engine.components.trade.Trade;
+import atsys.backtesting.engine.components.portfolio.Trade;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j(topic = "NoobPortfolioManager")

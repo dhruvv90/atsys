@@ -5,11 +5,11 @@ import atsys.backtesting.engine.components.asset.Instrument;
 import atsys.backtesting.engine.components.order.Order;
 import atsys.backtesting.engine.components.order.OrderFill;
 import atsys.backtesting.engine.components.order.OrderService;
-import atsys.backtesting.engine.components.position.Position;
-import atsys.backtesting.engine.components.position.PositionService;
+import atsys.backtesting.engine.components.portfolio.Position;
+import atsys.backtesting.engine.components.portfolio.PositionService;
 import atsys.backtesting.engine.components.signal.Signal;
 import atsys.backtesting.engine.components.signal.SignalType;
-import atsys.backtesting.engine.components.trade.Trade;
+import atsys.backtesting.engine.components.portfolio.Trade;
 import atsys.backtesting.engine.events.*;
 import lombok.Getter;
 

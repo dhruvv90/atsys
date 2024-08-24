@@ -1,6 +1,6 @@
 package atsys.backtesting.engine.events;
 
-import atsys.backtesting.engine.components.trade.Trade;
+import atsys.backtesting.engine.components.portfolio.Trade;
 import lombok.Getter;
 
 @Getter

@@ -5,8 +5,8 @@ import atsys.backtesting.engine.components.order.Order;
 import atsys.backtesting.engine.components.order.OrderFill;
 import atsys.backtesting.engine.components.order.OrderFillStatus;
 import atsys.backtesting.engine.components.order.OrderSide;
-import atsys.backtesting.engine.components.trade.Trade;
-import atsys.backtesting.engine.components.trade.TradeType;
+import atsys.backtesting.engine.components.portfolio.Trade;
+import atsys.backtesting.engine.components.portfolio.TradeType;
 import atsys.utils.Decimal;
 import lombok.extern.slf4j.Slf4j;
 

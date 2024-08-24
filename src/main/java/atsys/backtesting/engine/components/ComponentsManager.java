@@ -2,7 +2,7 @@ package atsys.backtesting.engine.components;
 
 import atsys.backtesting.engine.*;
 import atsys.backtesting.engine.components.order.OrderService;
-import atsys.backtesting.engine.components.position.PositionService;
+import atsys.backtesting.engine.components.portfolio.PositionService;
 import atsys.backtesting.engine.events.*;
 import atsys.backtesting.engine.events.listeners.*;
 import atsys.backtesting.engine.exception.InitializationException;

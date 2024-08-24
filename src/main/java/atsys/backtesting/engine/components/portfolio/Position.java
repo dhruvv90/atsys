@@ -1,4 +1,4 @@
-package atsys.backtesting.engine.components.position;
+package atsys.backtesting.engine.components.portfolio;
 
 import atsys.backtesting.engine.components.asset.Instrument;
 import atsys.utils.Decimal;

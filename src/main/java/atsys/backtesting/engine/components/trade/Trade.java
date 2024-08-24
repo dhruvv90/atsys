@@ -3,13 +3,14 @@ package atsys.backtesting.engine.components.trade;
 import atsys.backtesting.engine.components.asset.Instrument;
 import atsys.utils.Decimal;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.Objects;
 
+/**
+ * Immutable class
+ */
 @Getter
-@Setter
-public class Trade {
+public final class Trade {
 
     private final String tradeId;
     private final String orderId;

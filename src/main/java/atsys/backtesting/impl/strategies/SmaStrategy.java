@@ -34,11 +34,11 @@ public class SmaStrategy extends Strategy<SimpleTickData> {
             movingAverage = ((movingAverage.multiply(storage.size() - 1)).add(price))
                     .divide(storage.size());
 
-            log.info("price : " + price + ", no trade!");
+            log.info("price : {}, no trade!", price);
             return;
         }
         else{
-            movingAverage = ((movingAverage.multiply(storage.size())).subtract(storage.pollFirst()).add(price))
+            movingAverage = movingAverage.multiply(storage.size()).subtract(storage.pollFirst()).add(price)
                     .divide((storage.size() + 1));
             storage.addLast(price);
         }
@@ -52,6 +52,6 @@ public class SmaStrategy extends Strategy<SimpleTickData> {
         } else if (currQty > 0 && price.compareTo(movingAverage) < 0) {
             context.publishSignal(instrument, SignalType.SELL);
         }
-        log.info("price : " + price + ", ma: " + movingAverage);
+        log.info("price : {}, ma: {}", price, movingAverage);
     }
 }

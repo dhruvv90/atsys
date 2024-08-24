@@ -8,7 +8,6 @@ import atsys.backtesting.engine.components.order.OrderService;
 import atsys.backtesting.engine.components.portfolio.Position;
 import atsys.backtesting.engine.components.portfolio.PositionService;
 import atsys.backtesting.engine.components.signal.Signal;
-import atsys.backtesting.engine.components.signal.SignalType;
 import atsys.backtesting.engine.components.portfolio.Trade;
 import atsys.backtesting.engine.events.*;
 import lombok.Getter;
@@ -44,14 +43,14 @@ public class BacktestingContext {
         queuePublisher.publishEvent(event);
     }
 
-    public void publishOrder(Instrument instrument, Long quantity) {
-        Order order = orderService.createOrder(instrument, quantity);
+    public void publishOrder(Instrument instrument, Long quantity, boolean isBuy) {
+        Order order = orderService.createOrder(instrument, quantity, isBuy);
         OrderEvent event = new OrderEvent(order);
         publishEvent(event);
     }
 
-    public void publishSignal(Instrument instrument, SignalType signalType) {
-        Signal signal = new Signal(instrument, signalType);
+    public void publishSignal(Instrument instrument, boolean isBuy) {
+        Signal signal = new Signal(instrument, isBuy);
         SignalEvent event = new SignalEvent(signal);
         publishEvent(event);
     }

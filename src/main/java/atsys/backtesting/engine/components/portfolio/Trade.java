@@ -2,6 +2,7 @@ package atsys.backtesting.engine.components.portfolio;
 
 import atsys.backtesting.engine.components.asset.Instrument;
 import atsys.utils.Decimal;
+import atsys.utils.StringUtils;
 import lombok.Getter;
 
 import java.util.Objects;
@@ -17,7 +18,7 @@ public final class Trade {
     private final Instrument instrument;
     private final long quantity;
     private final Decimal avgPrice;
-    private final TradeType tradeType;
+    private final boolean isBuy;
     private final Decimal tradeValue;
 
     // Constructor managed by the Builder
@@ -27,13 +28,13 @@ public final class Trade {
             Instrument instrument,
             long quantity,
             Decimal avgPrice,
-            TradeType tradeType) {
+            boolean isBuy) {
         this.tradeId = tradeId;
         this.orderId = orderId;
         this.instrument = instrument;
         this.quantity = quantity;
         this.avgPrice = avgPrice;
-        this.tradeType= tradeType;
+        this.isBuy = isBuy;
         this.tradeValue = avgPrice.multiply(quantity);
     }
 
@@ -43,7 +44,7 @@ public final class Trade {
                 + "{"
                 + "id=" + tradeId
                 + ",sym=" + instrument
-                + ",type=" + tradeType
+                + ",type=" + StringUtils.getDirectionText(isBuy)
                 + ",qty=" + quantity
                 + ",price=" + avgPrice
                 + "}";

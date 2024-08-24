@@ -2,7 +2,6 @@ package atsys.backtesting.impl.strategies;
 
 import atsys.backtesting.engine.components.Strategy;
 import atsys.backtesting.impl.components.SimpleTickData;
-import atsys.backtesting.engine.components.signal.SignalType;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -21,7 +20,7 @@ public class DummyStrategy extends Strategy<SimpleTickData> {
         counter++;
 
         if(counter % 5 == 0){
-            context.publishSignal(tickData.getInstrument(), SignalType.BUY);
+            context.publishSignal(tickData.getInstrument(), true);
         }
     }
 }

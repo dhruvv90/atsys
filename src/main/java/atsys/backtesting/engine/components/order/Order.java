@@ -3,6 +3,7 @@ package atsys.backtesting.engine.components.order;
 import atsys.backtesting.engine.components.asset.Instrument;
 import atsys.backtesting.engine.components.portfolio.Trade;
 import atsys.utils.Decimal;
+import atsys.utils.StringUtils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,16 +30,14 @@ public class Order {
     @Setter
     private OrderStatus orderStatus;
     private final Instant createdAt;
-    private final OrderSide orderSide;
+    private final boolean isBuy;
     private final OrderValidity validity;
-//    private final String traderId;
-//    private final String brokerId;
     private final List<Trade> trades = new LinkedList<>();
 
-    Order(String orderId, Instrument instrument, long totalQty, OrderSide orderSide) {
+    Order(String orderId, Instrument instrument, long totalQty, boolean isBuy) {
         this.instrument = instrument;
         this.totalQty = totalQty;
-        this.orderSide = orderSide;
+        this.isBuy = isBuy;
         this.createdAt = Instant.now();
         this.orderId = orderId;
         validity = OrderValidity.DAY;
@@ -51,7 +50,7 @@ public class Order {
         return this.getClass().getSimpleName()
                 + "{"
                 + "id=" + orderId
-                + ","+ orderSide
+                + ","+ StringUtils.getDirectionText(isBuy)
                 + ",sym=" + instrument
                 + ",totalQty=" + totalQty
                 + ",filledQty=" + filledQty
@@ -74,7 +73,7 @@ public class Order {
 
     public void addTrade(Trade trade){
         avgPrice = avgPrice.multiply(filledQty).add(trade.getTradeValue())
-                        .divide(filledQty + trade.getQuantity());
+                        .divide((double)filledQty + trade.getQuantity());
         filledQty += trade.getQuantity();
         if(filledQty == totalQty){
             this.orderStatus = OrderStatus.COMPLETED;

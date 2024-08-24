@@ -30,12 +30,11 @@ public class OrderService {
     }
 
     @SneakyThrows
-    public Order createOrder(Instrument instrument, Long quantity) {
+    public Order createOrder(Instrument instrument, Long quantity, boolean isBuy) {
         if(quantity == 0){
             throw new InvalidParameterException("Invalid quantity: 0");
         }
-        OrderSide side = quantity > 0 ? OrderSide.BUY : OrderSide.SELL;
-        Order order = new Order(generateNewOrderId(), instrument, quantity, side);
+        Order order = new Order(generateNewOrderId(), instrument, quantity, isBuy);
         saveOrder(order);
 
         return order;

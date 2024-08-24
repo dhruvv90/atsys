@@ -3,7 +3,6 @@ package atsys.backtesting.impl.strategies;
 import atsys.backtesting.engine.components.Strategy;
 import atsys.backtesting.engine.components.asset.Instrument;
 import atsys.backtesting.engine.components.portfolio.Position;
-import atsys.backtesting.engine.components.signal.SignalType;
 import atsys.backtesting.impl.components.SimpleTickData;
 import atsys.utils.Decimal;
 import lombok.extern.slf4j.Slf4j;
@@ -48,9 +47,9 @@ public class SmaStrategy extends Strategy<SimpleTickData> {
 
 
         if (currQty <= 0 && price.compareTo(movingAverage) >= 0) {
-            context.publishSignal(instrument, SignalType.BUY);
+            context.publishSignal(instrument, true);
         } else if (currQty > 0 && price.compareTo(movingAverage) < 0) {
-            context.publishSignal(instrument, SignalType.SELL);
+            context.publishSignal(instrument, false);
         }
         log.info("price : {}, ma: {}", price, movingAverage);
     }

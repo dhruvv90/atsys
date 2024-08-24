@@ -5,7 +5,6 @@ import atsys.backtesting.engine.components.asset.Instrument;
 import atsys.backtesting.engine.components.order.OrderFill;
 import atsys.backtesting.engine.components.portfolio.Position;
 import atsys.backtesting.engine.components.signal.Signal;
-import atsys.backtesting.engine.components.signal.SignalType;
 import atsys.backtesting.engine.components.portfolio.Trade;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,12 +18,12 @@ public class NoobPortfolioManager extends PortfolioManager {
         long currPos = context.getPosition(instrument).map(Position::getQuantity).orElse(0L);
         long orderQty = 5;
 
-        if(currPos <= 0 && signal.getSignalType() == SignalType.BUY){
-            context.publishOrder(instrument, orderQty);
+        if(currPos <= 0 && signal.isBuy()){
+            context.publishOrder(instrument, orderQty, signal.isBuy());
         }
-        else if(currPos > 0 && signal.getSignalType() == SignalType.SELL){
+        else if(currPos > 0 && !signal.isBuy()){
             orderQty *= -1;
-            context.publishOrder(instrument, orderQty);
+            context.publishOrder(instrument, orderQty, signal.isBuy());
         }
         log.info("tick: {}, processing {}. currQty: {}, newOrder: {}", context.getLastTick().getLastTradedPrice(), signal, currPos, orderQty);
     }

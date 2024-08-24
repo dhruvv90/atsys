@@ -4,9 +4,7 @@ import atsys.backtesting.engine.components.ExecutionManager;
 import atsys.backtesting.engine.components.order.Order;
 import atsys.backtesting.engine.components.order.OrderFill;
 import atsys.backtesting.engine.components.order.OrderFillStatus;
-import atsys.backtesting.engine.components.order.OrderSide;
 import atsys.backtesting.engine.components.portfolio.Trade;
-import atsys.backtesting.engine.components.portfolio.TradeType;
 import atsys.utils.Decimal;
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,8 +31,7 @@ public class SimulatedExecutionManager extends ExecutionManager {
     }
 
     private void publishTrade(Order order, long quantity, Decimal price) {
-        TradeType type = order.getOrderSide().equals(OrderSide.BUY) ? TradeType.BUY : TradeType.SELL;
-        Trade trade = new Trade(UUID.randomUUID().toString(), order.getOrderId(), order.getInstrument(), quantity, price, type);
+        Trade trade = new Trade(UUID.randomUUID().toString(), order.getOrderId(), order.getInstrument(), quantity, price, order.isBuy());
         context.publishTrade(trade);
     }
 }

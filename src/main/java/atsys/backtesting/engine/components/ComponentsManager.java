@@ -98,6 +98,7 @@ public class ComponentsManager {
             portfolioManager = clazz.getDeclaredConstructor().newInstance();
 
             portfolioManager.setOrderService(orderService);
+            portfolioManager.setPositionService(positionService);
             portfolioManager.onInit(context);
 
             // Event Registration

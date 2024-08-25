@@ -22,14 +22,14 @@ public class PositionService {
     }
 
     public void addPosition(Instrument instrument, Long quantity){
-        if(positionMap.containsKey(instrument)){
-            Position pos = positionMap.get(instrument);
-            pos.setQuantity(pos.getQuantity() + quantity);
-            return;
-        }
-        Position pos = new Position(instrument);
-        pos.setQuantity(quantity);
-        positionMap.put(instrument, pos);
+//        if(positionMap.containsKey(instrument)){
+//            Position pos = positionMap.get(instrument);
+//            pos.setQuantity(pos.getQuantity() + quantity);
+//            return;
+//        }
+//        Position pos = new Position(instrument);
+//        pos.setQuantity(quantity);
+//        positionMap.put(instrument, pos);
     }
 
 }

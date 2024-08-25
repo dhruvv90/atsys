@@ -15,15 +15,14 @@ public class NoobPortfolioManager extends PortfolioManager {
     @Override
     public void onSignal(Signal signal) {
         Instrument instrument = signal.getInstrument();
-        long currPos = context.getPosition(instrument).map(Position::getQuantity).orElse(0L);
+        long currPos = positionService.getPosition(instrument).map(Position::getQuantity).orElse(0L);
         long orderQty = 5;
 
         if(currPos <= 0 && signal.isBuy()){
-            context.publishOrder(instrument, orderQty, signal.isBuy());
+            context.publishOrder(instrument, orderQty, true);
         }
         else if(currPos > 0 && !signal.isBuy()){
-            orderQty *= -1;
-            context.publishOrder(instrument, orderQty, signal.isBuy());
+            context.publishOrder(instrument, orderQty, false);
         }
         log.info("tick: {}, processing {}. currQty: {}, newOrder: {}", context.getLastTick().getLastTradedPrice(), signal, currPos, orderQty);
     }

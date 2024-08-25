@@ -48,13 +48,13 @@ public class Order {
     @Override
     public String toString() {
         return this.getClass().getSimpleName()
-                + "{"
-                + "id=" + orderId
-                + ","+ StringUtils.getDirectionText(isBuy)
-                + ",sym=" + instrument
-                + ",totalQty=" + totalQty
-                + ",filledQty=" + filledQty
-                + ",status=" +orderStatus
+                + " {"
+                + ", id=" + instrument
+                + StringUtils.getDirectionText(isBuy)
+                + ", " + instrument
+                + ", qty=" + totalQty
+                + ", filled=" + filledQty
+                + ", " +orderStatus
                 + "}";
     }
 

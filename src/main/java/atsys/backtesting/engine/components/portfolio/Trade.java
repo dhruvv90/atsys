@@ -41,12 +41,11 @@ public final class Trade {
     @Override
     public String toString() {
         return this.getClass().getSimpleName()
-                + "{"
-                + "id=" + tradeId
-                + ",sym=" + instrument
-                + ",type=" + StringUtils.getDirectionText(isBuy)
-                + ",qty=" + quantity
-                + ",price=" + avgPrice
+                + " {"
+                + instrument
+                + ", " + StringUtils.getDirectionText(isBuy)
+                + ", qty=" + quantity
+                + ", price=" + avgPrice
                 + "}";
     }
 

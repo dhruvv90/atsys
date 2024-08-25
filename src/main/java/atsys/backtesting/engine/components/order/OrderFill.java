@@ -18,9 +18,9 @@ public class OrderFill {
     @Override
     public String toString() {
         return this.getClass().getSimpleName()
-                + "{"
+                + " {"
                 + "orderId=" + orderId
-                + ",status=" + orderFillStatus
+                + ", status=" + orderFillStatus
                 + "}";
     }
 }

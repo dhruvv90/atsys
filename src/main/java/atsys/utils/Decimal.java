@@ -156,7 +156,7 @@ public class Decimal {
 
     public boolean equals(Decimal o) {
         return Objects.equals(value, o.value) ||
-                value.subtract(o.value).compareTo(BigDecimal.valueOf(Math.pow(10, -EQUALITY_SCALE))) < 0;
+                Decimal.abs(this.subtract(o)).compareTo(Math.pow(10, -EQUALITY_SCALE)) < 0;
     }
 
 

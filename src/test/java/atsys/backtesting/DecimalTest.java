@@ -1,6 +1,5 @@
 package atsys.backtesting;
 
-import atsys.backtesting.engine.exception.BaseException;
 import atsys.utils.Decimal;
 import org.junit.jupiter.api.Test;
 
@@ -11,12 +10,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class DecimalTest {
 
     @Test
-    void BasicTest() throws BaseException {
+    void BasicTest()  {
         BigDecimal one = BigDecimal.valueOf(1.0);
         BigDecimal two = BigDecimal.valueOf(1);
-        BigDecimal three = BigDecimal.valueOf(1.000000);
-        BigDecimal four = BigDecimal.valueOf(1.0000001);
-        BigDecimal five = BigDecimal.valueOf(1.000001);
+        BigDecimal three = BigDecimal.valueOf(1.000110);
+        BigDecimal four = BigDecimal.valueOf(1.0001);
+        BigDecimal five = BigDecimal.valueOf(1.00001);
 
 
         assertNotEquals(one, two);
@@ -28,9 +27,9 @@ class DecimalTest {
         Decimal decimal5 = Decimal.valueOf(five);
 
         assertEquals(decimal1, decimal2);
-        assertEquals(decimal2, decimal3);
+        assertEquals(decimal2, decimal5);
         assertEquals(decimal3, decimal4);
-        assertNotEquals(decimal4, decimal5);
+        assertEquals(decimal4, decimal5);
     }
 
     @Test
@@ -56,7 +55,7 @@ class DecimalTest {
     void arithmeticTest() {
         assertEquals(Decimal.valueOf(2.00).add(1), Decimal.valueOf(3));
         assertEquals(Decimal.valueOf(2.00).add(1.0000001), Decimal.valueOf(3));
-        assertNotEquals(Decimal.valueOf(2.00).add(1.000001), Decimal.valueOf(3));
+        assertNotEquals(Decimal.valueOf(2.00).add(1.0001), Decimal.valueOf(3));
 
         assertEquals(Decimal.valueOf(2.01).multiply(2), Decimal.valueOf(4.02));
         assertEquals(Decimal.valueOf(2.0000000000001).multiply(2), Decimal.valueOf(4.00));

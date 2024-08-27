@@ -27,14 +27,13 @@ public final class Trade {
             String orderId,
             Instrument instrument,
             long quantity,
-            Decimal avgPrice,
-            boolean isBuy) {
+            Decimal avgPrice) {
         this.tradeId = tradeId;
         this.orderId = orderId;
         this.instrument = instrument;
         this.quantity = quantity;
         this.avgPrice = avgPrice;
-        this.isBuy = isBuy;
+        this.isBuy = this.quantity > 0;
         this.tradeValue = avgPrice.multiply(quantity);
     }
 

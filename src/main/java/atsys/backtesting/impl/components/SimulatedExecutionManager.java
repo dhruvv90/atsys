@@ -31,7 +31,7 @@ public class SimulatedExecutionManager extends ExecutionManager {
     }
 
     private void publishTrade(Order order, long quantity, Decimal price) {
-        Trade trade = new Trade(UUID.randomUUID().toString(), order.getOrderId(), order.getInstrument(), quantity, price, order.isBuy());
+        Trade trade = new Trade(UUID.randomUUID().toString(), order.getOrderId(), order.getInstrument(), quantity, price);
         context.publishTrade(trade);
     }
 }

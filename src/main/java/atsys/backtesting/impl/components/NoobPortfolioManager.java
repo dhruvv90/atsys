@@ -19,10 +19,10 @@ public class NoobPortfolioManager extends PortfolioManager {
         long orderQty = 5;
 
         if(currPos <= 0 && signal.isBuy()){
-            context.publishOrder(instrument, orderQty, true);
+            context.publishOrder(instrument, orderQty);
         }
         else if(currPos > 0 && !signal.isBuy()){
-            context.publishOrder(instrument, orderQty, false);
+            context.publishOrder(instrument, -orderQty);
         }
         log.info("tick: {}, processing {}. currQty: {}, newOrder: {}", context.getLastTick().getLastTradedPrice(), signal, currPos, orderQty);
     }

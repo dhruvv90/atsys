@@ -34,10 +34,10 @@ public class Order {
     private final OrderValidity validity;
     private final List<Trade> trades = new LinkedList<>();
 
-    Order(String orderId, Instrument instrument, long totalQty, boolean isBuy) {
+    Order(String orderId, Instrument instrument, long totalQty) {
         this.instrument = instrument;
         this.totalQty = totalQty;
-        this.isBuy = isBuy;
+        this.isBuy = totalQty > 0;
         this.createdAt = Instant.now();
         this.orderId = orderId;
         validity = OrderValidity.DAY;

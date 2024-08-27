@@ -12,6 +12,7 @@ public class Decimal {
 
     private final BigDecimal value;
     private static final int DEFAULT_SCALE = 6;
+    private static final int EQUALITY_SCALE = 4;
     private static final RoundingMode DEFAULT_ROUNDING_MODE = RoundingMode.HALF_EVEN;
     public static final Decimal ZERO = Decimal.valueOf(0);
 
@@ -122,6 +123,20 @@ public class Decimal {
         return value.compareTo(other.value);
     }
 
+    public static Decimal abs(Decimal other){
+        if(other.compareTo(ZERO) >= 0){
+            return other;
+        }
+        return other.multiply(-1);
+    }
+
+    public static Decimal abs(double other){
+        if(other >= 0){
+            return Decimal.valueOf(other);
+        }
+        return Decimal.valueOf(other * -1);
+    }
+
     @Override
     public String toString() {
         return value.toString();
@@ -140,7 +155,8 @@ public class Decimal {
     }
 
     public boolean equals(Decimal o) {
-        return Objects.equals(value, o.value);
+        return Objects.equals(value, o.value) ||
+                value.subtract(o.value).compareTo(BigDecimal.valueOf(Math.pow(10, -EQUALITY_SCALE))) < 0;
     }
 
 

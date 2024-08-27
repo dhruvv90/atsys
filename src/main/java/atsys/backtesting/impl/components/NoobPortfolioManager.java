@@ -37,5 +37,6 @@ public class NoobPortfolioManager extends PortfolioManager {
     public void onTrade(Trade trade) {
         log.info("tick: {}, processing trade: {}", context.getLastTick().getLastTradedPrice(), trade);
         orderService.addTradeToOrder(trade);
+        positionService.addTrade(trade);
     }
 }

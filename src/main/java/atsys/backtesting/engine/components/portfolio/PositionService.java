@@ -21,15 +21,12 @@ public class PositionService {
         return Optional.empty();
     }
 
-    public void addPosition(Instrument instrument, Long quantity){
-//        if(positionMap.containsKey(instrument)){
-//            Position pos = positionMap.get(instrument);
-//            pos.setQuantity(pos.getQuantity() + quantity);
-//            return;
-//        }
-//        Position pos = new Position(instrument);
-//        pos.setQuantity(quantity);
-//        positionMap.put(instrument, pos);
+    public void addTrade(Trade trade) {
+        Position pos = positionMap.get(trade.getInstrument());
+        if(pos == null){
+            pos = new Position(trade.getInstrument());
+            positionMap.put(trade.getInstrument(), pos);
+        }
+        pos.update(trade);
     }
-
 }

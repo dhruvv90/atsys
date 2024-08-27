@@ -39,4 +39,8 @@ public class PositionTrade {
                 + "}";
     }
 
+    public Decimal getTradeValue(){
+        return executedPrice.multiply(quantity);
+    }
+
 }

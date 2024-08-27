@@ -17,9 +17,8 @@ public final class Trade {
     private final String orderId;
     private final Instrument instrument;
     private final long quantity;
-    private final Decimal avgPrice;
+    private final Decimal executedPrice;
     private final boolean isBuy;
-    private final Decimal tradeValue;
 
     // Constructor managed by the Builder
     public Trade(
@@ -27,14 +26,17 @@ public final class Trade {
             String orderId,
             Instrument instrument,
             long quantity,
-            Decimal avgPrice) {
+            Decimal executedPrice) {
         this.tradeId = tradeId;
         this.orderId = orderId;
         this.instrument = instrument;
         this.quantity = quantity;
-        this.avgPrice = avgPrice;
+        this.executedPrice = executedPrice;
         this.isBuy = this.quantity > 0;
-        this.tradeValue = avgPrice.multiply(quantity);
+    }
+
+    public Decimal getTradeValue(){
+        return executedPrice.multiply(quantity);
     }
 
     @Override
@@ -44,7 +46,7 @@ public final class Trade {
                 + instrument
                 + ", " + StringUtils.getDirectionText(isBuy)
                 + ", qty=" + quantity
-                + ", price=" + avgPrice
+                + ", price=" + executedPrice
                 + "}";
     }
 

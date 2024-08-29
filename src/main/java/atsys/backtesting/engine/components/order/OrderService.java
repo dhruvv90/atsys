@@ -30,11 +30,11 @@ public class OrderService {
     }
 
     @SneakyThrows
-    public Order createOrder(Instrument instrument, long quantity) {
+    public Order createOrder(String signalId, Instrument instrument, long quantity) {
         if(quantity == 0){
             throw new InvalidParameterException("Invalid quantity: 0");
         }
-        Order order = new Order(generateNewOrderId(), instrument, quantity);
+        Order order = new Order(generateNewOrderId(), signalId, instrument, quantity);
         saveOrder(order);
 
         return order;

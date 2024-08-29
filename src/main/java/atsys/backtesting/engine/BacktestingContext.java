@@ -43,8 +43,8 @@ public class BacktestingContext {
         queuePublisher.publishEvent(event);
     }
 
-    public void publishOrder(Instrument instrument, long quantity) {
-        Order order = orderService.createOrder(instrument, quantity);
+    public void publishOrder(String signalId, Instrument instrument, long quantity) {
+        Order order = orderService.createOrder(signalId, instrument, quantity);
         OrderEvent event = new OrderEvent(order);
         publishEvent(event);
     }

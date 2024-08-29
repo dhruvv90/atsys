@@ -17,6 +17,8 @@ import java.util.Objects;
 public class Order {
 
     private final String orderId;
+    private final String signalId;
+
     @Setter
     private String exchangeOrderId;
     private final Instrument instrument;
@@ -34,12 +36,13 @@ public class Order {
     private final OrderValidity validity;
     private final List<Trade> trades = new LinkedList<>();
 
-    Order(String orderId, Instrument instrument, long totalQty) {
+    Order(String orderId, String signalId, Instrument instrument, long totalQty) {
         this.instrument = instrument;
         this.totalQty = totalQty;
         this.isBuy = totalQty > 0;
         this.createdAt = Instant.now();
         this.orderId = orderId;
+        this.signalId = signalId;
         validity = OrderValidity.DAY;
         orderStatus = OrderStatus.CREATED_INTERNAL;
         orderType = OrderType.MARKET;
@@ -49,12 +52,12 @@ public class Order {
     public String toString() {
         return this.getClass().getSimpleName()
                 + " {"
-                + ", id=" + instrument
+                + instrument
                 + StringUtils.getDirectionText(isBuy)
                 + ", " + instrument
                 + ", qty=" + totalQty
                 + ", filled=" + filledQty
-                + ", " +orderStatus
+                + ", " + orderStatus
                 + "}";
     }
 
@@ -71,14 +74,13 @@ public class Order {
         return Objects.hashCode(orderId);
     }
 
-    public void addTrade(Trade trade){
+    public void addTrade(Trade trade) {
         avgPrice = avgPrice.multiply(filledQty).add(trade.getTradeValue())
-                        .divide((double)filledQty + trade.getQuantity());
+                .divide((double) filledQty + trade.getQuantity());
         filledQty += trade.getQuantity();
-        if(filledQty == totalQty){
+        if (filledQty == totalQty) {
             this.orderStatus = OrderStatus.COMPLETED;
-        }
-        else{
+        } else {
             this.orderStatus = OrderStatus.COMPLETED_PARTIAL;
         }
         trades.add(trade);

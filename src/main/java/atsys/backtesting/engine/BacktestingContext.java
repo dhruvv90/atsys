@@ -57,7 +57,7 @@ public class BacktestingContext {
 
     public void publishFill(OrderFill fill) {
         orderService.stageOrder(fill);
-        FillEvent event = new FillEvent(fill);
+        OrderFillEvent event = new OrderFillEvent(fill);
         publishEvent(event);
     }
 

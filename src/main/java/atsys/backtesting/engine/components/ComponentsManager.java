@@ -103,7 +103,7 @@ public class ComponentsManager {
 
             // Event Registration
             eventManager.register(SignalEvent.class, new SignalEventListener(portfolioManager));
-            eventManager.register(FillEvent.class, new FillEventListener(portfolioManager));
+            eventManager.register(OrderFillEvent.class, new OrderFillEventListener(portfolioManager));
             eventManager.register(TradeEvent.class, new TradeEventListener(portfolioManager));
         } catch (Exception e) {
             throw new InitializationException(e);

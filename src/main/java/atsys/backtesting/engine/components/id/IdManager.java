@@ -5,7 +5,8 @@ public abstract class IdManager {
     public enum ComponentType{
         ORDER,
         TRADE,
-        SIGNAL
+        SIGNAL,
+        CLOSED_TRADE
     }
 
     public abstract String generateId(ComponentType type);

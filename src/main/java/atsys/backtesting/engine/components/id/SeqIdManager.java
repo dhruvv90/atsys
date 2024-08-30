@@ -7,11 +7,14 @@ public class SeqIdManager extends IdManager {
     private final AtomicLong orderCounter;
     private final AtomicLong tradeCounter;
     private final AtomicLong signalCounter;
+    private final AtomicLong closedTradeCounter;
+
 
     public SeqIdManager(){
         this.orderCounter = new AtomicLong();
         this.tradeCounter = new AtomicLong();
         this.signalCounter= new AtomicLong();
+        this.closedTradeCounter = new AtomicLong();
     }
 
     @Override
@@ -27,6 +30,10 @@ public class SeqIdManager extends IdManager {
                 break;
             case SIGNAL:
                 result = String.valueOf(signalCounter.incrementAndGet());
+                break;
+            case CLOSED_TRADE:
+                result = String.valueOf(closedTradeCounter.incrementAndGet());
+                break;
         }
         return result;
     }

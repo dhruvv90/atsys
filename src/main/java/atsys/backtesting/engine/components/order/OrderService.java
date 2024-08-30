@@ -1,32 +1,31 @@
 package atsys.backtesting.engine.components.order;
 
 import atsys.backtesting.engine.components.asset.Instrument;
+import atsys.backtesting.engine.components.id.IdManager;
 import atsys.backtesting.engine.components.portfolio.Trade;
 import atsys.backtesting.engine.exception.InvalidParameterException;
+import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Slf4j
 public class OrderService {
-    private final AtomicLong counter;
     private final Map<String, Order> ordersById;
 
-    public OrderService() {
-        this.ordersById = new HashMap<>();
-        this.counter = new AtomicLong();
-    }
+    @Getter
+    private final IdManager idManager;
 
-    private String generateNewOrderId() {
-        return String.valueOf(counter.incrementAndGet());
+    public OrderService(IdManager idManager) {
+        this.idManager = idManager;
+        this.ordersById = new HashMap<>();
     }
 
     private void saveOrder(Order order){
-        ordersById.put(order.getOrderId(), order);
+        ordersById.put(order.getId(), order);
     }
 
     @SneakyThrows
@@ -34,7 +33,9 @@ public class OrderService {
         if(quantity == 0){
             throw new InvalidParameterException("Invalid quantity: 0");
         }
-        Order order = new Order(generateNewOrderId(), signalId, instrument, quantity);
+        String newId = idManager.generateId(IdManager.ComponentType.ORDER);
+
+        Order order = new Order(newId, signalId, instrument, quantity);
         saveOrder(order);
 
         return order;

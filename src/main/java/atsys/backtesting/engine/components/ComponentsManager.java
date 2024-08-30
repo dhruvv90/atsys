@@ -1,8 +1,11 @@
 package atsys.backtesting.engine.components;
 
 import atsys.backtesting.engine.*;
+import atsys.backtesting.engine.components.id.IdManager;
+import atsys.backtesting.engine.components.id.SeqIdManager;
 import atsys.backtesting.engine.components.order.OrderService;
 import atsys.backtesting.engine.components.portfolio.PositionService;
+import atsys.backtesting.engine.components.portfolio.TradeService;
 import atsys.backtesting.engine.events.*;
 import atsys.backtesting.engine.events.listeners.*;
 import atsys.backtesting.engine.exception.InitializationException;
@@ -17,6 +20,8 @@ public class ComponentsManager {
     private final EventQueue<Event> eventQueue;
     private final OrderService orderService;
     private final PositionService positionService;
+    private final TradeService tradeService;
+    private final IdManager idManager;
 
     @Getter
     private DataStreamer<TickData> dataStreamer;
@@ -40,9 +45,14 @@ public class ComponentsManager {
         this.queuePublisher = new QueuePublisher(this.eventQueue);
         this.eventManager = new EventManager();
 
+        // Id Manager
+        this.idManager = new SeqIdManager();
+
         // Create Services
-        this.orderService = new OrderService();
+        this.orderService = new OrderService(idManager);
         this.positionService = new PositionService();
+        this.tradeService = new TradeService(idManager);
+
 
         // Create Backtesting context
         BacktestingContext context = new BacktestingContext(this.backtest, queuePublisher, orderService, positionService);
@@ -114,6 +124,8 @@ public class ComponentsManager {
         try {
             var clazz = backtest.getExecutionMgrClazz();
             executionManager = clazz.getDeclaredConstructor().newInstance();
+
+            executionManager.setTradeService(tradeService);
             executionManager.onInit(context);
 
             // Event Registration

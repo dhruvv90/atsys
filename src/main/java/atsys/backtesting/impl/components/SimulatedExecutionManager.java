@@ -8,8 +8,6 @@ import atsys.backtesting.engine.components.portfolio.Trade;
 import atsys.utils.Decimal;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.UUID;
-
 @Slf4j(topic = "SimulatedExecutionManager")
 public class SimulatedExecutionManager extends ExecutionManager {
 
@@ -18,7 +16,7 @@ public class SimulatedExecutionManager extends ExecutionManager {
         log.info("tick {}, processing {}", context.getLastTick().getLastTradedPrice(), order);
         Decimal ltp = context.getLastTick().getLastTradedPrice();
 
-        OrderFill fill = new OrderFill(order.getOrderId(), OrderFillStatus.SUCCESS, order.getOrderId());
+        OrderFill fill = new OrderFill(order.getId(), OrderFillStatus.SUCCESS, order.getId());
         context.publishFill(fill);
 
         if(order.getTotalQty() == 1){
@@ -31,7 +29,7 @@ public class SimulatedExecutionManager extends ExecutionManager {
     }
 
     private void publishTrade(Order order, long quantity, Decimal price) {
-        Trade trade = new Trade(UUID.randomUUID().toString(), order.getOrderId(), order.getInstrument(), quantity, price);
+        Trade trade = tradeService.createTrade(order.getId(), order.getInstrument(), quantity, price);
         context.publishTrade(trade);
     }
 }

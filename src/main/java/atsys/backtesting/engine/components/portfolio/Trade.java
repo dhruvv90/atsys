@@ -13,7 +13,7 @@ import java.util.Objects;
 @Getter
 public final class Trade {
 
-    private final String tradeId;
+    private final String id;
     private final String orderId;
     private final Instrument instrument;
     private final long quantity;
@@ -21,13 +21,13 @@ public final class Trade {
     private final boolean isBuy;
 
     // Constructor managed by the Builder
-    public Trade(
-            String tradeId,
+    Trade(
+            String id,
             String orderId,
             Instrument instrument,
             long quantity,
             Decimal executedPrice) {
-        this.tradeId = tradeId;
+        this.id = id;
         this.orderId = orderId;
         this.instrument = instrument;
         this.quantity = quantity;
@@ -43,7 +43,8 @@ public final class Trade {
     public String toString() {
         return this.getClass().getSimpleName()
                 + " {"
-                + instrument
+                + "id="+id
+                + ", "+instrument
                 + ", " + StringUtils.getDirectionText(isBuy)
                 + ", qty=" + quantity
                 + ", price=" + executedPrice
@@ -55,11 +56,11 @@ public final class Trade {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Trade trade = (Trade) o;
-        return Objects.equals(tradeId, trade.tradeId);
+        return Objects.equals(id, trade.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tradeId);
+        return Objects.hash(id);
     }
 }

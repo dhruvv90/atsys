@@ -16,7 +16,7 @@ import java.util.Objects;
 @Getter
 public class Order {
 
-    private final String orderId;
+    private final String id;
     private final String signalId;
 
     @Setter
@@ -36,12 +36,12 @@ public class Order {
     private final OrderValidity validity;
     private final List<Trade> trades = new LinkedList<>();
 
-    Order(String orderId, String signalId, Instrument instrument, long totalQty) {
+    Order(String id, String signalId, Instrument instrument, long totalQty) {
         this.instrument = instrument;
         this.totalQty = totalQty;
         this.isBuy = totalQty > 0;
         this.createdAt = Instant.now();
-        this.orderId = orderId;
+        this.id = id;
         this.signalId = signalId;
         validity = OrderValidity.DAY;
         orderStatus = OrderStatus.CREATED_INTERNAL;
@@ -52,7 +52,8 @@ public class Order {
     public String toString() {
         return this.getClass().getSimpleName()
                 + " {"
-                + instrument
+                + "id="+id
+                + ", "+ instrument
                 + StringUtils.getDirectionText(isBuy)
                 + ", " + instrument
                 + ", qty=" + totalQty
@@ -66,12 +67,12 @@ public class Order {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return Objects.equals(orderId, order.orderId);
+        return Objects.equals(id, order.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(orderId);
+        return Objects.hashCode(id);
     }
 
     public void addTrade(Trade trade) {

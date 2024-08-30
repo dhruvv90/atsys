@@ -4,25 +4,25 @@ import atsys.backtesting.engine.components.asset.Instrument;
 import atsys.utils.StringUtils;
 import lombok.Getter;
 
-import java.util.concurrent.atomic.AtomicLong;
-
 @Getter
 public class Signal {
-    private final String signalId;
+    private final String id;
     private final Instrument instrument;
     private final boolean isBuy;
-    private static final AtomicLong counter = new AtomicLong();
 
-    public Signal(Instrument instrument, boolean isBuy) {
+    public Signal(String id, Instrument instrument, boolean isBuy) {
         this.instrument = instrument;
         this.isBuy = isBuy;
-        this.signalId = String.valueOf(counter.incrementAndGet());
+        this.id = id;
     }
 
     @Override
     public String toString() {
-        return String.join("",
-                this.getClass().getSimpleName(),
-                "(", instrument.toString(), ",", StringUtils.getDirectionText(isBuy), ")");
+        return this.getClass().getSimpleName()
+                + " {"
+                + "id="+id
+                + ", "+instrument
+                + ", " + StringUtils.getDirectionText(isBuy)
+                + "}";
     }
 }

@@ -6,10 +6,15 @@ import atsys.backtesting.engine.components.order.OrderFill;
 import atsys.backtesting.engine.components.order.OrderFillStatus;
 import atsys.backtesting.engine.components.portfolio.Trade;
 import atsys.utils.Decimal;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j(topic = "SimulatedExecutionManager")
-public class SimulatedExecutionManager extends ExecutionManager {
+public class DumbExecutionManager extends ExecutionManager {
+
+    private static final double SLIPPAGE_PERCENTAGE = 0.1;
+    private static final int LATENCY_MS = 0;
+
 
     @Override
     public void processOrder(Order order) {
@@ -28,8 +33,18 @@ public class SimulatedExecutionManager extends ExecutionManager {
         }
     }
 
+    @SneakyThrows
     private void publishTrade(Order order, long quantity, Decimal price) {
-        Trade trade = tradeService.createTrade(order.getId(), order.getInstrument(), quantity, price);
+        Thread.sleep(LATENCY_MS);
+        // apply negative slippage..
+        Decimal adjPrice;
+        if(order.isBuy()){
+            adjPrice = price.multiply(1 + (SLIPPAGE_PERCENTAGE/100.0));
+        }
+        else{
+            adjPrice = price.multiply(1 - (SLIPPAGE_PERCENTAGE/100.0));
+        }
+        Trade trade = tradeService.createTrade(order.getId(), order.getInstrument(), quantity, adjPrice);
         context.publishTrade(trade);
     }
 }

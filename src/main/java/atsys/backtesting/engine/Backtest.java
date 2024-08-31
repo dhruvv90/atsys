@@ -2,7 +2,7 @@ package atsys.backtesting.engine;
 
 import atsys.backtesting.engine.components.*;
 import atsys.backtesting.impl.components.NoobPortfolioManager;
-import atsys.backtesting.impl.components.SimulatedExecutionManager;
+import atsys.backtesting.impl.components.DumbExecutionManager;
 import atsys.utils.Decimal;
 import lombok.Getter;
 
@@ -49,6 +49,6 @@ public class Backtest<T extends TickData> {
                     Decimal initialCapital, Instant startDateTime, Instant endDateTime,
                     Class<? extends Strategy<T>> strategyClazz,  DataStreamer<T> dataStreamer) {
         this(name, description, symbol, initialCapital, startDateTime, endDateTime, strategyClazz,
-                NoobPortfolioManager.class, SimulatedExecutionManager.class, dataStreamer );
+                NoobPortfolioManager.class, DumbExecutionManager.class, dataStreamer );
     }
 }

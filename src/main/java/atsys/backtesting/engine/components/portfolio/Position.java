@@ -12,119 +12,147 @@ import java.util.Queue;
 @Slf4j
 public class Position {
     private final Instrument instrument;
-    private final Queue<PositionTrade> buyPosTrades;
-    private final Queue<PositionTrade> sellPosTrades;
-    private final Queue<PositionTrade> squaredOffTrades;
+
+    // Open Trades
+    private final Queue<OpenTrade> openBuyTrades;
+    private final Queue<OpenTrade> openSellTrades;
+
+    // Closed / Squared off trades
+    private final Queue<ClosedTrade> closedTrades;
+
     private long quantity;
     private Decimal avgPrice;
-    private Decimal unrealizedPnl;
-    private Decimal realizedPnl;
     private Decimal ltp;
-
 
     public Position(Instrument instrument) {
         this.instrument = instrument;
-        this.buyPosTrades = new LinkedList<>();
-        this.sellPosTrades = new LinkedList<>();
+        this.openBuyTrades = new LinkedList<>();
+        this.openSellTrades = new LinkedList<>();
 
-        this.squaredOffTrades = new LinkedList<>();
+        this.closedTrades = new LinkedList<>();
         this.quantity = 0;
 
         this.avgPrice = Decimal.ZERO;
-        this.unrealizedPnl = Decimal.ZERO;
-        this.realizedPnl = Decimal.ZERO;
         this.ltp = Decimal.ZERO;
+    }
+
+
+    /**
+     * Calculated lazily - simply by avgPrice, ltp and qty
+     */
+    public Decimal getUnrealizedPnl() {
+        Decimal unrealizedPnl;
+
+        if (quantity == 0) {
+            unrealizedPnl = Decimal.ZERO;
+
+        } else if (quantity > 0) {
+            // Long position
+            unrealizedPnl = ltp.subtract(avgPrice).multiply(quantity);
+        } else {
+            // Short position
+            unrealizedPnl = avgPrice.subtract(ltp).multiply(-quantity);
+        }
+        return unrealizedPnl;
+    }
+
+    /**
+     * Calculated lazily by iterating through all Closed trades
+     */
+    public Decimal getRealizedPnl() {
+        Decimal realizedPnl = Decimal.ZERO;
+        if(closedTrades.isEmpty()){
+            return realizedPnl;
+        }
+        for (ClosedTrade closedTrade : closedTrades) {
+            realizedPnl = realizedPnl.add(closedTrade.getPnl());
+        }
+        return realizedPnl;
     }
 
     public void update(Trade trade) {
         this.ltp = trade.getExecutedPrice();
 
         if (trade.isBuy()) {
-            if (sellPosTrades.isEmpty()) {
+            if (openSellTrades.isEmpty()) {
                 processTradeRolling(trade);
             } else {
                 processTradeSquareOff(trade);
             }
         } else {
-            if (buyPosTrades.isEmpty()) {
+            if (openBuyTrades.isEmpty()) {
                 processTradeRolling(trade);
             } else {
                 processTradeSquareOff(trade);
             }
         }
         storeTrade(trade);
-        refreshUnrealizedPnl();
     }
 
-    private void storeTrade(Trade trade){
-        PositionTrade posTrade = new PositionTrade(trade.getInstrument(), trade.getQuantity(),
+    private void storeTrade(Trade trade) {
+        OpenTrade openTrade = new OpenTrade(trade.getInstrument(), trade.getQuantity(),
                 trade.getExecutedPrice(), trade.isBuy());
-        if(trade.isBuy()){
-            buyPosTrades.add(posTrade);
-        }
-        else{
-            sellPosTrades.add(posTrade);
+        if (trade.isBuy()) {
+            openBuyTrades.add(openTrade);
+        } else {
+            openSellTrades.add(openTrade);
         }
     }
 
 
-    private void squareOffSellTrade(Trade sellTrade){
-        if(buyPosTrades.isEmpty()){
-            log.warn("No buy posTrades found for incoming sellTrade");
+    private void squareOffSellTrade(Trade sellTrade) {
+        if (openBuyTrades.isEmpty()) {
+            log.warn("No open buy trades found for incoming sellTrade");
             return;
         }
 
         long incomingQty = sellTrade.getQuantity(); // -ve
-        while(!buyPosTrades.isEmpty() && incomingQty != 0){
-            PositionTrade buyPosTrade = buyPosTrades.peek();
-            long qtyToSell = Math.min(Math.abs(buyPosTrade.getQuantity()), Math.abs(incomingQty));
+        while (!openBuyTrades.isEmpty() && incomingQty != 0) {
+            OpenTrade openBuyTrade = openBuyTrades.peek();
+            long qtyToSell = Math.min(Math.abs(openBuyTrade.getQuantity()), Math.abs(incomingQty));
 
-            Decimal pnl = sellTrade.getExecutedPrice().subtract(buyPosTrade.getExecutedPrice()).multiply(qtyToSell);
-            // record squared off trade here..
-
-            // update realized pnl
-            realizedPnl = realizedPnl.add(pnl);
+            // SquareOff and record ClosedTrade
+            ClosedTrade closedTrade = new ClosedTrade(instrument, qtyToSell, openBuyTrade.getExecutedPrice(),
+                    sellTrade.getExecutedPrice());
+            closedTrades.offer(closedTrade);
 
             incomingQty += qtyToSell;
-            buyPosTrade.setQuantity(buyPosTrade.getQuantity() - qtyToSell);
-            if(buyPosTrade.getQuantity() == 0){
-                buyPosTrades.poll();
+            openBuyTrade.setQuantity(openBuyTrade.getQuantity() - qtyToSell);
+            if (openBuyTrade.getQuantity() == 0) {
+                openBuyTrades.poll();
             }
         }
     }
 
-    private void squareOffBuyTrade(Trade buyTrade){
-        if(sellPosTrades.isEmpty()){
-            log.warn("No sell posTrades found for incoming sellTrade");
+    private void squareOffBuyTrade(Trade buyTrade) {
+        if (openSellTrades.isEmpty()) {
+            log.warn("No open sell trades found for incoming sellTrade");
             return;
         }
 
         long incomingQty = buyTrade.getQuantity(); // +ve
-        while(!sellPosTrades.isEmpty() && incomingQty != 0){
-            PositionTrade sellPosTrade = sellPosTrades.peek();
-            long qtyToBuy = Math.min(Math.abs(sellPosTrade.getQuantity()), Math.abs(incomingQty));
+        while (!openSellTrades.isEmpty() && incomingQty != 0) {
+            OpenTrade openSellTrade = openSellTrades.peek();
+            long qtyToBuy = Math.min(Math.abs(openSellTrade.getQuantity()), Math.abs(incomingQty));
 
-            Decimal pnl = sellPosTrade.getExecutedPrice().subtract(buyTrade.getExecutedPrice()).multiply(qtyToBuy);
-            // record squared off trade here..
-
-            // update realized pnl
-            realizedPnl = realizedPnl.add(pnl);
+            // SquareOff and record ClosedTrade
+            ClosedTrade closedTrade = new ClosedTrade(instrument, qtyToBuy, buyTrade.getExecutedPrice(),
+                    openSellTrade.getExecutedPrice());
+            closedTrades.offer(closedTrade);
 
             incomingQty -= qtyToBuy;
-            sellPosTrade.setQuantity(sellPosTrade.getQuantity() + qtyToBuy);
-            if(sellPosTrade.getQuantity() == 0){
-                sellPosTrades.poll();
+            openSellTrade.setQuantity(openSellTrade.getQuantity() + qtyToBuy);
+            if (openSellTrade.getQuantity() == 0) {
+                openSellTrades.poll();
             }
         }
     }
 
 
-
     private void processTradeSquareOff(Trade trade) {
-        if(trade.isBuy()){
+        if (trade.isBuy()) {
             squareOffBuyTrade(trade);
-        }
-        else{
+        } else {
             squareOffSellTrade(trade);
         }
         quantity += trade.getQuantity();
@@ -134,15 +162,15 @@ public class Position {
 
     /**
      * Does averaging of buy price in same direction and updates it :
-     *  avg up: curr long , buy trade OR
-     *  avg down : when curr short, sell trade
+     * avg up: curr long , buy trade OR
+     * avg down : when curr short, sell trade
      * MUST NOT BE USED IF current position is opposite to side of trade. for that
      * we need to square off and recalculate buy prices
      *
      * @param trade Incoming trade
      */
     private void processTradeRolling(Trade trade) {
-        if((quantity > 0 && !trade.isBuy()) || (quantity < 0 && trade.isBuy())){
+        if ((quantity > 0 && !trade.isBuy()) || (quantity < 0 && trade.isBuy())) {
             log.error("Invalid method call : cannot calculate avgPrice for opposite directions. Use squareOff()");
             return;
         }
@@ -158,37 +186,22 @@ public class Position {
      * Recalculate avg price by iterating through all posTrades.
      * Useful after square-off
      */
-    private Decimal recalcAvgPrice(){
+    private Decimal recalcAvgPrice() {
         Decimal tradeValue = Decimal.ZERO;
         long qty = 0;
-        for(PositionTrade trade: buyPosTrades){
+        for (OpenTrade trade : openBuyTrades) {
             qty += trade.getQuantity();
             tradeValue = tradeValue.add(trade.getTradeValue());
         }
-        for(PositionTrade trade: sellPosTrades){
+        for (OpenTrade trade : openSellTrades) {
             qty += trade.getQuantity();
             tradeValue = tradeValue.add(trade.getTradeValue());
         }
-        if(qty == 0){
+        if (qty == 0) {
             return Decimal.ZERO;
         }
         return tradeValue.divide(qty);
     }
 
-    /**
-     * Refresh Unrealized PnL using CURRENT ltp and avgPrice.
-     * Can be used to refresh unrealized pnl after trade updates qty/price
-     */
-    private void refreshUnrealizedPnl() {
-        if (quantity == 0) {
-            unrealizedPnl = Decimal.ZERO;
 
-        } else if (quantity > 0) {
-            // Long position
-            unrealizedPnl = ltp.subtract(avgPrice).multiply(quantity);
-        } else {
-            // Short position
-            unrealizedPnl = avgPrice.subtract(ltp).multiply(-quantity);
-        }
-    }
 }

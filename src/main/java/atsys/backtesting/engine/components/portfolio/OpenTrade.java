@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-public class PositionTrade {
+public class OpenTrade {
 
     private final Instrument instrument;
     private final boolean isBuy;
@@ -17,7 +17,7 @@ public class PositionTrade {
     private long quantity;
 
     // Constructor managed by the Builder
-    public PositionTrade(
+    public OpenTrade(
             Instrument instrument,
             long quantity,
             Decimal executedPrice,

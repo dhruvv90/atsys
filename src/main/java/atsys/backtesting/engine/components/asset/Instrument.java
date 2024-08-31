@@ -28,6 +28,9 @@ public abstract class Instrument {
         if(this == obj){
             return true;
         }
+        if(obj == null){
+            return false;
+        }
         if(!getClass().equals(obj.getClass())){
             return false;
         }

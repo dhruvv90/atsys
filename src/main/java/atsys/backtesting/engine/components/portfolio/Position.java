@@ -41,22 +41,22 @@ public class Position {
 
         if (trade.isBuy()) {
             if (sellPosTrades.isEmpty()) {
-                calcAvgPriceUnidirectional(trade);
+                processTradeRolling(trade);
             } else {
-                doSquareOff(trade);
+                processTradeSquareOff(trade);
             }
         } else {
             if (buyPosTrades.isEmpty()) {
-                calcAvgPriceUnidirectional(trade);
+                processTradeRolling(trade);
             } else {
-                doSquareOff(trade);
+                processTradeSquareOff(trade);
             }
         }
-        saveTradeInternal(trade);
+        storeTrade(trade);
         refreshUnrealizedPnl();
     }
 
-    private void saveTradeInternal(Trade trade){
+    private void storeTrade(Trade trade){
         PositionTrade posTrade = new PositionTrade(trade.getInstrument(), trade.getQuantity(),
                 trade.getExecutedPrice(), trade.isBuy());
         if(trade.isBuy()){
@@ -120,7 +120,7 @@ public class Position {
 
 
 
-    private void doSquareOff(Trade trade) {
+    private void processTradeSquareOff(Trade trade) {
         if(trade.isBuy()){
             squareOffBuyTrade(trade);
         }
@@ -141,7 +141,7 @@ public class Position {
      *
      * @param trade Incoming trade
      */
-    private void calcAvgPriceUnidirectional(Trade trade) {
+    private void processTradeRolling(Trade trade) {
         if((quantity > 0 && !trade.isBuy()) || (quantity < 0 && trade.isBuy())){
             log.error("Invalid method call : cannot calculate avgPrice for opposite directions. Use squareOff()");
             return;
@@ -151,7 +151,7 @@ public class Position {
                 .add(trade.getTradeValue());
 
         this.quantity += trade.getQuantity();
-        this.avgPrice = portfolioValue.divide(Decimal.valueOf(this.quantity));
+        this.avgPrice = portfolioValue.divide(this.quantity);
     }
 
     /**

@@ -77,7 +77,7 @@ public class Order {
 
     public void addTrade(Trade trade) {
         avgPrice = avgPrice.multiply(filledQty).add(trade.getTradeValue())
-                .divide((double) filledQty + trade.getQuantity());
+                .divide((double)filledQty + trade.getQuantity());
         filledQty += trade.getQuantity();
         if (filledQty == totalQty) {
             this.orderStatus = OrderStatus.COMPLETED;

@@ -115,6 +115,10 @@ public class Decimal {
         return divide(Decimal.valueOf(divisor));
     }
 
+    public Decimal divide(long divisor) {
+        return divide(Decimal.valueOf(divisor));
+    }
+
     public int compareTo(double other){
         return value.compareTo(Decimal.valueOf(other).value);
     }
